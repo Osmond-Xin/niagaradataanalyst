@@ -3,7 +3,6 @@ import path from 'path'
 import matter from 'gray-matter'
 import { NextSeo } from 'next-seo';
 import Post from '../components/Post'
-import Banner from "../components/Banner";
 import Sidebar from "../components/Sidebar"
 import { sortByDate, slugify } from '../utils'
 
@@ -29,8 +28,7 @@ export default function Home({ posts }) {
           site_name: 'Niagara Data Analyst',
         }}      
       />
-      <Banner /> 
-      <div className="container">
+      <div className="container mt-4">
         <div className="row">
           <div className="col-lg-8">
             {posts && posts.length > 0 ? (

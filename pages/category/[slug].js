@@ -3,7 +3,6 @@ import path from 'path'
 import matter from 'gray-matter'
 import { NextSeo } from 'next-seo'
 import Post from '../../components/Post'
-import Banner from "../../components/Banner"
 import Sidebar from "../../components/Sidebar"
 import { slugify } from '../../utils'
 
@@ -20,8 +19,7 @@ export default function CategoryPage({ posts, category }) {
           site_name: 'Niagara Data Analyst',
         }}
       />
-      <Banner />
-      <div className="container">
+      <div className="container mt-4">
         <div className="row">
           <div className="col-lg-8">
             <div className="card mb-4">

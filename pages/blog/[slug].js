@@ -5,7 +5,6 @@ import { marked } from 'marked'
 import Link from 'next/link'
 import { slugify } from '../../utils'
 import { NextSeo } from 'next-seo';
-import Banner from "../../components/Banner"
 import Sidebar from "../../components/Sidebar"
 
 export default function PostPage({ content, frontmatter }) {
@@ -29,29 +28,32 @@ export default function PostPage({ content, frontmatter }) {
           site_name: 'Niagara Data Analyst',
         }}      
       />
-      <Banner />
-      <div className="container my-5">
+      <div className="container-fluid px-4 my-5">
         <div className="row">
-          <div className="col-lg-8">
-            <div className='card card-page'>
-              <h1 className='post-title mt-2 p-2'>{frontmatter.title}</h1>
-              <div className='post-date m-1 p-2'>
-                <div><h6>{frontmatter.date}</h6></div>
-                <div> {
-                  frontmatter.categories.map(
-                    category => {
-                      const slug = slugify(category)
-                      return (<Link key={category} href={`/category/${slug}`}>
-                        <a className='btn'>
-                          <h6 className=' post-title'>#{category}</h6>
-                        </a>
-                      </Link>)
-                    }
-                  )
-                } </div>
-              </div>
+          <div className="col-12 col-lg-8">
+            <div className='card w-100'>
+              <div className="card-body p-4">
+                <div className="w-100">
+                  <h1 className='post-title mb-3'>{frontmatter.title}</h1>
+                  <div className='post-date mb-4'>
+                    <div className="mb-2"><h6>{frontmatter.date}</h6></div>
+                    <div className="d-flex flex-wrap gap-2"> {
+                      frontmatter.categories.map(
+                        category => {
+                          const slug = slugify(category)
+                          return (<Link key={category} href={`/category/${slug}`}>
+                            <a className='btn btn-sm btn-outline-primary'>
+                              #{category}
+                            </a>
+                          </Link>)
+                        }
+                      )
+                    } </div>
+                  </div>
 
-              <div className='post-body p-5 m-auto' dangerouslySetInnerHTML={{ __html: marked.parse(content) }}>
+                  <div className='post-body' dangerouslySetInnerHTML={{ __html: marked.parse(content) }}>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
