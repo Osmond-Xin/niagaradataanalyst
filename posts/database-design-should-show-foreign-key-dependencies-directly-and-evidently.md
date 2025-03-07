@@ -5,7 +5,7 @@ date : "2025-03-02 01:09:24"
 description : "Database design should show foreign key dependencies directly and evidently"  
 slug : "database-design-should-show-foreign-key-dependencies-directly-and-evidently"  
 summary : "Database design should show foreign key dependencies directly and evidently"  
-tags : ["sql","article"]  
+tags : ["sql"]  
 title : "Database design should show foreign key dependencies directly and evidently"  
 
 ---

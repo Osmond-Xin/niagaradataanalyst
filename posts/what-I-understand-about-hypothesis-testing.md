@@ -1,11 +1,11 @@
 ---  
 author : "Osmond Xin"  
-categories : ["hypothesis", "statistics"]  
+categories : ["statistics"]  
 date : "2025-03-01 11:09:24"  
 description : "What I understand about hypothesis testing" 
 slug : "what-I-understand-about-hypothesis-testing"  
 summary : "What I understand about hypothesis testing"  
-tags : ["hypothesis", "statistics", "article"]  
+tags : ["statistics"]  
 title : "What I understand about hypothesis testing"  
 
 ---

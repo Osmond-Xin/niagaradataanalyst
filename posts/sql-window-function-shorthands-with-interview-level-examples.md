@@ -5,7 +5,7 @@ date : "2025-03-03 02:19:24"
 description : "SQL window function shorthands with interview-level examples"  
 slug : "sql-window-function-shorthands-with-interview-level-examples"  
 summary : "SQL window function shorthands with interview-level examples"  
-tags : ["sql","article"]  
+tags : ["sql"]  
 title : "SQL window function shorthands with interview-level examples"  
 
 ---
