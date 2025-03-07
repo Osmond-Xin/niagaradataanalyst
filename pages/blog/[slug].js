@@ -6,6 +6,21 @@ import Link from 'next/link'
 import { slugify } from '../../utils'
 import { NextSeo } from 'next-seo';
 import Sidebar from "../../components/Sidebar"
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark.css';
+
+// 配置 marked 使用 highlight.js
+marked.setOptions({
+  highlight: function(code, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(code, { language: lang }).value;
+      } catch (__) {}
+    }
+    return code;
+  },
+  langPrefix: 'hljs language-'
+});
 
 export default function PostPage({ content, frontmatter }) {
   return (
