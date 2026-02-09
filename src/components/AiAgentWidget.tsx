@@ -182,7 +182,14 @@ const AiAgentWidget: React.FC = () => {
                       : 'bg-gray-800 text-gray-300'
                     }`}
                 >
-                  {msg.content || (isLoading && i === messages.length - 1 ? t('ai.thinking') : '')}
+                  {msg.content || (isLoading && i === messages.length - 1 ? (
+                    <span className="inline-flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <span className="ml-2 text-gray-400">{t('ai.thinking')}</span>
+                    </span>
+                  ) : '')}
                 </div>
               </div>
             ))}

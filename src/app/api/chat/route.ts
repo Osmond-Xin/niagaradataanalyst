@@ -109,6 +109,9 @@ export async function POST(request: NextRequest) {
     const vertexAi = new VertexAI({
       project: GCP_PROJECT_ID,
       location: GCP_LOCATION,
+      apiEndpoint: GCP_LOCATION === 'global'
+        ? 'aiplatform.googleapis.com'
+        : `${GCP_LOCATION}-aiplatform.googleapis.com`,
     });
 
     const model = vertexAi.getGenerativeModel({
