@@ -8,7 +8,7 @@ import { aiPersona } from '@/data/ai-persona';
 
 /** Vertex AI配置 */
 const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID;
-const GCP_LOCATION = process.env.GCP_LOCATION || 'us-central1';
+const GCP_LOCATION = process.env.GCP_LOCATION || 'global';
 const MODEL_ID = 'gemini-3-flash-preview';
 
 /** 限流配置：每IP每分钟50次，全局每天300次 */
