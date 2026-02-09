@@ -94,6 +94,18 @@ export async function POST(request: NextRequest) {
     /** 动态导入Vertex AI SDK（仅服务端） */
     const { VertexAI } = await import('@google-cloud/vertexai');
 
+    /**
+     * Vercel部署时无文件系统，通过GOOGLE_APPLICATION_CREDENTIALS_JSON环境变量传入凭证内容
+     * 将JSON内容写入/tmp临时文件，并设置GOOGLE_APPLICATION_CREDENTIALS指向该文件
+     */
+    const credJson = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
+    if (credJson && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+      const fs = await import('fs');
+      const tmpPath = '/tmp/gcp-credentials.json';
+      fs.writeFileSync(tmpPath, credJson);
+      process.env.GOOGLE_APPLICATION_CREDENTIALS = tmpPath;
+    }
+
     const vertexAi = new VertexAI({
       project: GCP_PROJECT_ID,
       location: GCP_LOCATION,
