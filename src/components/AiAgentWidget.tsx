@@ -49,7 +49,7 @@ const AiAgentWidget: React.FC = () => {
     if (!input.trim() || isLoading) return;
 
     const userMessage: ChatMessage = { role: 'user', content: input.trim() };
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage, { role: 'assistant', content: '' }]);
     setInput('');
     setIsLoading(true);
 
@@ -72,8 +72,6 @@ const AiAgentWidget: React.FC = () => {
         const reader = response.body?.getReader();
         const decoder = new TextDecoder();
         let assistantContent = '';
-
-        setMessages((prev) => [...prev, { role: 'assistant', content: '' }]);
 
         if (reader) {
           while (true) {

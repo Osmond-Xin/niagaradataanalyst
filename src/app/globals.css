@@ -34,20 +34,20 @@ body {
   background: #555;
 }
 
-/* 呼吸动画 - AI小部件使用 */
+/* 低调脉动动画 - AI小部件使用 */
 @keyframes breathe {
   0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    opacity: 0.3;
   }
   50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px 10px rgba(59, 130, 246, 0);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    opacity: 1;
   }
 }
 
 .animate-breathe {
-  animation: breathe 3s ease-in-out infinite;
+  animation: breathe 4s ease-in-out infinite;
 }
 
 /* 终端闪烁光标 */
