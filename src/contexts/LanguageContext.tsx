@@ -11,7 +11,7 @@ import type { Language, LanguageContextType } from '@/types';
 
 /** 默认语言上下文值 */
 const LanguageContext = createContext<LanguageContextType>({
-  language: 'zh',
+  language: 'en',
   setLanguage: () => {},
   t: (key: string) => key,
 });
@@ -46,7 +46,7 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
  * 包裹整个应用，提供语言状态和翻译功能
  */
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>('zh');
+  const [language, setLanguageState] = useState<Language>('en');
   const [mounted, setMounted] = useState(false);
 
   /** 初始化：从localStorage读取语言偏好 */
