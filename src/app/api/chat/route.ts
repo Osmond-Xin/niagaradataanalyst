@@ -103,18 +103,29 @@ export async function POST(request: NextRequest) {
     }
 
     /**
-     * 解析 generateContent 完整 JSON 响应
-     * 格式：{candidates:[{content:{parts:[{text:"..."}]}}]}
+     * 使用 text() 读取原始响应，手动 parse 以便记录详细错误
      */
-    const data = await vertexResponse.json();
-    const fullText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!fullText) {
-      console.error('[API/chat] Empty response:', JSON.stringify(data).slice(0, 200));
+    const rawText = await vertexResponse.text();
+    let data: Record<string, unknown>;
+    try {
+      data = JSON.parse(rawText) as Record<string, unknown>;
+    } catch (e) {
+      console.error('[API/chat] JSON parse failed. Status:', vertexResponse.status);
+      console.error('[API/chat] Raw response (200 chars):', rawText.slice(0, 200));
       return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
     }
 
-    return NextResponse.json({ content: fullText });
+    const candidates = data.candidates as Array<Record<string, unknown>> | undefined;
+    const fullText = (candidates?.[0]?.content as Record<string, unknown> | undefined)
+      ?.parts as Array<{ text?: string }> | undefined;
+    const text = fullText?.[0]?.text;
+
+    if (!text) {
+      console.error('[API/chat] No text in response:', JSON.stringify(data).slice(0, 200));
+      return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
+    }
+
+    return NextResponse.json({ content: text });
 
   } catch (error) {
     console.error('[API/chat] Error:', error);
