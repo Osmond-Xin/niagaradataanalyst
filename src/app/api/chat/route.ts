@@ -1,15 +1,24 @@
 /**
- * Vertex AI聊天API Route
- * 接收前端消息，注入系统提示词，调用Gemini模型，返回流式响应
- * 服务端运行，凭证不暴露到客户端
+ * Vertex AI 聊天 API Route
+ * 直接调用 Vertex AI REST API，使用 API Key 鉴权（无需服务账号文件）
+ * 支持流式响应，服务端运行，凭证不暴露到客户端
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { aiPersona } from '@/data/ai-persona';
 
-/** Vertex AI配置 */
+/** Vertex AI 配置 */
+const GOOGLE_AI_API_KEY = process.env.GOOGLE_AI_API_KEY;
 const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID;
 const GCP_LOCATION = process.env.GCP_LOCATION || 'global';
-const MODEL_ID = 'gemini-3-flash-preview';
+const MODEL_ID = process.env.GEMINI_MODEL_ID || 'gemini-3-flash-preview';
+
+/** 根据 location 构建 API base URL */
+function getApiBaseUrl(): string {
+  if (GCP_LOCATION === 'global') {
+    return 'https://aiplatform.googleapis.com/v1';
+  }
+  return `https://${GCP_LOCATION}-aiplatform.googleapis.com/v1`;
+}
 
 /** 限流配置：每IP每分钟50次，全局每天300次 */
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -80,69 +89,90 @@ export async function POST(request: NextRequest) {
       : aiPersona.systemPrompt;
 
     /**
-     * 如果Vertex AI未配置，使用回退响应
-     * 这允许在没有GCP凭证的开发环境中运行
+     * 如果 API Key 或 Project ID 未配置，返回回退响应
      */
-    if (!GCP_PROJECT_ID) {
+    if (!GOOGLE_AI_API_KEY || !GCP_PROJECT_ID) {
       const fallbackResponse = mode === 'job-match'
-        ? '工作匹配功能需要配置Vertex AI。请设置GCP_PROJECT_ID环境变量。\n\nJob matching requires Vertex AI configuration. Please set GCP_PROJECT_ID.'
-        : '你好！我是NiagaraDataAnalyst的AI助手。目前AI服务未配置，但你可以浏览网站了解更多信息。\n\nHello! I\'m the NiagaraDataAnalyst AI assistant. AI service is not configured yet, but feel free to explore the website.';
-
+        ? '工作匹配功能需要配置 Vertex AI API Key。请设置 GOOGLE_AI_API_KEY 和 GCP_PROJECT_ID 环境变量。\n\nJob matching requires Vertex AI configuration. Please set GOOGLE_AI_API_KEY and GCP_PROJECT_ID.'
+        : '你好！我是 NiagaraDataAnalyst 的 AI 助手。目前 AI 服务未配置，但你可以浏览网站了解更多信息。\n\nHello! I\'m the NiagaraDataAnalyst AI assistant. AI service is not configured yet, but feel free to explore the website.';
       return NextResponse.json({ content: fallbackResponse });
     }
 
-    /** 动态导入Vertex AI SDK（仅服务端） */
-    const { VertexAI } = await import('@google-cloud/vertexai');
+    /** 构建 Vertex AI REST API 请求体 */
+    const requestBody = {
+      system_instruction: {
+        parts: [{ text: systemPrompt }],
+      },
+      contents: messages.map((msg) => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }],
+      })),
+      generationConfig: {
+        maxOutputTokens: 1000,
+        temperature: 0.7,
+      },
+    };
 
-    /**
-     * Vercel部署时无文件系统，通过GOOGLE_APPLICATION_CREDENTIALS_JSON环境变量传入凭证内容
-     * 将JSON内容写入/tmp临时文件，并设置GOOGLE_APPLICATION_CREDENTIALS指向该文件
-     */
-    const credJson = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
-    if (credJson && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-      const fs = await import('fs');
-      const tmpPath = '/tmp/gcp-credentials.json';
-      fs.writeFileSync(tmpPath, credJson);
-      process.env.GOOGLE_APPLICATION_CREDENTIALS = tmpPath;
+    /** 调用 Vertex AI 流式接口，使用 API Key 鉴权 */
+    const apiUrl = `${getApiBaseUrl()}/projects/${GCP_PROJECT_ID}/locations/${GCP_LOCATION}/publishers/google/models/${MODEL_ID}:streamGenerateContent?alt=sse&key=${GOOGLE_AI_API_KEY}`;
+
+    const vertexResponse = await fetch(apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!vertexResponse.ok) {
+      const errText = await vertexResponse.text();
+      console.error('[API/chat] Vertex AI error:', vertexResponse.status, errText);
+      return NextResponse.json(
+        { error: '服务暂时不可用，请稍后重试。' },
+        { status: 500 },
+      );
     }
 
-    const vertexAi = new VertexAI({
-      project: GCP_PROJECT_ID,
-      location: GCP_LOCATION,
-      apiEndpoint: GCP_LOCATION === 'global'
-        ? 'aiplatform.googleapis.com'
-        : `${GCP_LOCATION}-aiplatform.googleapis.com`,
-    });
-
-    const model = vertexAi.getGenerativeModel({
-      model: MODEL_ID,
-      systemInstruction: { role: 'user', parts: [{ text: systemPrompt }] },
-    });
-
-    /** 构建对话历史 */
-    const contents = messages.map((msg) => ({
-      role: msg.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: msg.content }],
-    }));
-
-    /** 调用Vertex AI生成内容（流式） */
-    const result = await model.generateContentStream({ contents });
-
-    /** 创建流式响应 */
+    /** 将 Vertex AI SSE 流转换为前端所需格式 */
     const encoder = new TextEncoder();
+    const reader = vertexResponse.body!.getReader();
+    const decoder = new TextDecoder();
+
     const stream = new ReadableStream({
       async start(controller) {
+        let buffer = '';
         try {
-          for await (const chunk of result.stream) {
-            const text = chunk.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (text) {
-              controller.enqueue(encoder.encode(`data: ${JSON.stringify({ content: text })}\n\n`));
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            /** 最后一行可能不完整，保留到下次拼接 */
+            buffer = lines.pop() ?? '';
+
+            for (const line of lines) {
+              if (!line.startsWith('data: ')) continue;
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') continue;
+              try {
+                const parsed = JSON.parse(data);
+                const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (text) {
+                  controller.enqueue(
+                    encoder.encode(`data: ${JSON.stringify({ content: text })}\n\n`),
+                  );
+                }
+              } catch {
+                /** 忽略非 JSON 行 */
+              }
             }
           }
           controller.enqueue(encoder.encode('data: [DONE]\n\n'));
           controller.close();
         } catch (error) {
-          controller.enqueue(encoder.encode(`data: ${JSON.stringify({ error: 'Stream error' })}\n\n`));
+          console.error('[API/chat] Stream error:', error);
+          controller.enqueue(
+            encoder.encode(`data: ${JSON.stringify({ error: 'Stream error' })}\n\n`),
+          );
           controller.close();
         }
       },
