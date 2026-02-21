@@ -113,8 +113,8 @@ export async function POST(request: NextRequest) {
       },
     };
 
-    /** 调用 Vertex AI 流式接口，使用 API Key 鉴权 */
-    const apiUrl = `${getApiBaseUrl()}/projects/${GCP_PROJECT_ID}/locations/${GCP_LOCATION}/publishers/google/models/${MODEL_ID}:streamGenerateContent?alt=sse&key=${GOOGLE_AI_API_KEY}`;
+    /** 调用 Vertex AI generateContent 接口（global endpoint 不支持 streamGenerateContent） */
+    const apiUrl = `${getApiBaseUrl()}/projects/${GCP_PROJECT_ID}/locations/${GCP_LOCATION}/publishers/google/models/${MODEL_ID}:generateContent?key=${GOOGLE_AI_API_KEY}`;
 
     const vertexResponse = await fetch(apiUrl, {
       method: 'POST',
@@ -131,60 +131,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    /** 将 Vertex AI SSE 流转换为前端所需格式 */
-    const encoder = new TextEncoder();
-    const reader = vertexResponse.body!.getReader();
-    const decoder = new TextDecoder();
+    const responseData = await vertexResponse.json();
+    const text = responseData.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        let buffer = '';
-        try {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
+    if (!text) {
+      console.error('[API/chat] Empty response from Vertex AI:', JSON.stringify(responseData));
+      return NextResponse.json(
+        { error: '服务暂时不可用，请稍后重试。' },
+        { status: 500 },
+      );
+    }
 
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split('\n');
-            /** 最后一行可能不完整，保留到下次拼接 */
-            buffer = lines.pop() ?? '';
-
-            for (const line of lines) {
-              if (!line.startsWith('data: ')) continue;
-              const data = line.slice(6).trim();
-              if (data === '[DONE]') continue;
-              try {
-                const parsed = JSON.parse(data);
-                const text = parsed.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (text) {
-                  controller.enqueue(
-                    encoder.encode(`data: ${JSON.stringify({ content: text })}\n\n`),
-                  );
-                }
-              } catch {
-                /** 忽略非 JSON 行 */
-              }
-            }
-          }
-          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-          controller.close();
-        } catch (error) {
-          console.error('[API/chat] Stream error:', error);
-          controller.enqueue(
-            encoder.encode(`data: ${JSON.stringify({ error: 'Stream error' })}\n\n`),
-          );
-          controller.close();
-        }
-      },
-    });
-
-    return new Response(stream, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
-    });
+    return NextResponse.json({ content: text });
   } catch (error) {
     console.error('[API/chat] Error:', error);
     return NextResponse.json(
