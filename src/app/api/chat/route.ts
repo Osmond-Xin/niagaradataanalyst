@@ -9,7 +9,7 @@ import { aiPersona } from '@/data/ai-persona';
 /** Vertex AI 配置 */
 const GOOGLE_AI_API_KEY = process.env.GOOGLE_AI_API_KEY;
 const MODEL_ID = process.env.GEMINI_MODEL_ID || 'gemini-3-flash-preview';
-const API_URL = `https://aiplatform.googleapis.com/v1/publishers/google/models/${MODEL_ID}:streamGenerateContent`;
+const API_URL = `https://aiplatform.googleapis.com/v1/publishers/google/models/${MODEL_ID}:generateContent`;
 
 /** 限流配置：每IP每分钟50次，全局每天300次 */
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -103,35 +103,14 @@ export async function POST(request: NextRequest) {
     }
 
     /**
-     * 收集完整 JSON 数组流，拼接所有 chunk 的 text，以 SSE 格式转发给前端
-     * Vertex AI 返回格式：[{candidates:[{content:{parts:[{text:"..."}]}}]}, ...]
+     * 解析 generateContent 完整 JSON 响应
+     * 格式：{candidates:[{content:{parts:[{text:"..."}]}}]}
      */
-    const decoder = new TextDecoder();
-    const reader = vertexResponse.body!.getReader();
-    const rawChunks: string[] = [];
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      rawChunks.push(decoder.decode(value, { stream: true }));
-    }
-
-    const rawText = rawChunks.join('');
-    let fullText = '';
-
-    try {
-      const parsed = JSON.parse(rawText);
-      for (const chunk of parsed) {
-        const text = chunk.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text) fullText += text;
-      }
-    } catch {
-      console.error('[API/chat] JSON parse error, raw:', rawText.slice(0, 200));
-      return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
-    }
+    const data = await vertexResponse.json();
+    const fullText = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!fullText) {
-      console.error('[API/chat] Empty text in response:', rawText.slice(0, 200));
+      console.error('[API/chat] Empty response:', JSON.stringify(data).slice(0, 200));
       return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
     }
 
