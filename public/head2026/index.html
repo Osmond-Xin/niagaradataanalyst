@@ -188,32 +188,6 @@ footer{border-top:1px solid var(--border);padding:20px 32px;font-size:.7rem;
   </div>
 </header>
 
-<!-- ═══ SCENARIO CONTROLS ═════════════════════════════════════════════════ -->
-<div class="controls">
-  <div class="ctrl">
-    <label>Climate Scenario</label>
-    <select id="sel-scenario">
-      <option value="SSP5-8.5">SSP5-8.5 — High Emissions</option>
-      <option value="SSP2-4.5">SSP2-4.5 — Climate Action</option>
-    </select>
-  </div>
-  <div class="ctrl">
-    <label>Time Horizon</label>
-    <div class="slider-wrap">
-      <input type="range" id="slider" min="0" max="2" step="1" value="2"/>
-      <div class="ticks"><span>2030</span><span>2050</span><span>2080</span></div>
-    </div>
-  </div>
-  <div class="dyn-kpis">
-    <div class="dkpi dr">Most Vulnerable: <span class="dv" id="dk-ward">—</span></div>
-    <div class="dkpi dr">V-Score: <span class="dv" id="dk-vscore">—</span></div>
-    <div class="dkpi">DSI: <span class="dv" id="dk-dsi">—</span></div>
-    <div class="dkpi dr">City Canopy Loss: <span class="dv" id="dk-canopy">—</span></div>
-    <div class="dkpi">TXx Delta: <span class="dv" id="dk-txx">—</span></div>
-    <div class="dkpi dg">Resilient Ward: <span class="dv" id="dk-resilient">—</span></div>
-  </div>
-</div>
-
 <!-- ═══ NARRATIVE CHAIN NAV ════════════════════════════════════════════════ -->
 <nav class="chain">
   <a href="#crisis" id="nav-crisis">&#127756; The Crisis</a>
@@ -436,7 +410,7 @@ footer{border-top:1px solid var(--border);padding:20px 32px;font-size:.7rem;
   </section>
 
   <!-- COMP 05 — Ward 10 Action Plan -->
-  <section class="comp" id="action">
+  <section class="comp" id="comp05">
     <div class="comp-label">Component 05 &mdash; Ward 10 Action Roadmap</div>
     <h2>Ward 10: Hamilton&#8217;s Highest-Risk Ward — Concrete Intervention Timeline</h2>
     <div class="fig-row wide" style="margin-top:20px">
@@ -481,9 +455,63 @@ footer{border-top:1px solid var(--border);padding:20px 32px;font-size:.7rem;
 
 </div><!-- .narrative -->
 
+<!-- ═══ CONCLUSIONS ════════════════════════════════════════════════════════ -->
+<div class="conclusions" id="action">
+  <h2>Three Actions That Must Start Now</h2>
+  <div class="action-cards">
+    <div class="action-card ac1">
+      <div class="action-num">01</div>
+      <h3>Start in Ward 13 — No Barriers, Act Now</h3>
+      <p>3,395 high-risk trees on public land. Ward 13 has the highest Ash concentration
+         (2,232 trees) and 68% public ownership — the City can begin EAB removal and
+         native replanting immediately, without private-property negotiation.</p>
+    </div>
+    <div class="action-card ac2">
+      <div class="action-num">02</div>
+      <h3>Remove All Ash by 2028</h3>
+      <p>EAB kills 99% of Ash trees within 8–10 years of infestation (CFIA 2021).
+         Hamilton&#8217;s 11,222 Ash trees (VULN=5) are already effectively lost without
+         emergency intervention. Ward 13 first, then all other wards.</p>
+    </div>
+    <div class="action-card ac3">
+      <div class="action-num">03</div>
+      <h3>Invest $2M with CR-UFIM Split</h3>
+      <p>40% species diversification · 35% canopy expansion · 25% monitoring.
+         Target: 4,000 native trees across 7 wards, all on public land.
+         This single investment protects $1.39M in annual ecosystem services at risk.</p>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ INTERACTIVE SECTION ════════════════════════════════════════════════ -->
 <div class="interactive">
-  <h2>Interactive Ward Explorer — Change scenario and horizon above to update</h2>
+  <h2>Interactive Ward Explorer</h2>
+
+<!-- ═══ SCENARIO CONTROLS ═════════════════════════════════════════════════ -->
+<div class="controls">
+  <div class="ctrl">
+    <label>Climate Scenario</label>
+    <select id="sel-scenario">
+      <option value="SSP5-8.5">SSP5-8.5 — High Emissions</option>
+      <option value="SSP2-4.5">SSP2-4.5 — Climate Action</option>
+    </select>
+  </div>
+  <div class="ctrl">
+    <label>Time Horizon</label>
+    <div class="slider-wrap">
+      <input type="range" id="slider" min="0" max="2" step="1" value="2"/>
+      <div class="ticks"><span>2030</span><span>2050</span><span>2080</span></div>
+    </div>
+  </div>
+  <div class="dyn-kpis">
+    <div class="dkpi dr">Most Vulnerable: <span class="dv" id="dk-ward">—</span></div>
+    <div class="dkpi dr">V-Score: <span class="dv" id="dk-vscore">—</span></div>
+    <div class="dkpi">DSI: <span class="dv" id="dk-dsi">—</span></div>
+    <div class="dkpi dr">City Canopy Loss: <span class="dv" id="dk-canopy">—</span></div>
+    <div class="dkpi">TXx Delta: <span class="dv" id="dk-txx">—</span></div>
+    <div class="dkpi dg">Resilient Ward: <span class="dv" id="dk-resilient">—</span></div>
+  </div>
+</div>
 <!-- ═══ STATIC KPI STRIP ══════════════════════════════════════════════════ -->
 <div class="kpi-strip">
   <div class="kpi-card kpi-red">
@@ -578,33 +606,6 @@ footer{border-top:1px solid var(--border);padding:20px 32px;font-size:.7rem;
   </table>
 </div>
 
-<!-- ═══ CONCLUSIONS ════════════════════════════════════════════════════════ -->
-<div class="conclusions">
-  <h2>Three Actions That Must Start Now</h2>
-  <div class="action-cards">
-    <div class="action-card ac1">
-      <div class="action-num">01</div>
-      <h3>Start in Ward 13 — No Barriers, Act Now</h3>
-      <p>3,395 high-risk trees on public land. Ward 13 has the highest Ash concentration
-         (2,232 trees) and 68% public ownership — the City can begin EAB removal and
-         native replanting immediately, without private-property negotiation.</p>
-    </div>
-    <div class="action-card ac2">
-      <div class="action-num">02</div>
-      <h3>Remove All Ash by 2028</h3>
-      <p>EAB kills 99% of Ash trees within 8–10 years of infestation (CFIA 2021).
-         Hamilton&#8217;s 11,222 Ash trees (VULN=5) are already effectively lost without
-         emergency intervention. Ward 13 first, then all other wards.</p>
-    </div>
-    <div class="action-card ac3">
-      <div class="action-num">03</div>
-      <h3>Invest $2M with CR-UFIM Split</h3>
-      <p>40% species diversification · 35% canopy expansion · 25% monitoring.
-         Target: 4,000 native trees across 7 wards, all on public land.
-         This single investment protects $1.39M in annual ecosystem services at risk.</p>
-    </div>
-  </div>
-</div>
 
 <!-- ═══ FOOTER ══════════════════════════════════════════════════════════════ -->
 <footer>
