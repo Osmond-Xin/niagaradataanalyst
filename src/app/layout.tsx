@@ -8,6 +8,7 @@ import './globals.css';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import Navbar from '@/components/Navbar';
 import AiAgentWidget from '@/components/AiAgentWidget';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -56,6 +57,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-gray-950 text-gray-100 antialiased`}>
+        <GoogleAnalytics />
         <LanguageProvider>
           <Navbar />
           <main className="min-h-screen">
