@@ -6,9 +6,14 @@
  * 支持普通聊天和工作匹配两种模式
  * 呼吸动画启动按钮，流式响应显示
  */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { ChatMessage, ChatMode } from '@/types';
+import { analytics } from '@/lib/analytics';
+
+/** 生成唯一会话ID */
+const generateSessionId = (): string =>
+  `chat_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
 /** 聊天模式配置 */
 const chatModes: ChatMode[] = [
@@ -17,7 +22,7 @@ const chatModes: ChatMode[] = [
 ];
 
 const AiAgentWidget: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [activeMode, setActiveMode] = useState<'chat' | 'job-match'>('chat');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -26,16 +31,37 @@ const AiAgentWidget: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  /** 当前会话ID和会话开始时间（用于计算时长） */
+  const sessionIdRef = useRef<string>('');
+  const sessionStartTimeRef = useRef<number>(0);
+
   /** 自动滚动到最新消息 */
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  /** 打开聊天窗口时聚焦输入框 */
+  /** 打开聊天窗口时聚焦输入框，并上报会话开始事件 */
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 300);
+      // 新建会话ID并上报
+      sessionIdRef.current = generateSessionId();
+      sessionStartTimeRef.current = Date.now();
+      analytics.chatSessionStart(sessionIdRef.current, language);
+    } else {
+      // 关闭时判断是否有消息，决定上报哪个事件
+      if (sessionIdRef.current) {
+        const userMessages = messages.filter((m) => m.role === 'user');
+        if (userMessages.length === 0) {
+          analytics.chatOpenedNoMessage(sessionIdRef.current, language);
+        } else {
+          const durationSec = Math.round((Date.now() - sessionStartTimeRef.current) / 1000);
+          analytics.chatSessionEnd(sessionIdRef.current, userMessages.length, durationSec);
+        }
+        sessionIdRef.current = '';
+      }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   /** 切换模式时重置消息 */
@@ -49,6 +75,10 @@ const AiAgentWidget: React.FC = () => {
     if (!input.trim() || isLoading) return;
 
     const userMessage: ChatMessage = { role: 'user', content: input.trim() };
+    const currentUserMessageCount = messages.filter((m) => m.role === 'user').length;
+    // 上报发送消息事件（message_index从0开始计数）
+    analytics.chatMessageSent(sessionIdRef.current, currentUserMessageCount);
+
     setMessages((prev) => [...prev, userMessage, { role: 'assistant', content: '' }]);
     setInput('');
     setIsLoading(true);

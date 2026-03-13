@@ -6,13 +6,21 @@
  */
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { analytics } from '@/lib/analytics';
 
 const LanguageToggle: React.FC = () => {
   const { language, setLanguage } = useLanguage();
 
+  /** 切换语言并上报埋点 */
+  const handleToggle = () => {
+    const nextLang = language === 'zh' ? 'en' : 'zh';
+    analytics.languageToggle(language, nextLang);
+    setLanguage(nextLang);
+  };
+
   return (
     <button
-      onClick={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
+      onClick={handleToggle}
       className="px-3 py-1.5 rounded-md border border-gray-600 text-sm font-medium
                  hover:bg-gray-800 transition-colors duration-200
                  focus:outline-none focus:ring-2 focus:ring-blue-500"
