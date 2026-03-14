@@ -783,6 +783,45 @@
       .pipeline-card {
         transform: none !important;
       }
+
+      /* ── 核心滚动修复 ──────────────────────────────────────────
+         iOS Safari 中多层 overflow:hidden 会完全阻断触摸滚动。
+         手机端改为：main-content 作为滚动容器，面板改为 flow 布局。
+      ─────────────────────────────────────────────────────────── */
+      .main-content {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
+      }
+
+      /* 面板：改用 display 显隐，脱离 position:absolute */
+      .frame-panel {
+        position: relative;
+        display: none;
+        opacity: 1;
+        pointer-events: none;
+        transition: none;
+      }
+
+      .frame-panel.active {
+        display: block;
+        pointer-events: auto;
+      }
+
+      /* 首页面板：自然高度，由 main-content 滚动 */
+      #panel-home {
+        height: auto;
+      }
+
+      .landing {
+        height: auto;
+        overflow: visible;
+      }
+
+      /* iframe 面板：撑满 main-content（iframe-wrap 内部处理滚动） */
+      .frame-panel:not(#panel-home) {
+        height: 100%;
+      }
     }
   </style>
 </head>
