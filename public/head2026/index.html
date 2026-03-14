@@ -1100,7 +1100,7 @@
       // Lazy-load iframe
       if (id !== 'home') {
         const iframe = document.getElementById('frame-' + id);
-        if (!iframe.src || iframe.src === window.location.href) {
+        if (!iframe.getAttribute('src')) {
           iframe.src = PAGES[id];
         }
       }
