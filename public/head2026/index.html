@@ -723,22 +723,22 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 
     <!-- NOTEBOOK PAGES (lazy-loaded) -->
     <div class="frame-panel" id="panel-01">
-      <iframe id="frame-01" src="about:blank" title="Data Cleaning & Preparation"></iframe>
+      <iframe id="frame-01" title="Data Cleaning & Preparation"></iframe>
     </div>
     <div class="frame-panel" id="panel-02">
-      <iframe id="frame-02" src="about:blank" title="GBIF Taxonomy Validation"></iframe>
+      <iframe id="frame-02" title="GBIF Taxonomy Validation"></iframe>
     </div>
     <div class="frame-panel" id="panel-03">
-      <iframe id="frame-03" src="about:blank" title="Santamour Analysis"></iframe>
+      <iframe id="frame-03" title="Santamour Analysis"></iframe>
     </div>
     <div class="frame-panel" id="panel-04">
-      <iframe id="frame-04" src="about:blank" title="Vulnerability Score Framework"></iframe>
+      <iframe id="frame-04" title="Vulnerability Score Framework"></iframe>
     </div>
     <div class="frame-panel" id="panel-05">
-      <iframe id="frame-05" src="about:blank" title="Replanting Strategy"></iframe>
+      <iframe id="frame-05" title="Replanting Strategy"></iframe>
     </div>
     <div class="frame-panel" id="panel-poster">
-      <iframe id="frame-poster" src="about:blank" title="Competition Poster"></iframe>
+      <iframe id="frame-poster" title="Competition Poster"></iframe>
     </div>
 
     <!-- PRESENTATION PANEL -->
@@ -814,8 +814,7 @@ function showPage(id) {
   // Lazy-load iframe (not for home or presentation)
   if (id !== 'home' && id !== 'presentation') {
     const iframe = document.getElementById('frame-' + id);
-    if (!iframe.getAttribute('data-loaded')) {
-      iframe.setAttribute('data-loaded', '1');
+    if (!iframe.getAttribute('src')) {
       iframe.src = PAGES[id];
     }
   }
