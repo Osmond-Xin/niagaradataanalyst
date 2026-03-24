@@ -276,53 +276,6 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 .poster-arrow{margin-left:auto;font-size:.9rem;color:var(--gold);opacity:0;transition:opacity .12s}
 .poster-card:hover .poster-arrow{opacity:1}
 
-/* ═══ PRESENTATION PLAYER ════════════════════════════════════════════════ */
-.pres-inner{width:100%;height:100%;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
-.pres-layout{flex:1;display:flex;overflow:hidden;min-height:0}
-.pres-acts-sidebar{
-  width:230px;flex-shrink:0;
-  background:var(--panel);border-right:1px solid var(--border);
-  overflow-y:auto;padding:16px 0;
-  scrollbar-width:thin;scrollbar-color:var(--border2) transparent;
-}
-.pres-acts-label{
-  font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted2);padding:0 16px 10px;
-}
-.pres-act-item{
-  padding:10px 14px 10px 16px;cursor:pointer;
-  border-left:3px solid transparent;
-  transition:background .12s,border-color .12s;
-}
-.pres-act-item:hover{background:rgba(255,255,255,.04)}
-.pres-act-item.active{background:rgba(26,122,122,.1);border-left-color:var(--teal-light)}
-.pres-act-item.active .pres-act-title{color:var(--teal-light)}
-.pres-act-num{font-size:.6rem;color:var(--muted2);font-weight:700;letter-spacing:.07em;margin-bottom:2px;text-transform:uppercase}
-.pres-act-title{font-size:.78rem;color:var(--text);font-weight:600;line-height:1.3}
-
-.pres-video-area{flex:1;display:flex;flex-direction:column;padding:20px 24px;min-width:0;overflow:hidden}
-.pres-video-header{flex-shrink:0;margin-bottom:12px}
-.pres-video-header h3{font-family:var(--serif);font-size:1.05rem;color:var(--text);margin-bottom:3px}
-.pres-video-header p{font-size:.73rem;color:var(--muted)}
-.pres-video-wrap{
-  flex:1;display:flex;align-items:center;justify-content:center;min-height:0;
-  background:#000;border-radius:8px;overflow:hidden;border:1px solid var(--border);
-}
-.pres-video-wrap video{width:100%;height:100%;object-fit:contain;display:block}
-.pres-controls{
-  flex-shrink:0;display:flex;align-items:center;gap:10px;padding-top:12px;
-}
-.pres-btn{
-  padding:7px 18px;border-radius:6px;border:1px solid var(--border2);
-  background:var(--panel);color:var(--muted);font-size:.78rem;font-weight:600;
-  cursor:pointer;transition:all .12s;font-family:var(--sans);
-}
-.pres-btn:hover:not(:disabled){border-color:var(--teal);color:var(--teal-light);background:rgba(26,122,122,.1)}
-.pres-btn:disabled{opacity:.35;cursor:not-allowed}
-.pres-btn.pres-primary{background:var(--teal);border-color:var(--teal);color:#fff}
-.pres-btn.pres-primary:hover:not(:disabled){background:var(--teal-mid);border-color:var(--teal-mid)}
-.pres-progress{flex:1;text-align:right;font-size:.72rem;color:var(--muted2)}
-
 /* nav teal variant for presentation */
 .nav-item.active .nav-pres-icon{background:var(--teal-light);color:#0b1f30;border-color:var(--teal-light)}
 .nav-pres-icon{
@@ -371,51 +324,6 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
   .stat-box:nth-child(2n){border-right:none}
   .stat-box:nth-child(n+3){border-top:1px solid var(--border)}
 
-  /* ── Presentation player (mobile) ── */
-  /* override the generic frame-panel block rule so the panel has natural height */
-  #panel-presentation.active{display:block;min-height:100svh}
-  .pres-inner{height:auto;min-height:0;overflow:visible}
-
-  /* stack layout vertically instead of side-by-side */
-  .pres-layout{flex-direction:column;overflow:visible;height:auto;min-height:0}
-
-  /* acts sidebar becomes a horizontal scroll strip across the top */
-  .pres-acts-sidebar{
-    width:100%;height:auto;
-    border-right:none;border-bottom:1px solid var(--border);
-    display:flex;flex-direction:row;
-    overflow-x:auto;overflow-y:hidden;
-    padding:0;
-    scrollbar-width:none;
-    -webkit-overflow-scrolling:touch;
-  }
-  .pres-acts-sidebar::-webkit-scrollbar{display:none}
-  .pres-acts-label{display:none}           /* no room for label in strip */
-  .pres-act-item{
-    flex-shrink:0;
-    padding:10px 14px;
-    border-left:none;
-    border-bottom:3px solid transparent;
-    min-width:100px;
-  }
-  .pres-act-item.active{
-    border-left-color:transparent;
-    border-bottom-color:var(--teal-light);
-    background:rgba(26,122,122,.08);
-  }
-
-  /* video area: natural flow, no flex stretching tricks */
-  .pres-video-area{padding:14px 16px;flex:none;height:auto;overflow:visible}
-  .pres-video-header{margin-bottom:10px}
-  .pres-video-header h3{font-size:.92rem}
-
-  /* video box: fixed 16:9 height instead of flex:1 */
-  .pres-video-wrap{flex:none;height:54vw;min-height:180px}
-
-  /* controls: wrap to two rows, bigger touch targets */
-  .pres-controls{flex-wrap:wrap;gap:8px;padding-top:10px}
-  .pres-btn{padding:10px 20px;font-size:.82rem}
-  .pres-progress{flex-basis:100%;text-align:left;padding-top:2px}
 }
 </style>
 </head>
@@ -743,29 +651,7 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 
     <!-- PRESENTATION PANEL -->
     <div class="frame-panel" id="panel-presentation">
-      <div class="pres-inner">
-        <div class="pres-layout">
-          <!-- Acts sidebar -->
-          <div class="pres-acts-sidebar" id="pres-acts-sidebar">
-            <div class="pres-acts-label">Presentation Acts</div>
-          </div>
-          <!-- Video area -->
-          <div class="pres-video-area">
-            <div class="pres-video-header">
-              <h3 id="pres-title">Title &amp; Introduction</h3>
-              <p id="pres-desc">Team #20 — H.E.A.D 2026 Competition, University of Niagara Falls Canada</p>
-            </div>
-            <div class="pres-video-wrap">
-              <video id="pres-video" controls preload="metadata"></video>
-            </div>
-            <div class="pres-controls">
-              <button class="pres-btn" id="pres-prev" onclick="presNav(-1)" disabled>&#8592; Previous</button>
-              <button class="pres-btn pres-primary" id="pres-next" onclick="presNav(1)">Next &#8594;</button>
-              <div class="pres-progress" id="pres-progress">Act 1 of 8</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <iframe id="frame-presentation" title="Final Presentation"></iframe>
     </div>
 
   </div><!-- /main-content -->
@@ -780,6 +666,7 @@ const PAGES = {
   '04':     'HTML/04_vulnerability_score.html',
   '05':     'HTML/05_replanting_strategy.html',
   'poster': 'poster.html',
+  'presentation': 'presantation/presentation.html',
 };
 
 const BREADCRUMBS = {
@@ -811,18 +698,12 @@ function showPage(id) {
   const bc = document.getElementById('breadcrumb');
   bc.textContent = BREADCRUMBS[id] || '';
 
-  // Lazy-load iframe (not for home or presentation)
-  if (id !== 'home' && id !== 'presentation') {
+  // Lazy-load iframe
+  if (id !== 'home') {
     const iframe = document.getElementById('frame-' + id);
     if (!iframe.getAttribute('src')) {
       iframe.src = PAGES[id];
     }
-  }
-
-  // Initialise presentation player on first open
-  if (id === 'presentation' && !presInited) {
-    presInit();
-    presInited = true;
   }
 
   // Close mobile sidebar + backdrop
@@ -837,104 +718,6 @@ function showPage(id) {
   if (navEl) navEl.scrollIntoView({block:'nearest', behavior:'smooth'});
 }
 
-/* ── Presentation player ────────────────────────────────────────────────── */
-const PRES_ACTS = [
-  {
-    file:  'presantation/act0_title.mp4',
-    title: 'Title & Introduction',
-    desc:  'Opening sequence — Hamilton Urban Forest Climate Vulnerability Analysis, Team #20',
-  },
-  {
-    file:  'presantation/act1_climate.mp4',
-    title: 'Act 1: Climate Change Context',
-    desc:  'Historical climate trends in Hamilton and projected warming under SSP2-4.5 through 2080',
-  },
-  {
-    file:  'presantation/act3_biodiversity.mp4',
-    title: 'Act 3: Biodiversity Assessment',
-    desc:  'Santamour 10/20/30 rule analysis — species and genus concentration across 15 wards',
-  },
-  {
-    file:  'presantation/act4_vulnerability.mp4',
-    title: 'Act 4: Vulnerability Analysis',
-    desc:  'IPCC AR5 vulnerability scores (Exposure + Sensitivity − Adaptive Capacity) for 2030, 2050, and 2080',
-  },
-  {
-    file:  'presantation/act4b_vuln_evolution.mp4',
-    title: 'Act 4b: Vulnerability Evolution',
-    desc:  'Ward-level vulnerability trajectory over time — identifying highest-risk areas',
-  },
-  {
-    file:  'presantation/act5_solution.mp4',
-    title: 'Act 5: Replanting Solutions',
-    desc:  'Resilient species recommendations and replanting priorities by ward',
-  },
-  {
-    file:  'presantation/act6_comparison.mp4',
-    title: 'Act 6: City Comparisons',
-    desc:  'Hamilton benchmarked against comparable urban forest programs in other cities',
-  },
-  {
-    file:  'presantation/act7_framework.mp4',
-    title: 'Act 7: Implementation Framework',
-    desc:  'Policy recommendations and phased action plan for Hamilton\u2019s urban forest management',
-  },
-];
-
-let presInited = false;
-let presCurrentAct = 0;
-
-function presInit() {
-  const sidebar = document.getElementById('pres-acts-sidebar');
-  PRES_ACTS.forEach((act, i) => {
-    const el = document.createElement('div');
-    el.className = 'pres-act-item' + (i === 0 ? ' active' : '');
-    el.id = 'pres-act-' + i;
-    el.onclick = () => presLoadAct(i);
-    var actLabel = act.title.match(/^(Act \d+\w?)/);
-    el.innerHTML =
-      '<div class="pres-act-num">' + (actLabel ? actLabel[1] : 'Intro') + '</div>' +
-      '<div class="pres-act-title">' + act.title + '</div>';
-    sidebar.appendChild(el);
-  });
-
-  // Auto-advance when a video ends
-  document.getElementById('pres-video').addEventListener('ended', () => {
-    if (presCurrentAct < PRES_ACTS.length - 1) presNav(1);
-  });
-
-  presLoadAct(0);
-}
-
-function presLoadAct(idx) {
-  // Update active highlight in sidebar
-  document.querySelectorAll('.pres-act-item').forEach((el, i) => {
-    el.classList.toggle('active', i === idx);
-  });
-  presCurrentAct = idx;
-
-  const act = PRES_ACTS[idx];
-  const video = document.getElementById('pres-video');
-  video.src = act.file;
-  video.load();
-  video.play().catch(() => {/* autoplay blocked — user will press play */});
-
-  document.getElementById('pres-title').textContent = act.title;
-  document.getElementById('pres-desc').textContent = act.desc;
-  document.getElementById('pres-prev').disabled = idx === 0;
-  document.getElementById('pres-next').disabled = idx === PRES_ACTS.length - 1;
-  var progressLabel = PRES_ACTS[idx].title.match(/^(Act \d+\w?)/);
-  document.getElementById('pres-progress').textContent =
-    (progressLabel ? progressLabel[1] : 'Intro') + ' of ' + PRES_ACTS.length + ' segments';
-
-  const actEl = document.getElementById('pres-act-' + idx);
-  if (actEl) actEl.scrollIntoView({block: 'nearest', behavior: 'smooth'});
-}
-
-function presNav(dir) {
-  const next = presCurrentAct + dir;
-  if (next >= 0 && next < PRES_ACTS.length) presLoadAct(next);
-}
 </script>
 </body>
 </html>
