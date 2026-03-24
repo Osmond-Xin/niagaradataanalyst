@@ -15,48 +15,25 @@
   --text:#d8e8f0;--muted:#7a9ab0;--muted2:#4e6e84;
   --serif:'Playfair Display',Georgia,serif;
   --sans:'Lato',Helvetica,sans-serif;
-  --mono:'Source Code Pro',monospace;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7}
-
-/* layout */
 .wrap{max-width:960px;margin:0 auto;padding:40px 32px 80px}
 
 /* slide card */
-.slide{
-  background:var(--panel);border:1px solid var(--border);border-radius:12px;
-  margin-bottom:32px;overflow:hidden;
-}
-.slide-header{
-  padding:20px 28px 16px;border-bottom:1px solid var(--border);
-  display:flex;align-items:center;gap:12px;
-}
-.slide-num{
-  flex-shrink:0;width:32px;height:32px;border-radius:50%;
-  background:var(--panel2);border:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.7rem;font-weight:700;color:var(--muted);
-}
+.slide{background:var(--panel);border:1px solid var(--border);border-radius:12px;margin-bottom:32px;overflow:hidden}
+.slide-header{padding:20px 28px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.slide-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--panel2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--muted)}
 .slide-num.accent{background:var(--teal-light);color:#0b1f30;border-color:var(--teal-light)}
 .slide-label{font-size:.88rem;font-weight:700;color:var(--text)}
 .slide-body{padding:28px}
 
 /* title slide */
-.title-slide .slide-body{
-  text-align:center;padding:56px 32px;
-  background:linear-gradient(160deg,var(--navy) 0%,#0f4040 60%,#1a6060 100%);
-}
+.title-slide .slide-body{text-align:center;padding:56px 32px;background:linear-gradient(160deg,var(--navy) 0%,#0f4040 60%,#1a6060 100%)}
 .title-slide h1{font-family:var(--serif);font-size:2rem;color:#fff;margin-bottom:12px;line-height:1.25}
 .title-slide .subtitle{font-size:1.05rem;color:rgba(255,255,255,.6);margin-bottom:28px}
 .title-slide .team{font-size:.82rem;color:rgba(255,255,255,.45)}
-.title-slide .badge{
-  display:inline-block;margin-top:16px;
-  background:rgba(201,138,26,.15);border:1px solid rgba(201,138,26,.35);
-  color:var(--gold-light);font-size:.72rem;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;
-  padding:5px 14px;border-radius:14px;
-}
+.title-slide .badge{display:inline-block;margin-top:16px;background:rgba(201,138,26,.15);border:1px solid rgba(201,138,26,.35);color:var(--gold-light);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:14px}
 
 /* stats grid */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border-radius:8px;overflow:hidden;margin:20px 0}
@@ -64,16 +41,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 .stat-val{font-family:var(--serif);font-size:1.5rem;color:var(--teal-light);font-weight:700}
 .stat-lbl{font-size:.7rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
 
-/* text blocks */
+/* text */
 h2{font-family:var(--serif);font-size:1.35rem;color:#fff;margin-bottom:16px}
 h3{font-family:var(--serif);font-size:1.05rem;color:var(--teal-light);margin-bottom:8px}
 p{margin-bottom:12px;color:var(--text)}
 .muted{color:var(--muted);font-size:.82rem}
-.highlight{color:var(--gold-light);font-weight:700}
 
 /* RQ cards */
 .rq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:20px 0}
-.rq-card{background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:20px;position:relative;border-top:3px solid var(--teal)}
+.rq-card{background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:20px;border-top:3px solid var(--teal)}
 .rq-card h3{color:var(--teal-light);margin-bottom:6px;font-size:.92rem}
 .rq-card p{font-size:.85rem;color:var(--muted);margin:0}
 
@@ -81,15 +57,11 @@ p{margin-bottom:12px;color:var(--text)}
 .slide-img{width:100%;border-radius:8px;margin:12px 0;display:block}
 .img-row{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;margin:16px 0}
 .img-row img{flex:1;min-width:200px;max-width:100%;border-radius:8px}
-.img-half{width:calc(50% - 8px);border-radius:8px}
 .img-caption{font-size:.72rem;color:var(--muted2);text-align:center;margin-top:4px}
 
-/* species cards */
-.species-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
-.species-card{background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:16px;text-align:center}
-.species-card img{width:120px;height:120px;object-fit:contain;border-radius:8px;margin-bottom:10px;background:#fff}
-.species-card h4{font-size:.88rem;color:var(--text);margin-bottom:4px}
-.species-card .score{font-size:.78rem;color:var(--teal-light);font-weight:700}
+/* video */
+.video-wrap{background:#000;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin:16px 0}
+.video-wrap video{width:100%;display:block}
 
 /* vulnerability cards */
 .vuln-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
@@ -102,14 +74,18 @@ p{margin-bottom:12px;color:var(--text)}
 .vuln-tag.danger{background:rgba(220,80,60,.15);color:#f08070;border:1px solid rgba(220,80,60,.3)}
 
 /* santamour rule box */
-.rule-box{
-  background:var(--panel2);border:1px solid var(--border2);border-radius:8px;
-  padding:20px 24px;margin:16px 0;border-left:4px solid var(--teal);
-}
+.rule-box{background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:20px 24px;margin:16px 0;border-left:4px solid var(--teal)}
 .rule-box .rule{font-size:1rem;color:var(--teal-light);font-weight:700;margin-bottom:8px}
 .rule-box ul{list-style:none;padding:0}
 .rule-box li{font-size:.85rem;color:var(--muted);padding:3px 0;padding-left:16px;position:relative}
 .rule-box li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+
+/* species cards */
+.species-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.species-card{background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:16px;text-align:center}
+.species-card img{width:120px;height:120px;object-fit:contain;border-radius:8px;margin-bottom:10px;background:#fff}
+.species-card h4{font-size:.88rem;color:var(--text);margin-bottom:4px}
+.species-card .score{font-size:.78rem;color:var(--teal-light);font-weight:700}
 
 /* priority table */
 .priority-table{width:100%;border-collapse:separate;border-spacing:0;margin:16px 0;border-radius:8px;overflow:hidden}
@@ -128,21 +104,10 @@ p{margin-bottom:12px;color:var(--text)}
 .conc-card p{font-size:.82rem;color:var(--muted);margin:0}
 
 /* callout */
-.callout{
-  background:linear-gradient(135deg,rgba(201,138,26,.1),rgba(220,80,60,.08));
-  border:1px solid rgba(201,138,26,.3);border-radius:8px;
-  padding:20px 24px;margin:20px 0;text-align:center;
-}
+.callout{background:linear-gradient(135deg,rgba(201,138,26,.1),rgba(220,80,60,.08));border:1px solid rgba(201,138,26,.3);border-radius:8px;padding:20px 24px;margin:20px 0;text-align:center}
 .callout p{font-size:.95rem;color:var(--gold-light);font-weight:700;margin:0;line-height:1.6}
 
-/* video embed */
-.video-wrap{
-  background:#000;border-radius:8px;overflow:hidden;
-  border:1px solid var(--border);margin:16px 0;
-}
-.video-wrap video{width:100%;display:block}
-
-/* data sources */
+/* sources */
 .sources{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:16px 0}
 .sources ul{list-style:none;padding:0}
 .sources li{font-size:.82rem;color:var(--muted);padding:4px 0;padding-left:14px;position:relative}
@@ -163,25 +128,28 @@ p{margin-bottom:12px;color:var(--text)}
   .sources{grid-template-columns:1fr}
   .img-row{flex-direction:column}
   .img-row img{min-width:0;width:100%}
-  .img-half{width:100%}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<!-- ══ Slide 1: Title ══════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 1 — Title
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide title-slide">
   <div class="slide-body">
     <div class="badge">H.E.A.D Competition 2026</div>
-    <h1>Climate-Driven Vulnerability Assessment of Hamilton's Urban Forest</h1>
-    <div class="subtitle">A Ward-Level Resilience Framework for 2030, 2050, and 2080</div>
+    <h1>Climate-Driven Vulnerability Assessment<br>of Hamilton's Urban Forest</h1>
+    <div class="subtitle">A Ward-Level Resilience Framework<br>for 2030, 2050, and 2080</div>
     <div class="team">Susana Carolina Romero Aparicio, Su Myat Aung, Tessy Ramirez, Yi Xin</div>
     <div class="team" style="margin-top:4px;opacity:.7">University of Niagara Falls Canada &mdash; Team #20</div>
   </div>
 </div>
 
-<!-- ══ Slide 2: Background ═════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 2 — Background
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num accent">2</div><div class="slide-label">Background</div></div>
   <div class="slide-body">
@@ -192,12 +160,15 @@ p{margin-bottom:12px;color:var(--text)}
       <div class="stat"><div class="stat-val">32.82&deg;C</div><div class="stat-lbl">Baseline temp</div></div>
       <div class="stat"><div class="stat-val">+4.47&deg;C</div><div class="stat-lbl">Projected increase by 2080</div></div>
     </div>
-    <img class="slide-img" src="slides/slide02_img0.png" alt="Temperature rise and urban forest illustration"/>
     <p class="muted"><strong>Data Sources:</strong> City of Hamilton Open Data Portal &middot; GBIF Backbone Taxonomy &middot; Metro Vancouver Urban Forest Climate Adaptation Species Selection Database &middot; CanDCS-M6 / Canadian Centre for Climate Services &middot; Ontario Climate Station Records</p>
+    <img class="slide-img" src="slides/slide02_img0.png" alt="Temperature rise and urban forest illustration"/>
+    <div class="video-wrap"><video controls preload="metadata" src="slides/slide02_video.mp4"></video></div>
   </div>
 </div>
 
-<!-- ══ Slide 3: Research Questions ═════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 3 — Research Questions
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num accent">3</div><div class="slide-label">Research Questions</div></div>
   <div class="slide-body">
@@ -215,54 +186,40 @@ p{margin-bottom:12px;color:var(--text)}
         <p>Which wards and dominant species exhibit the highest climate vulnerability?</p>
       </div>
     </div>
-    <div class="img-row">
-      <img src="slides/slide03_img3.png" alt="Hamilton ward map with tree coverage density"/>
-    </div>
-    <div class="img-row">
-      <img src="slides/slide03_img0.png" alt="Species resilience distribution chart"/>
-      <img src="slides/slide03_img2.png" alt="Dominant tree species by ward chart"/>
-    </div>
+    <img class="slide-img" src="slides/slide03_img0.png" alt="Distribution of Species Climate Resilience Class"/>
+    <img class="slide-img" src="slides/slide03_img1.png" alt="Hamilton temperature trend 1866-2080 and projected summer heat increase"/>
+    <img class="slide-img" src="slides/slide03_img2.png" alt="Dominant tree species by ward"/>
+    <img class="slide-img" src="slides/slide03_img3.png" alt="Hamilton ward map with tree coverage density"/>
   </div>
 </div>
 
-<!-- ══ Slide 4: Climate Context (Video) ════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 4 — Video: Climate Context
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num">4</div><div class="slide-label">Climate Change Context</div></div>
   <div class="slide-body">
-    <p>Historical climate trends in Hamilton and projected warming under SSP2-4.5 through 2080.</p>
-    <div class="video-wrap">
-      <video controls preload="metadata" src="act1_climate.mp4"></video>
-    </div>
-    <img class="slide-img" src="slides/slide03_img1.png" alt="Hamilton temperature trend 1866-2080 and projected summer heat increase"/>
+    <div class="video-wrap"><video controls preload="metadata" src="slides/slide04_video.mp4"></video></div>
   </div>
 </div>
 
-<!-- ══ Slide 5: ISA Maps (Video) ═══════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 5 — Video: ISA Maps
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
-  <div class="slide-header"><div class="slide-num">5</div><div class="slide-label">ISA Heat Index &amp; Vulnerability Maps</div></div>
+  <div class="slide-header"><div class="slide-num">5</div><div class="slide-label">ISA Heat Index Maps</div></div>
   <div class="slide-body">
-    <p>Ward-level ISA-proxy heat index mapping using the Stewart &amp; Oke (2012) Local Climate Zone framework.</p>
-    <div class="video-wrap">
-      <video controls preload="metadata" src="act4_vulnerability.mp4"></video>
-    </div>
+    <div class="video-wrap"><video controls preload="metadata" src="slides/slide05_video.mp4"></video></div>
   </div>
 </div>
 
-<!-- ══ Slide 6: Key Species Vulnerabilities ════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 6 — Key Species Vulnerabilities
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num accent">6</div><div class="slide-label">Key Species Vulnerabilities</div></div>
   <div class="slide-body">
     <div class="vuln-grid">
-      <div class="vuln-card">
-        <img src="slides/slide06_img1.png" alt="Norway Maple botanical illustration"/>
-        <div>
-          <h4>Norway Maple <span class="muted">(Acer platanoides)</span></h4>
-          <p>11.9% of total urban forest</p>
-          <div class="vuln-tag warn">Exceeds 10% Santamour threshold</div>
-          <div class="vuln-tag warn">Major vulnerability contributor</div>
-          <p style="margin-top:8px">Acer genus exceeds 20% threshold in 14 of 15 wards</p>
-        </div>
-      </div>
       <div class="vuln-card">
         <img src="slides/slide06_img0.png" alt="Fraxinus botanical illustration with Emerald Ash Borer"/>
         <div>
@@ -273,11 +230,23 @@ p{margin-bottom:12px;color:var(--text)}
           <p style="margin-top:8px">Extreme pest susceptibility eliminates future planting viability</p>
         </div>
       </div>
+      <div class="vuln-card">
+        <img src="slides/slide06_img1.png" alt="Norway Maple botanical illustration"/>
+        <div>
+          <h4>Norway Maple <span class="muted">(Acer platanoides)</span></h4>
+          <p>11.9% of total urban forest</p>
+          <div class="vuln-tag warn">Exceeds 10% Santamour threshold</div>
+          <div class="vuln-tag warn">Major vulnerability contributor</div>
+          <p style="margin-top:8px">Acer genus exceeds 20% threshold in 14 of 15 wards. Dominant urban species contributing significantly to overall forest vulnerability.</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ══ Slide 7: Santamour 10/20/30 ════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 7 — Santamour 10/20/30 Biodiversity Rule
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num accent">7</div><div class="slide-label">Santamour 10/20/30 Biodiversity Rule</div></div>
   <div class="slide-body">
@@ -295,59 +264,58 @@ p{margin-bottom:12px;color:var(--text)}
         <li>Sapindaceae family approaching 30% limit</li>
       </ul>
     </div>
-    <img class="slide-img" src="slides/slide03_img2.png" alt="Dominant tree species by ward with 10% threshold line"/>
+    <div class="video-wrap"><video controls preload="metadata" src="slides/slide07_video.mp4"></video></div>
   </div>
 </div>
 
-<!-- ══ Slide 8: Replanting Priorities Framework ════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 8 — Urban Forest Replanting Priorities Framework
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num accent">8</div><div class="slide-label">Urban Forest Replanting Priorities Framework</div></div>
   <div class="slide-body">
     <img class="slide-img" src="slides/slide08_img0.png" alt="Common Hackberry botanical illustration"/>
+    <div class="video-wrap"><video controls preload="metadata" src="slides/slide08_video.mp4"></video></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 9 — Replanting Priority Charts
+     ════════════════════════════════════════════════════════════════════════ -->
+<div class="slide">
+  <div class="slide-header"><div class="slide-num">9</div><div class="slide-label">Replanting Priority Analysis</div></div>
+  <div class="slide-body">
     <img class="slide-img" src="slides/slide09_img0.png" alt="Replanting priority driver breakdown by ward and resilience vs replanting need scatter plot"/>
-    <p class="muted">Key Insight: Ward 3 highest priority (0.966); Ward 13 lowest (0.195). Built stress is the primary driver of replanting priority.</p>
   </div>
 </div>
 
-<!-- ══ Slide 9: Vulnerability Evolution (Video) ════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 10 — Video: Species Recommendation
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
-  <div class="slide-header"><div class="slide-num">9</div><div class="slide-label">Vulnerability Evolution &amp; Biodiversity Assessment</div></div>
+  <div class="slide-header"><div class="slide-num">10</div><div class="slide-label">Species Recommendation</div></div>
   <div class="slide-body">
-    <p>Ward-level vulnerability trajectory over time &mdash; identifying highest-risk areas and Santamour biodiversity rule analysis.</p>
-    <div class="video-wrap">
-      <video controls preload="metadata" src="act4b_vuln_evolution.mp4"></video>
-    </div>
-    <div class="video-wrap" style="margin-top:12px">
-      <video controls preload="metadata" src="act3_biodiversity.mp4"></video>
-    </div>
+    <div class="video-wrap"><video controls preload="metadata" src="slides/slide10_video.mp4"></video></div>
   </div>
 </div>
 
-<!-- ══ Slide 10: Species Recommendations (Video) ═══════════════════════ -->
-<div class="slide">
-  <div class="slide-header"><div class="slide-num">10</div><div class="slide-label">Species Recommendations Animation</div></div>
-  <div class="slide-body">
-    <div class="video-wrap">
-      <video controls preload="metadata" src="act5_solution.mp4"></video>
-    </div>
-  </div>
-</div>
-
-<!-- ══ Slide 11: Top Climate-Resilient Species ═════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 11 — Top Climate-Resilient Species Recommendations
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num accent">11</div><div class="slide-label">Top Climate-Resilient Species Recommendations</div></div>
   <div class="slide-body">
     <p>Reduces reliance on the dominant Acer genus. Fraxinus excluded due to Emerald Ash Borer risk. Supports climate resilience and biodiversity goals.</p>
     <div class="species-grid">
       <div class="species-card">
-        <img src="slides/slide11_img1.png" alt="Common Hackberry"/>
-        <h4>Common Hackberry</h4>
-        <div class="score">Resilience Score: 0.938</div>
-      </div>
-      <div class="species-card">
         <img src="slides/slide11_img0.png" alt="Asian Pear"/>
         <h4>Asian Pear</h4>
         <div class="score">Resilience Score: 0.917</div>
+      </div>
+      <div class="species-card">
+        <img src="slides/slide11_img1.png" alt="Common Hackberry"/>
+        <h4>Common Hackberry</h4>
+        <div class="score">Resilience Score: 0.938</div>
       </div>
       <div class="species-card">
         <img src="slides/slide11_img2.png" alt="Tanoak"/>
@@ -360,10 +328,13 @@ p{margin-bottom:12px;color:var(--text)}
         <div class="score">Resilience Score: 0.833</div>
       </div>
     </div>
+    <div class="video-wrap"><video controls preload="metadata" src="slides/slide11_video.mp4"></video></div>
   </div>
 </div>
 
-<!-- ══ Slide 12: Canopy Coverage & Replanting Priority ═════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 12 — Phase 2: Canopy Coverage & Replanting Priority
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num accent">12</div><div class="slide-label">Phase 2: Canopy Coverage &amp; Replanting Priority</div></div>
   <div class="slide-body">
@@ -374,10 +345,10 @@ p{margin-bottom:12px;color:var(--text)}
       <div class="stat"><div class="stat-val">40%</div><div class="stat-lbl">UFS target by 2050</div></div>
     </div>
 
-    <img class="slide-img" src="slides/slide12_img0.png" alt="Canopy distribution: public vs private bubble chart"/>
-    <div class="img-caption">Canopy by Ownership per Ward &mdash; 2024 LiDAR (State of Urban Forest Report 2026)</div>
+    <h3>Canopy by Ownership per Ward &mdash; 2024 LiDAR</h3>
+    <p class="muted">State of Urban Forest Report 2026</p>
 
-    <h3 style="margin-top:24px">Replanting Priority Classification</h3>
+    <h3 style="margin-top:20px">Replanting Priority Classification &mdash; Cross-Reference Analysis</h3>
     <p class="muted">Gap = City-owned canopy % minus Private land canopy % per ward (2024 LiDAR)</p>
     <table class="priority-table">
       <tr><th>Classification</th><th>Wards</th><th>Criteria</th></tr>
@@ -398,16 +369,19 @@ p{margin-bottom:12px;color:var(--text)}
       </tr>
     </table>
     <p class="muted">Source: State of the Urban Forest Report 2026, City of Hamilton (LiDAR survey by Airborne Solutions, 2024)</p>
+    <img class="slide-img" src="slides/slide12_img0.png" alt="Canopy distribution: public vs private bubble chart"/>
   </div>
 </div>
 
-<!-- ══ Slide 13: Conclusion ════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 13 — Conclusion and Recommendations
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num accent">13</div><div class="slide-label">Conclusion and Recommendations</div></div>
   <div class="slide-body">
     <div class="conc-grid">
       <div class="conc-card">
-        <img src="slides/slide13_img2.png" alt="Climate and urban heat icon"/>
+        <img src="slides/slide13_img0.png" alt="Policy framework icon"/>
         <h4>Prioritize Ward 3</h4>
         <p>Critical climate hotspot requires immediate attention &mdash; lowest resilience combined with highest replanting priority score</p>
       </div>
@@ -417,22 +391,25 @@ p{margin-bottom:12px;color:var(--text)}
         <p>Implement Santamour 10/20/30 rule to reduce maple dependency and enhance ecosystem resilience</p>
       </div>
       <div class="conc-card">
-        <img src="slides/slide13_img0.png" alt="Policy framework icon"/>
+        <img src="slides/slide13_img2.png" alt="Climate and urban heat icon"/>
         <h4>Align Policy Framework</h4>
         <p>Integrate resilience scoring into City of Hamilton Urban Forest Strategy 2020 implementation</p>
       </div>
     </div>
     <div class="callout">
-      <p>THE BIGGEST RISK to Urban Forest is NOT Climate Alone!<br/>
+      <p>THE BIGGEST RISK to Urban Forest is NOT Climate Alone!<br>
       Strategic Climate Adaptation requires Coordinated Action Across Vulnerable Wards, Species Diversification, and Policy Integration!</p>
     </div>
   </div>
 </div>
 
-<!-- ══ Slide 14: References ════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 14 — Data Sources & References
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num">14</div><div class="slide-label">Data Sources &amp; References</div></div>
   <div class="slide-body">
+    <img src="slides/slide14_img0.png" alt="Research icon" style="width:80px;margin-bottom:16px;border-radius:8px"/>
     <div class="sources">
       <div>
         <h3>Primary Data Sources</h3>
@@ -458,29 +435,14 @@ p{margin-bottom:12px;color:var(--text)}
   </div>
 </div>
 
-<!-- ══ Slide 15: QR Code ═══════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════════════
+     SLIDE 15 — QR Code
+     ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide">
   <div class="slide-header"><div class="slide-num">15</div><div class="slide-label">Explore More</div></div>
   <div class="slide-body qr-center">
     <img src="slides/slide15_img0.png" alt="QR Code"/>
-    <p style="margin-top:16px;color:var(--muted)">Scan to explore the full interactive analysis</p>
-  </div>
-</div>
-
-<!-- ══ Additional Videos ═══════════════════════════════════════════════ -->
-<div class="slide">
-  <div class="slide-header"><div class="slide-num">+</div><div class="slide-label">Additional Presentation Videos</div></div>
-  <div class="slide-body">
-    <h3>Opening &mdash; Title &amp; Introduction</h3>
-    <div class="video-wrap"><video controls preload="metadata" src="act0_title.mp4"></video></div>
-
-    <h3 style="margin-top:24px">City Comparisons</h3>
-    <p class="muted">Hamilton benchmarked against comparable urban forest programs in other cities</p>
-    <div class="video-wrap"><video controls preload="metadata" src="act6_comparison.mp4"></video></div>
-
-    <h3 style="margin-top:24px">Implementation Framework</h3>
-    <p class="muted">Policy recommendations and phased action plan</p>
-    <div class="video-wrap"><video controls preload="metadata" src="act7_framework.mp4"></video></div>
+    <p style="margin-top:16px;color:var(--muted)">Scan me if you're curious!</p>
   </div>
 </div>
 
