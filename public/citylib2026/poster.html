@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <base href="/citylib2026/">
+  <title>CityLAB Hamilton — Climate-Driven Vulnerability Assessment of Hamilton's Urban Forest</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --teal-darker: #134744;
+      --teal-deep:   #1f6b68;
+      --teal:        #2c7e7a;
+      --teal-mid:    #4a8d82;
+      --sage:        #7abc9d;
+      --sage-light:  #e8f2ed;
+      --alert:       #9a2020;
+      --amber:       #d77a2b;
+      --maroon:      #7d1e3a;
+      --bg:          #ffffff;
+      --text:        #1f2e2b;
+      --muted:       #5a6b68;
+      --border:      #d4e0da
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #eee;
+      color: var(--text);
+      line-height: 1.5
+    }
+
+    /* Poster container */
+    .poster {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: var(--bg);
+      box-shadow: 0 0 30px rgba(0, 0, 0, .15)
+    }
+
+    /* ── HEADER ───────────────────────────────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-deep) 55%, var(--teal) 100%);
+      color: #fff;
+      padding: 28px 40px 20px;
+      position: relative;
+      min-height: 100px
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px
+    }
+
+    .header-logo {
+      height: 60px;
+      width: auto
+    }
+
+    .header-text {
+      flex: 1;
+      text-align: center
+    }
+
+    .header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -.02em
+    }
+
+    .header h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-top: 2px;
+      opacity: .95
+    }
+
+    /* ── AUTHORS ──────────────────────────────────────────────────────────── */
+    .authors-bar {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 40px;
+      border-bottom: 2px solid var(--teal-deep);
+      font-size: .85rem;
+      font-weight: 700
+    }
+
+    /* ── THREE-COLUMN BODY ────────────────────────────────────────────────── */
+    .body-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0
+    }
+
+    .col {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .col:last-child {
+      border-right: none
+    }
+
+    /* ── SECTION HEADERS ──────────────────────────────────────────────────── */
+    .section-header {
+      background: linear-gradient(135deg, var(--teal-deep), var(--teal));
+      color: #fff;
+      font-size: .95rem;
+      font-weight: 800;
+      padding: 8px 14px;
+      border-radius: 6px;
+      margin: 16px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: .04em
+    }
+
+    .section-header:first-child {
+      margin-top: 0
+    }
+
+    .section-header.dark {
+      background: linear-gradient(135deg, var(--teal-darker), #0d3b38)
+    }
+
+    /* ── CONTENT ──────────────────────────────────────────────────────────── */
+    .bullet {
+      position: relative;
+      padding-left: 18px;
+      margin: 6px 0;
+      font-size: .82rem;
+      line-height: 1.55
+    }
+
+    .bullet::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--teal-deep);
+      font-weight: 700
+    }
+
+    .desc {
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 8px 0
+    }
+
+    .desc-sm {
+      font-size: .78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 6px 0
+    }
+
+    .red-text {
+      color: var(--alert);
+      font-weight: 700
+    }
+
+    .teal-text {
+      color: var(--teal-deep);
+      font-weight: 700
+    }
+
+    img.chart {
+      width: 100%;
+      height: auto;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      margin: 4px 0;
+      display: block
+    }
+
+    /* ── Chart block: image on top, text below ────────────────────────────── */
+    .chart-block {
+      margin: 12px 0;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      overflow: hidden
+    }
+
+    .chart-block img.chart {
+      margin: 0;
+      border: none;
+      border-radius: 0
+    }
+
+    .chart-block .caption {
+      padding: 8px 12px;
+      font-size: .78rem;
+      color: var(--muted);
+      line-height: 1.55
+    }
+
+    /* ── TABLE ─────────────────────────────────────────────────────────────── */
+    .vuln-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .78rem;
+      margin: 10px 0
+    }
+
+    .vuln-table th,
+    .vuln-table td {
+      border: 1px solid #ccc;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top
+    }
+
+    .vuln-table thead th {
+      background: var(--teal-deep);
+      color: #fff;
+      font-weight: 700;
+      text-align: center
+    }
+
+    .vuln-table .note-row {
+      font-style: italic;
+      font-size: .72rem;
+      color: var(--muted)
+    }
+
+    /* ── FINDING CARDS ────────────────────────────────────────────────────── */
+    .findings-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 10px 0
+    }
+
+    .finding-card {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: .78rem;
+      line-height: 1.5
+    }
+
+    .finding-card h4 {
+      font-size: .82rem;
+      margin-bottom: 6px;
+      color: var(--teal-deep)
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────────────────── */
+    .footer {
+      background: var(--teal-darker);
+      color: #fff;
+      padding: 16px 40px;
+      font-size: .72rem;
+      line-height: 1.6
+    }
+
+    .footer .label {
+      color: var(--sage);
+      font-weight: 700;
+      text-transform: uppercase
+    }
+
+    /* ── WIDE SECTIONS (spanning center+right) ────────────────────────────── */
+    .wide-section {
+      grid-column: 1;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border)
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────────────────── */
+    @media(max-width:1000px) {
+      .header h1 {
+        font-size: 1.2rem
+      }
+
+      .header h2 {
+        font-size: 1rem
+      }
+
+      .col {
+        padding: 12px 16px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="poster">
+
+    <!-- ═══ HEADER ═════════════════════════════════════════════════════════════ -->
+    <div class="header">
+      <div class="header-inner">
+        <div style="color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.05em;line-height:1.6;opacity:.9">
+          CityLAB Hamilton<br/>
+          <span style="font-weight:400;opacity:.8">Vibrant · Healthy · Sustainable</span>
+        </div>
+        <div class="header-text">
+          <h1>Climate-Driven Vulnerability Assessment of Hamilton&#8217;s Urban Forest:</h1>
+          <h2>A Ward-Level Resilience Framework for 2030, 2050, and 2080</h2>
+        </div>
+        <img class="header-logo" src="assets/citylab_logo.png" alt="CityLAB Hamilton Logo" style="background:rgba(255,255,255,.92);border-radius:6px;padding:6px;" />
+      </div>
+    </div>
+
+    <!-- ═══ AUTHORS ════════════════════════════════════════════════════════════ -->
+    <div class="authors-bar">
+      <span>Authors: Susana Carolina Romero Aparicio, Su Myat Aung, Tessy Ramirez, Yi Xin</span>
+      <span>Affiliations: University of Niagara Falls Canada</span>
+    </div>
+
+    <!-- ═══ THREE-COLUMN BODY ═════════════════════════════════════════════════ -->
+    <div class="body-grid">
+
+      <!-- ─── LEFT COLUMN ────────────────────────────────────────────────────── -->
+      <div class="col">
+
+        <div class="section-header">BACKGROUND</div>
+
+        <div class="bullet"><strong>Impact:</strong> Environmental - Economic - Social</div>
+        <div class="bullet"><strong>Inventory:</strong> 275,156 city-owned trees &middot; 15 wards &middot; 98.4%
+          species-matched (exact + genus fallback)</div>
+        <div class="bullet"><strong>Climate:</strong> Baseline = 32.82&deg;C (1991&ndash;2020) &rarr; projected
+          +3.11&deg;C by 2030, +3.76&deg;C by 2050, +4.47&deg;C by 2080 under SSP2-4.5</div>
+        <div class="bullet"><strong>Goal:</strong> Monitor and Improve Resiliency</div>
+        <div class="desc"><span class="red-text">Urban Forests are KEY Climate Assets BUT increasingly Vulnerable to Climate Stress.</span></div>
+
+        <div class="section-header dark">RESEARCH QUESTIONS</div>
+
+        <div class="bullet">How vulnerable is Hamilton&#8217;s current urban forest to future climate change? <span class="teal-text">(Climate Exposure)</span></div>
+        <div class="bullet">Does the current species composition provide sufficient resilience to future climate conditions? <span class="teal-text">(Species Resilience)</span></div>
+        <div class="bullet">Which wards and dominant species exhibit the highest climate vulnerability? <span class="teal-text">(Spatial Risk Concentration)</span></div>
+
+        <div class="section-header">HAMILTON&#8217;S URBAN FOREST TODAY</div>
+
+        <div class="chart-block">
+          <img class="chart" src="poster_images/img_05_Picture_6.png" alt="Distribution of Species Climate Resilience Class" />
+          <div class="caption">Most tree species exhibit low climate resilience, highlighting vulnerability in the current species mix.</div>
+        </div>
+
+        <div class="chart-block">
+          <img class="chart" src="poster_images/img_08_Picture_45.png" alt="Dominant Tree Species by Ward" />
+          <div class="caption">Most wards are dominated by Norway Maple, with Wards 5, 11, and 13 showing alternative dominant species.</div>
+        </div>
+
+        <div class="chart-block">
+          <img class="chart" style="width:200%;margin-left:-100%;" src="poster_images/img_12_Picture_34.png"
+            alt="Projected Summer Heat Increase" />
+          <div class="caption">Hamilton&#8217;s summer heat is projected to rise sharply by 2030, 2050, and 2080, increasing climate stress on the city&#8217;s urban forest.</div>
+        </div>
+
+        <div class="chart-block">
+          <img class="chart" style="width:200%;" src="poster_images/img_13_Picture_71.png" alt="Historical Temperature Rise" />
+          <div class="caption">Hamilton has warmed steadily since the late 19th century and is projected to continue warming through 2080 under the SSP2&#8209;4.5 scenario.</div>
+        </div>
+
+      </div>
+
+      <!-- ─── CENTER COLUMN ──────────────────────────────────────────────────── -->
+      <div class="col">
+
+        <div class="section-header">VULNERABILITY SCORE FRAMEWORK</div>
+
+        <table class="vuln-table">
+          <thead>
+            <tr>
+              <th colspan="4">Vulnerability Score = Exposure + Sensitivity &#8722; Adaptive Capacity<br /><span
+                  style="font-weight:400;font-size:.75rem">(IPCC AR5 Vulnerability Conceptual framework)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Exposure</strong></td>
+              <td>Magnitude of climate stress experienced by trees and urban areas</td>
+              <td>Extreme Heat Intensity (&Delta;TXx): change in annual maximum daily temperature during summer.<br />Heat index = &Sigma; (Population_category &times; ISA Impervious Surface Weight)</td>
+              <td>Spatial scale: City &amp; Ward Levels</td>
+            </tr>
+            <tr>
+              <td><strong>Sensitivity</strong><br />(1 &minus; Resilience score)</td>
+              <td>Species-level susceptibility to climate stress</td>
+              <td>Heat (AHS Temp &gt;30&deg;C), Hydroclimate (Drought + Saturated Soil Tolerance), Pollution
+                Tolerance, Climate Suitability</td>
+              <td>Species-Level susceptibility to climate stress</td>
+            </tr>
+            <tr>
+              <td><strong>Adaptive Capacity</strong></td>
+              <td>Ecosystem ability to cope with environmental stress</td>
+              <td>DBH (Diameter at Breast Height). Larger trees exhibit greater resistance through deeper root systems and higher biomass.</td>
+              <td>Individual Tree Level</td>
+            </tr>
+            <tr class="note-row">
+              <td colspan="4"><em>*Higher Vulnerability Scores indicate greater climate risk to the urban forest.*</em><br />*All the datasets used in this analysis originates from well-established and widely recognized government-affiliated sources.*</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Charts stacked vertically -->
+        <div class="chart-block">
+          <img class="chart" src="poster_images/img_03_Picture_2.png" alt="Hamilton Ward ISA Vulnerability 2030" />
+        </div>
+
+        <div class="chart-block">
+          <img class="chart" src="poster_images/img_02_Picture_4.png" alt="Hamilton Ward ISA Vulnerability 2050" />
+          <div class="caption">Wards 3, 4, and 2 are most vulnerable. Ward 3 shows the highest projected vulnerability by 2080 under climate change scenarios, necessitating strategic planning prioritization.</div>
+        </div>
+
+        <div class="chart-block">
+          <img class="chart" src="poster_images/img_07_Picture_6.png" alt="Species Composition by Ward" />
+        </div>
+
+        <div class="chart-block">
+          <img class="chart" src="poster_images/img_06_Picture_39.png" alt="Species Resilience Distribution" />
+          <div class="caption">Norway maple, a dominant urban species, contributes significantly to vulnerability due to its high proportion within the urban forest. Among the most vulnerable species, Norway maple stands out due to its relatively high proportion in the urban forest.</div>
+        </div>
+
+      </div>
+
+      <!-- ─── RIGHT COLUMN ───────────────────────────────────────────────────── -->
+      <div class="col">
+
+        <div class="section-header">URBAN FOREST REPLANTING PRIORITIES</div>
+
+        <div class="desc" style="text-align:center">
+          <span class="teal-text">Tree Priority Replanting Rank Framework</span><br />
+          <span class="red-text" style="font-size:.75rem">[Built Environment Stress + Ward Vulnerability Score + Low
+            Diversity Pressure + Biodiversity Pressure]</span>
+        </div>
+
+        <div class="chart-block">
+          <img class="chart" src="poster_images/img_01_Picture_68.png"
+            alt="Urban Forest Replanting Risk Triangle by Ward" />
+          <div class="caption">
+            <p>Ward position reflects the dominant driver of 2050 replanting priority.</p>
+            <p>Wards 9, 11, 12, 13, and 15 cluster toward biodiversity risk, indicating higher species dominance and lower diversity.</p>
+            <p>Wards 2, 3, 4, and 7 show mixed drivers, where built&#8209;environment stress and biodiversity pressure combine.</p>
+            <p>Ward 3 has the highest replanting priority (0.966) due to intense built&#8209;environment heat exposure.</p>
+          </div>
+        </div>
+
+        <div class="chart-block">
+          <img class="chart" src="poster_images/img_04_Picture_43.png" alt="Top Resilient Species for Replanting" />
+          <div class="caption">
+            <p>Replanting recommendations prioritize climate-resilient species for vulnerable wards.</p>
+            <p>Common hackberry (0.938) and Asian pear (0.917) show the highest resilience.</p>
+            <p>9 of 10 species belong to new genera, reducing reliance on Acer.</p>
+            <p>Fraxinus (ash) excluded due to Emerald Ash Borer risk.</p>
+            <p>Supports climate resilience and biodiversity diversification.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ─── WIDE SECTION: SANTAMOUR + PRIORITY + KEY FINDINGS ─────────────── -->
+      <div class="wide-section">
+        <div style="display:grid;grid-template-columns:1fr;gap:16px">
+
+          <!-- LEFT: Santamour -->
+          <div>
+            <div class="section-header dark">SANTAMOUR 10/20/30 RULE FOR URBAN FOREST BIODIVERSITY</div>
+
+            <div class="chart-block">
+              <img class="chart" src="poster_images/img_10_Picture_38.png" alt="10/20/30 Rule Scatter by Ward" />
+            </div>
+
+            <div class="chart-block">
+              <img class="chart" src="poster_images/img_11_Picture_2.png" alt="10/20/30 Rule Analysis" />
+              <div class="caption">
+                <p>The Santamour guideline recommends that no single species exceed 10%, no genus exceed 20%, and no family exceed 30% of the urban forest composition.</p>
+                <p>Points located to the right of the dashed thresholds indicate biodiversity dominance exceeding the 10/20/30 guideline.</p>
+                <p>City-Level: Acer platanoides (Norway maple) exceeds the 10% species threshold, and the Acer genus exceeds the 20% genus threshold. The Sapindaceae family is approaching the 30% family dominance threshold. Ward 4 is the only ward with two species violating the rule.</p>
+                <p>Dominance of Acer platanoides increases systemic risk because monoculture urban forests are more susceptible to pest outbreaks and climate stress.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Priority chart + Key Findings -->
+          <div>
+            <div class="chart-block">
+              <img class="chart" src="poster_images/img_09_Picture_32.png"
+                alt="Replanting Priority and Ward Recommendations" />
+              <div class="caption red-text">Ward 3 emerges as the most critical hotspot, combining low resilience with the highest replanting priority. Wards 6, 7, and 8 show high planting pressure despite relatively stronger resilience, indicating expansion pressure rather than immediate canopy decline.</div>
+            </div>
+
+            <div class="section-header dark">KEY FINDINGS AND RECOMMENDATIONS</div>
+            <div class="findings-grid">
+              <div class="finding-card">
+                <h4>Highest vulnerability:</h4>
+                <p>Prioritize climate adaptation in high-risk wards.</p>
+                <p>Ward 3 ranks highest across all climate horizons, driven by the city&#8217;s highest impervious-surface heat exposure (ISA index = 1.0 normalized).</p>
+              </div>
+              <div class="finding-card">
+                <h4>Biodiversity risk:</h4>
+                <p>Reduce dependence on dominant maple species.</p>
+                <p>Norway Maple represents 11.9%, of the urban forest, exceeding the 10% Santamour cap. Acer genus exceeds the 20% limit in 14 of 15 wards (Ward 4: 31%, Ward 3 &amp; 7: ~29%).</p>
+              </div>
+              <div class="finding-card">
+                <h4>Safest wards:</h4>
+                <p>Wards 9, 11, 12, 13, 15: lowest vulnerability, lowest built share, lowest road stress.</p>
+                <p><strong>Ash risk:</strong> 9,170 Fraxinus trees (3.3% of the inventory) are highly vulnerable to Emerald Ash Borer, posing a significant future canopy loss risk. Fraxinus species are excluded from recommended replanting.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /body-grid -->
+
+    <!-- ═══ FOOTER ═════════════════════════════════════════════════════════════ -->
+    <div class="footer">
+      <p><span class="label">DATA SOURCES:</span> City of Hamilton Open Data Portal (tree inventory, land use, road
+        network) | Global Biodiversity Information Facility GBIF Backbone Taxonomy (species classification validation) |
+        Metro Vancouver Urban Forest Climate Adaptation Species Selection Database (species resilience scores) |
+        CanDCS-M6 / Canadian Centre for Climate Services (climate scenario projections) | Ontario Climate Station
+        Records (historical climate data)</p>
+      <p style="margin-top:8px"><span class="label">REFERENCES:</span> Santamour, F. S. Jr. (1990) - Urban forest
+        10-20-30 diversity rule, IPCC AR5 WGII Chapter 19 (2014) - Vulnerability assessment framework, Stewart, City of
+        Hamilton Urban Forest Strategy (2020) - Policy alignment, I. D. &amp; Oke, T. R. (2012) - Local Climate Zones
+        (LCZ) framework, Sj&ouml;man, H., Hirons, A. D. &amp; Bassuk, N. L. (2015) - Urban tree drought tolerance</p>
+    </div>
+
+  </div><!-- /poster -->
+</body>
+
+</html>

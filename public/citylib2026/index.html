@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<base href="/citylib2026/"/>
+<title>CityLAB Hamilton — Hamilton Urban Forest Climate Vulnerability Analysis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --white:       #ffffff;
+  --bg-alt:      #f7faf8;
+  --teal-darker: #134744;
+  --teal-deep:   #1f6b68;
+  --teal:        #2c7e7a;
+  --teal-mid:    #4a8d82;
+  --sage:        #7abc9d;
+  --sage-light:  #e8f2ed;
+  --alert:       #9a2020;
+  --amber:       #d77a2b;
+  --maroon:      #7d1e3a;
+  --navy:        #1b3a5f;
+  --text:        #1f2e2b;
+  --muted:       #5a6b68;
+  --muted2:      #8ba094;
+  --border:      #d4e0da;
+  --border2:     #b8cec1;
+  --sidebar-w:   268px;
+  --serif:       'DM Serif Display', Georgia, serif;
+  --sans:        'DM Sans', Helvetica, sans-serif;
+}
+
+html,body{height:100%;overflow:hidden;font-family:var(--sans)}
+body{background:var(--white);color:var(--text);font-size:14px;line-height:1.6}
+
+/* ═══ LAYOUT ════════════════════════════════════════════════════════════ */
+.layout{display:flex;height:100vh;overflow:hidden}
+
+/* ═══ SIDEBAR ═══════════════════════════════════════════════════════════ */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--bg-alt);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+
+/* brand */
+.sidebar-brand{
+  padding:22px 20px 18px;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.sidebar-brand-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.brand-logo{height:40px;width:auto;display:block}
+.brand-title{font-family:var(--serif);font-size:.88rem;font-weight:700;color:var(--teal-deep);line-height:1.25}
+.brand-sub{font-size:.68rem;color:var(--muted);line-height:1.4}
+.brand-badge{
+  display:inline-flex;align-items:center;gap:5px;margin-top:4px;
+  background:var(--sage-light);border:1px solid var(--teal-mid);
+  color:var(--teal-deep);font-size:.65rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:12px;
+}
+.brand-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--teal-deep)}
+
+/* nav */
+.sidebar-nav{flex:1;overflow-y:auto;padding:12px 0;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.nav-section-label{
+  font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted2);padding:10px 20px 6px;
+}
+.nav-item{
+  display:flex;align-items:flex-start;gap:11px;
+  padding:10px 16px 10px 20px;cursor:pointer;
+  border-left:3px solid transparent;
+  transition:background .12s,border-color .12s;
+  position:relative;
+}
+.nav-item:hover{background:var(--sage-light)}
+.nav-item.active{
+  background:var(--sage-light);
+  border-left-color:var(--teal-deep);
+}
+.nav-item.active .nav-step{background:var(--teal-deep);color:#fff}
+.nav-item.active .nav-title{color:var(--teal-deep)}
+
+.nav-step{
+  flex-shrink:0;margin-top:1px;
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:700;letter-spacing:.04em;
+  background:var(--white);border:1px solid var(--border2);
+  color:var(--muted);transition:all .12s;
+}
+.nav-poster-icon{
+  flex-shrink:0;margin-top:1px;width:22px;height:22px;
+  border-radius:4px;background:var(--white);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:var(--muted);transition:all .12s;
+}
+.nav-item.active .nav-poster-icon{background:var(--teal-deep);color:#fff;border-color:var(--teal-deep)}
+.nav-text{flex:1;min-width:0}
+.nav-title{font-size:.8rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px}
+.nav-desc{font-size:.68rem;color:var(--muted);line-height:1.4}
+.nav-stat{
+  margin-top:5px;display:inline-block;
+  font-size:.65rem;font-weight:700;
+  color:var(--teal-deep);background:var(--sage-light);
+  border:1px solid var(--border2);
+  padding:2px 7px;border-radius:8px;
+}
+
+.nav-divider{height:1px;background:var(--border);margin:8px 20px}
+
+/* sidebar footer */
+.sidebar-footer{
+  padding:14px 20px;border-top:1px solid var(--border);flex-shrink:0;
+}
+.sidebar-footer p{font-size:.65rem;color:var(--muted2);line-height:1.5}
+.sidebar-footer strong{color:var(--muted);font-weight:700}
+
+/* ═══ MAIN AREA ══════════════════════════════════════════════════════════ */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+
+/* topbar */
+.main-topbar{
+  height:44px;flex-shrink:0;
+  background:var(--white);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 24px;gap:12px;
+}
+.topbar-breadcrumb{font-size:.75rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.topbar-breadcrumb span{color:var(--text);font-weight:600}
+.topbar-spacer{flex:1}
+.topbar-home-btn{
+  font-size:.72rem;color:var(--muted);cursor:pointer;padding:4px 10px;
+  border-radius:4px;border:1px solid var(--border2);
+  transition:all .12s;
+  background:none;
+}
+.topbar-home-btn:hover{color:var(--teal-deep);border-color:var(--teal-deep);background:var(--sage-light)}
+
+/* frame wrapper */
+.main-content{flex:1;position:relative;overflow:hidden}
+.frame-panel{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .18s}
+.frame-panel.active{opacity:1;pointer-events:auto}
+.frame-panel iframe{width:100%;height:100%;border:none;display:block}
+
+/* ═══ LANDING ════════════════════════════════════════════════════════════ */
+.landing{width:100%;height:100%;overflow-y:auto;background:var(--white)}
+
+.landing-hero{
+  background:var(--white);
+  padding:56px 56px 40px;
+  border-bottom:2px solid var(--teal-deep);
+  position:relative;overflow:hidden;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--sage-light);border:1px solid var(--teal-mid);
+  color:var(--teal-deep);font-size:.68rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:4px 12px;border-radius:12px;margin-bottom:20px;
+}
+.hero-eyebrow::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--teal-deep)}
+.landing-hero h1{
+  font-family:var(--serif);font-size:2.1rem;font-weight:400;
+  color:var(--sage);max-width:700px;line-height:1.2;margin-bottom:14px;
+}
+.landing-hero p{
+  font-size:.9rem;color:var(--muted);max-width:620px;
+  line-height:1.8;margin-bottom:28px;
+}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap}
+.hero-tag{
+  background:var(--bg-alt);border:1px solid var(--border);
+  color:var(--teal-deep);font-size:.72rem;padding:4px 13px;border-radius:20px;
+}
+
+/* stats row */
+.stats-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--white);
+}
+.stat-box{
+  padding:18px 20px;border-right:1px solid var(--border);text-align:center;
+}
+.stat-box:last-child{border-right:none}
+.stat-val{font-family:var(--serif);font-size:1.6rem;color:var(--teal-deep);font-weight:400;line-height:1}
+.stat-lbl{font-size:.68rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
+
+/* pipeline section */
+.pipeline-section{padding:36px 56px 48px}
+.section-label{
+  font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted2);margin-bottom:20px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+}
+.pipeline{display:flex;flex-direction:column;gap:10px}
+.pipeline-card{
+  display:flex;align-items:center;gap:16px;
+  background:var(--white);border:1px solid var(--border);
+  border-radius:8px;padding:16px 20px;cursor:pointer;
+  transition:border-color .14s,background .14s,transform .12s;
+  text-decoration:none;color:inherit;
+  position:relative;
+}
+.pipeline-card:hover{
+  border-color:var(--teal-deep);background:var(--sage-light);transform:translateX(4px);
+}
+.pipeline-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--border2);border-radius:8px 0 0 8px;
+  transition:background .14s;
+}
+.pipeline-card:hover::before,.pipeline-card.highlight::before{background:var(--teal-deep)}
+.pc-num{
+  flex-shrink:0;width:36px;height:36px;border-radius:50%;
+  background:var(--sage-light);border:1px solid var(--teal-mid);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:700;color:var(--teal-deep);
+}
+.pc-body{flex:1;min-width:0}
+.pc-title{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.pc-desc{font-size:.75rem;color:var(--muted);line-height:1.5}
+.pc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+.pc-tag{font-size:.65rem;color:var(--teal-deep);background:var(--sage-light);
+        border:1px solid var(--border2);padding:2px 7px;border-radius:8px}
+.pc-stats{flex-shrink:0;text-align:right;min-width:90px}
+.pc-stat-val{font-family:var(--serif);font-size:1.05rem;color:var(--teal-deep);font-weight:400}
+.pc-stat-lbl{font-size:.64rem;color:var(--muted2);margin-top:1px}
+.pc-arrow{
+  flex-shrink:0;font-size:1rem;color:var(--teal-deep);
+  opacity:0;transition:opacity .12s,transform .12s;
+  transform:translateX(-4px);
+}
+.pipeline-card:hover .pc-arrow{opacity:1;transform:translateX(0)}
+
+/* poster card */
+.poster-card{
+  display:flex;align-items:center;gap:16px;
+  background:var(--white);border:1px solid var(--border);
+  border-radius:8px;padding:16px 20px;cursor:pointer;
+  transition:all .14s;margin-top:6px;
+}
+.poster-card:hover{border-color:var(--teal-deep);background:var(--sage-light)}
+.poster-card-icon{
+  flex-shrink:0;width:36px;height:36px;border-radius:6px;
+  background:var(--sage-light);border:1px solid var(--teal-mid);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+}
+.poster-card-title{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.poster-card-desc{font-size:.75rem;color:var(--muted);line-height:1.5}
+.poster-arrow{margin-left:auto;font-size:.9rem;color:var(--teal-deep);opacity:0;transition:opacity .12s}
+.poster-card:hover .poster-arrow{opacity:1}
+
+/* nav teal variant for presentation */
+.nav-item.active .nav-pres-icon{background:var(--teal-deep);color:#fff;border-color:var(--teal-deep)}
+.nav-pres-icon{
+  flex-shrink:0;margin-top:1px;width:22px;height:22px;
+  border-radius:4px;background:var(--white);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:var(--muted);transition:all .12s;
+}
+
+/* ═══ MOBILE ═════════════════════════════════════════════════════════════ */
+.mobile-nav-toggle{display:none;padding:10px 16px;cursor:pointer;font-size:.8rem;color:var(--muted)}
+.sidebar-backdrop{display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.55);-webkit-tap-highlight-color:transparent}
+.sidebar-backdrop.active{display:block}
+
+@media(max-width:760px){
+  /* ── unlock touch scrolling (iOS Safari blocks it when html/body are overflow:hidden) ── */
+  html,body{height:auto;overflow:auto}
+  .layout{height:auto;min-height:100vh;overflow:visible}
+  .main{overflow:visible;height:auto}
+  .main-topbar{position:sticky;top:0;z-index:50}
+  .main-content{overflow:visible;height:auto}
+  /* switch panels with display instead of absolute-overlay so they sit in normal flow */
+  .frame-panel{position:relative;display:none;opacity:1;pointer-events:auto}
+  .frame-panel.active{display:block}
+  .frame-panel iframe{height:82vh}
+  .landing{height:auto;overflow-y:visible}
+
+  /* ── sidebar ── */
+  .sidebar{
+    position:fixed;inset:0 auto 0 0;z-index:100;
+    transform:translateX(-100%);transition:transform .2s;
+    width:min(var(--sidebar-w), 88vw);
+  }
+  .sidebar.open{transform:translateX(0)}
+  .mobile-nav-toggle{display:block;background:var(--bg-alt);border-bottom:1px solid var(--border)}
+
+  /* ── content ── */
+  .landing-hero{padding:36px 24px 32px}
+  .landing-hero h1{font-size:1.5rem}
+  .pipeline-section{padding:28px 16px}
+  .pipeline-card{flex-wrap:wrap;gap:10px;padding:14px 16px}
+  .pc-stats{min-width:auto;text-align:left;flex-basis:100%;display:flex;gap:4px;align-items:baseline}
+  .pc-stats .pc-stat-lbl{margin-top:0}
+  .pc-arrow{display:none}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .stat-box:nth-child(2n){border-right:none}
+  .stat-box:nth-child(n+3){border-top:1px solid var(--border)}
+
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ═══ SIDEBAR ═══════════════════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="sidebar-brand-top">
+      <img src="assets/citylab_logo.png" alt="CityLAB Hamilton" class="brand-logo"/>
+    </div>
+    <div class="brand-title">CityLAB Hamilton</div>
+    <div class="brand-sub">Hamilton Urban Forest · Climate Vulnerability</div>
+    <div class="brand-badge">Vibrant · Healthy · Sustainable</div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="sidebar-nav">
+
+    <div class="nav-section-label">Analysis Pipeline</div>
+
+    <div class="nav-item" id="nav-01" onclick="showPage('01')">
+      <div class="nav-step">01</div>
+      <div class="nav-text">
+        <div class="nav-title">Data Cleaning &amp; Preparation</div>
+        <div class="nav-desc">Tree inventory, climate records, species resilience &amp; road network</div>
+        <div class="nav-stat">275,156 trees · 314 species</div>
+      </div>
+    </div>
+
+    <div class="nav-item" id="nav-02" onclick="showPage('02')">
+      <div class="nav-step">02</div>
+      <div class="nav-text">
+        <div class="nav-title">GBIF Taxonomy Validation</div>
+        <div class="nav-desc">Species names validated against Global Biodiversity Information Facility</div>
+        <div class="nav-stat">98.9% valid family assigned</div>
+      </div>
+    </div>
+
+    <div class="nav-item" id="nav-03" onclick="showPage('03')">
+      <div class="nav-step">03</div>
+      <div class="nav-text">
+        <div class="nav-title">Santamour 10/20/30 Analysis</div>
+        <div class="nav-desc">Biodiversity rule assessment across 15 wards</div>
+        <div class="nav-stat">14/15 wards exceed genus cap</div>
+      </div>
+    </div>
+
+    <div class="nav-item" id="nav-04" onclick="showPage('04')">
+      <div class="nav-step">04</div>
+      <div class="nav-text">
+        <div class="nav-title">Vulnerability Score Framework</div>
+        <div class="nav-desc">IPCC AR5 equation with ISA heat index for 2030–2080</div>
+        <div class="nav-stat">Ward 3 score: 0.956 → 1.423</div>
+      </div>
+    </div>
+
+    <div class="nav-item" id="nav-05" onclick="showPage('05')">
+      <div class="nav-step">05</div>
+      <div class="nav-text">
+        <div class="nav-title">Replanting Strategy</div>
+        <div class="nav-desc">Ward-level priority rankings &amp; resilient species recommendations</div>
+        <div class="nav-stat">Ward 3 priority: 0.966</div>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Deliverable</div>
+
+    <div class="nav-item" id="nav-poster" onclick="showPage('poster')">
+      <div class="nav-poster-icon">📋</div>
+      <div class="nav-text">
+        <div class="nav-title">Competition Poster</div>
+        <div class="nav-desc">CityLAB Hamilton poster with all figures &amp; findings</div>
+      </div>
+    </div>
+
+    <div class="nav-divider"></div>
+    <div class="nav-section-label">Presentation</div>
+
+    <div class="nav-item" id="nav-presentation" onclick="showPage('presentation')">
+      <div class="nav-pres-icon">&#9654;</div>
+      <div class="nav-text">
+        <div class="nav-title">Final Presentation</div>
+        <div class="nav-desc">Team #20 — 8-act video presentation of full analysis</div>
+        <div class="nav-stat">8 video segments</div>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <p><strong>Team:</strong> Susana Carolina Romero Aparicio, Su Myat Aung, Tessy Ramirez, Yi Xin</p>
+    <p style="margin-top:4px"><strong>Institution:</strong> University of Niagara Falls Canada</p>
+  </div>
+
+</aside>
+
+<!-- ═══ MAIN ═══════════════════════════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- Mobile sidebar backdrop -->
+  <div class="sidebar-backdrop" id="sidebar-backdrop"
+       onclick="document.getElementById('sidebar').classList.remove('open');this.classList.remove('active')"></div>
+
+  <!-- Mobile toggle -->
+  <div class="mobile-nav-toggle" onclick="
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebar-backdrop').classList.toggle('active')">
+    ☰ Menu
+  </div>
+
+  <!-- Top bar -->
+  <div class="main-topbar">
+    <div class="topbar-breadcrumb" id="breadcrumb">
+      Hamilton Urban Forest Climate Vulnerability Analysis
+    </div>
+    <div class="topbar-spacer"></div>
+    <button class="topbar-home-btn" onclick="showPage('home')">← Home</button>
+  </div>
+
+  <!-- Content area -->
+  <div class="main-content">
+
+    <!-- LANDING -->
+    <div class="frame-panel active" id="panel-home">
+      <div class="landing">
+
+        <div class="landing-hero">
+          <div class="hero-eyebrow">CityLAB Hamilton · University of Niagara Falls Canada</div>
+          <h1>Climate-Driven Vulnerability Assessment of Hamilton's Urban Forest</h1>
+          <p>A ward-level resilience framework analysing 275,156 city-owned trees across 15 municipal wards, projecting vulnerability under SSP2-4.5 climate scenarios for 2030, 2050, and 2080. Built on the IPCC AR5 vulnerability equation with an ISA-proxy heat index following the Stewart &amp; Oke (2012) Local Climate Zone framework.</p>
+          <div class="hero-tags">
+            <span class="hero-tag">275,156 Trees</span>
+            <span class="hero-tag">15 Wards</span>
+            <span class="hero-tag">IPCC AR5 Framework</span>
+            <span class="hero-tag">GBIF Taxonomy</span>
+            <span class="hero-tag">Santamour 10/20/30</span>
+            <span class="hero-tag">SSP2-4.5 · 2030 · 2050 · 2080</span>
+            <span class="hero-tag">Python · Pandas · GeoPandas</span>
+          </div>
+        </div>
+
+        <!-- Key stats -->
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-val">275,156</div>
+            <div class="stat-lbl">City-owned trees</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">15</div>
+            <div class="stat-lbl">Municipal wards</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">98.9%</div>
+            <div class="stat-lbl">Valid family assigned</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">+4.47°C</div>
+            <div class="stat-lbl">Projected ΔT by 2080</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">11.9%</div>
+            <div class="stat-lbl">Norway Maple share</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">Ward 3</div>
+            <div class="stat-lbl">Highest vulnerability</div>
+          </div>
+        </div>
+
+        <!-- Pipeline cards -->
+        <div class="pipeline-section">
+          <div class="section-label">Analysis Pipeline — select a step to explore</div>
+          <div class="pipeline">
+
+            <div class="pipeline-card" onclick="showPage('01')">
+              <div class="pc-num">01</div>
+              <div class="pc-body">
+                <div class="pc-title">Data Cleaning &amp; Preparation</div>
+                <div class="pc-desc">Preprocessing of Hamilton's tree inventory, climate records (1866–2026), species resilience database, land use classification, and road network data for 15 wards.</div>
+                <div class="pc-tags">
+                  <span class="pc-tag">Tree Inventory</span>
+                  <span class="pc-tag">Climate Records</span>
+                  <span class="pc-tag">Species Resilience</span>
+                  <span class="pc-tag">Road Network</span>
+                  <span class="pc-tag">Pandas · GeoPandas</span>
+                </div>
+              </div>
+              <div class="pc-stats">
+                <div class="pc-stat-val">275,156</div>
+                <div class="pc-stat-lbl">trees after cleaning</div>
+              </div>
+              <div class="pc-arrow">→</div>
+            </div>
+
+            <div class="pipeline-card" onclick="showPage('02')">
+              <div class="pc-num">02</div>
+              <div class="pc-body">
+                <div class="pc-title">Species &amp; Family Taxonomy Validation (GBIF)</div>
+                <div class="pc-desc">All 299 unique species queried against the GBIF Backbone Taxonomy via API. Exact and genus-level fallback matching resolves family classification for every tree record.</div>
+                <div class="pc-tags">
+                  <span class="pc-tag">GBIF API</span>
+                  <span class="pc-tag">Taxonomy Validation</span>
+                  <span class="pc-tag">Family Assignment</span>
+                  <span class="pc-tag">Python · Requests</span>
+                </div>
+              </div>
+              <div class="pc-stats">
+                <div class="pc-stat-val">98.9%</div>
+                <div class="pc-stat-lbl">valid family assigned</div>
+              </div>
+              <div class="pc-arrow">→</div>
+            </div>
+
+            <div class="pipeline-card" onclick="showPage('03')">
+              <div class="pc-num">03</div>
+              <div class="pc-body">
+                <div class="pc-title">Santamour 10/20/30 Biodiversity Assessment</div>
+                <div class="pc-desc">City-wide and ward-level assessment against the recommended urban forestry diversity thresholds. Norway Maple exceeds the 10% species cap; Acer genus violates the 20% genus rule in 14 of 15 wards.</div>
+                <div class="pc-tags">
+                  <span class="pc-tag">Santamour Rule</span>
+                  <span class="pc-tag">Species Diversity</span>
+                  <span class="pc-tag">Monoculture Risk</span>
+                  <span class="pc-tag">15 Wards</span>
+                </div>
+              </div>
+              <div class="pc-stats">
+                <div class="pc-stat-val">14/15</div>
+                <div class="pc-stat-lbl">wards exceed genus cap</div>
+              </div>
+              <div class="pc-arrow">→</div>
+            </div>
+
+            <div class="pipeline-card" onclick="showPage('04')">
+              <div class="pc-num">04</div>
+              <div class="pc-body">
+                <div class="pc-title">Climate Vulnerability Score Framework</div>
+                <div class="pc-desc">Ward-level vulnerability scores applying the IPCC AR5 equation (Exposure + Sensitivity − Adaptive Capacity) with an ISA-proxy land-use heat index amplifier, calibrated for 2030, 2050, and 2080 under SSP2-4.5.</div>
+                <div class="pc-tags">
+                  <span class="pc-tag">IPCC AR5</span>
+                  <span class="pc-tag">ISA Heat Index</span>
+                  <span class="pc-tag">SSP2-4.5</span>
+                  <span class="pc-tag">LCZ Framework</span>
+                  <span class="pc-tag">CanDCS-M6</span>
+                </div>
+              </div>
+              <div class="pc-stats">
+                <div class="pc-stat-val">1.423</div>
+                <div class="pc-stat-lbl">Ward 3 score, 2080</div>
+              </div>
+              <div class="pc-arrow">→</div>
+            </div>
+
+            <div class="pipeline-card" onclick="showPage('05')">
+              <div class="pc-num">05</div>
+              <div class="pc-body">
+                <div class="pc-title">Urban Forest Replanting Strategy</div>
+                <div class="pc-desc">Integrated replanting priority model combining built environment stress, climate vulnerability, biodiversity pressure, and ash-borer risk into a ward-level action plan. Identifies top resilient replacement species for each ward through 2080.</div>
+                <div class="pc-tags">
+                  <span class="pc-tag">Replanting Priority</span>
+                  <span class="pc-tag">Built Stress</span>
+                  <span class="pc-tag">Species Resilience</span>
+                  <span class="pc-tag">Fraxinus EAB Risk</span>
+                </div>
+              </div>
+              <div class="pc-stats">
+                <div class="pc-stat-val">0.966</div>
+                <div class="pc-stat-lbl">Ward 3 priority score</div>
+              </div>
+              <div class="pc-arrow">→</div>
+            </div>
+
+          </div>
+
+          <!-- Poster card -->
+          <div class="poster-card" onclick="showPage('poster')">
+            <div class="poster-card-icon">📋</div>
+            <div>
+              <div class="poster-card-title">CityLAB Hamilton — Competition Poster</div>
+              <div class="poster-card-desc">Final deliverable poster — vulnerability framework, ward trajectories, Santamour analysis, replanting priorities, recommended resilient species, and key findings.</div>
+            </div>
+            <div class="poster-arrow">→</div>
+          </div>
+
+          <!-- Presentation card -->
+          <div class="poster-card" onclick="showPage('presentation')" style="border-color:var(--border)">
+            <div class="poster-card-icon" style="font-size:1.1rem">&#9654;</div>
+            <div>
+              <div class="poster-card-title">Team #20 Final Presentation</div>
+              <div class="poster-card-desc">8-act video presentation — climate context, biodiversity assessment, vulnerability scores, city comparisons, and implementation framework.</div>
+            </div>
+            <div class="poster-arrow">→</div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /landing -->
+
+    <!-- NOTEBOOK PAGES (lazy-loaded) -->
+    <div class="frame-panel" id="panel-01">
+      <iframe id="frame-01" title="Data Cleaning & Preparation"></iframe>
+    </div>
+    <div class="frame-panel" id="panel-02">
+      <iframe id="frame-02" title="GBIF Taxonomy Validation"></iframe>
+    </div>
+    <div class="frame-panel" id="panel-03">
+      <iframe id="frame-03" title="Santamour Analysis"></iframe>
+    </div>
+    <div class="frame-panel" id="panel-04">
+      <iframe id="frame-04" title="Vulnerability Score Framework"></iframe>
+    </div>
+    <div class="frame-panel" id="panel-05">
+      <iframe id="frame-05" title="Replanting Strategy"></iframe>
+    </div>
+    <div class="frame-panel" id="panel-poster">
+      <iframe id="frame-poster" title="Competition Poster"></iframe>
+    </div>
+
+    <!-- PRESENTATION PANEL -->
+    <div class="frame-panel" id="panel-presentation">
+      <iframe id="frame-presentation" title="Final Presentation"></iframe>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<script>
+const PAGES = {
+  '01':     'HTML/01_data_cleaning.html',
+  '02':     'HTML/02_gbif_validation.html',
+  '03':     'HTML/03_santamour_analysis.html',
+  '04':     'HTML/04_vulnerability_score.html',
+  '05':     'HTML/05_replanting_strategy.html',
+  'poster': 'poster.html',
+  'presentation': 'presantation/presentation.html',
+};
+
+const BREADCRUMBS = {
+  'home':         'Hamilton Urban Forest Climate Vulnerability Analysis',
+  '01':           'Step 1 of 5 — Data Cleaning & Preparation',
+  '02':           'Step 2 of 5 — GBIF Taxonomy Validation',
+  '03':           'Step 3 of 5 — Santamour 10/20/30 Biodiversity Assessment',
+  '04':           'Step 4 of 5 — Climate Vulnerability Score Framework',
+  '05':           'Step 5 of 5 — Urban Forest Replanting Strategy',
+  'poster':       'Deliverable — CityLAB Hamilton Competition Poster',
+  'presentation': 'Presentation — Team #20 Final Presentation',
+};
+
+let current = 'home';
+
+function showPage(id) {
+  // Deactivate old
+  document.getElementById('panel-' + current).classList.remove('active');
+  const oldNav = document.getElementById('nav-' + current);
+  if (oldNav) oldNav.classList.remove('active');
+
+  // Activate new
+  current = id;
+  document.getElementById('panel-' + id).classList.add('active');
+  const newNav = document.getElementById('nav-' + id);
+  if (newNav) newNav.classList.add('active');
+
+  // Update breadcrumb
+  const bc = document.getElementById('breadcrumb');
+  bc.textContent = BREADCRUMBS[id] || '';
+
+  // Lazy-load iframe
+  if (id !== 'home') {
+    const iframe = document.getElementById('frame-' + id);
+    if (!iframe.getAttribute('src')) {
+      iframe.src = PAGES[id];
+    }
+  }
+
+  // Close mobile sidebar + backdrop
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-backdrop').classList.remove('active');
+
+  // Scroll to top on mobile so iframe is immediately visible
+  if (window.innerWidth <= 760) window.scrollTo({top: 0, behavior: 'instant'});
+
+  // Scroll active nav item into view
+  const navEl = document.getElementById('nav-' + id);
+  if (navEl) navEl.scrollIntoView({block:'nearest', behavior:'smooth'});
+}
+
+</script>
+</body>
+</html>
