@@ -3,18 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Team #20 Final Presentation — H.E.A.D 2026</title>
+<title>CityLAB Hamilton — Team #20 Final Presentation</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&family=Source+Code+Pro:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0b1f30;--teal:#1a7a7a;--teal-light:#5ecfcf;
-  --gold:#c98a1a;--gold-light:#f0c96a;
-  --bg:#0e1117;--panel:#0f1923;--panel2:#152232;
-  --border:#1e3346;--border2:#26445c;
-  --text:#d8e8f0;--muted:#7a9ab0;--muted2:#4e6e84;
-  --serif:'Playfair Display',Georgia,serif;
-  --sans:'Lato',Helvetica,sans-serif;
+  --navy:#134744;--teal:#1f6b68;--teal-light:#7abc9d;
+  --gold:#d77a2b;--gold-light:#e8a05c;
+  --bg:#ffffff;--panel:#f7faf8;--panel2:#eef5f0;
+  --border:#d4e0da;--border2:#b8cec1;
+  --text:#1f2e2b;--muted:#5a6b68;--muted2:#8ba094;
+  --maroon:#7d1e3a;--alert:#9a2020;
+  --serif:'DM Serif Display',Georgia,serif;
+  --sans:'DM Sans',Helvetica,sans-serif;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7}
@@ -24,16 +25,16 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 .slide{background:var(--panel);border:1px solid var(--border);border-radius:12px;margin-bottom:32px;overflow:hidden}
 .slide-header{padding:20px 28px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
 .slide-num{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--panel2);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--muted)}
-.slide-num.accent{background:var(--teal-light);color:#0b1f30;border-color:var(--teal-light)}
+.slide-num.accent{background:var(--teal);color:#fff;border-color:var(--teal)}
 .slide-label{font-size:.88rem;font-weight:700;color:var(--text)}
 .slide-body{padding:28px}
 
 /* title slide */
-.title-slide .slide-body{text-align:center;padding:56px 32px;background:linear-gradient(160deg,var(--navy) 0%,#0f4040 60%,#1a6060 100%)}
-.title-slide h1{font-family:var(--serif);font-size:2rem;color:#fff;margin-bottom:12px;line-height:1.25}
-.title-slide .subtitle{font-size:1.05rem;color:rgba(255,255,255,.6);margin-bottom:28px}
-.title-slide .team{font-size:.82rem;color:rgba(255,255,255,.45)}
-.title-slide .badge{display:inline-block;margin-top:16px;background:rgba(201,138,26,.15);border:1px solid rgba(201,138,26,.35);color:var(--gold-light);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:14px}
+.title-slide .slide-body{text-align:center;padding:56px 32px;background:var(--bg);border-bottom:2px solid var(--teal)}
+.title-slide h1{font-family:var(--serif);font-size:2rem;color:var(--teal-light);margin-bottom:12px;line-height:1.25;font-weight:400}
+.title-slide .subtitle{font-size:1.05rem;color:var(--maroon);margin-bottom:28px}
+.title-slide .team{font-size:.82rem;color:var(--muted)}
+.title-slide .badge{display:inline-block;margin-top:16px;background:var(--panel2);border:1px solid var(--border2);color:var(--teal);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:14px}
 
 /* stats grid */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border-radius:8px;overflow:hidden;margin:20px 0}
@@ -42,8 +43,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15
 .stat-lbl{font-size:.7rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
 
 /* text */
-h2{font-family:var(--serif);font-size:1.35rem;color:#fff;margin-bottom:16px}
-h3{font-family:var(--serif);font-size:1.05rem;color:var(--teal-light);margin-bottom:8px}
+h2{font-family:var(--serif);font-size:1.35rem;color:var(--teal);margin-bottom:16px;font-weight:400}
+h3{font-family:var(--serif);font-size:1.05rem;color:var(--teal);margin-bottom:8px;font-weight:400}
 p{margin-bottom:12px;color:var(--text)}
 .muted{color:var(--muted);font-size:.82rem}
 
@@ -70,15 +71,15 @@ p{margin-bottom:12px;color:var(--text)}
 .vuln-card h4{font-size:.92rem;color:var(--text);margin-bottom:6px}
 .vuln-card p{font-size:.8rem;color:var(--muted);margin:0 0 4px}
 .vuln-tag{display:inline-block;font-size:.68rem;padding:2px 8px;border-radius:8px;margin:2px 2px 0 0;font-weight:600}
-.vuln-tag.warn{background:rgba(201,138,26,.15);color:var(--gold-light);border:1px solid rgba(201,138,26,.3)}
-.vuln-tag.danger{background:rgba(220,80,60,.15);color:#f08070;border:1px solid rgba(220,80,60,.3)}
+.vuln-tag.warn{background:#fbeed6;color:var(--gold);border:1px solid #e8c490}
+.vuln-tag.danger{background:#fbe4e4;color:var(--alert);border:1px solid #e8b0b0}
 
 /* santamour rule box */
 .rule-box{background:var(--panel2);border:1px solid var(--border2);border-radius:8px;padding:20px 24px;margin:16px 0;border-left:4px solid var(--teal)}
 .rule-box .rule{font-size:1rem;color:var(--teal-light);font-weight:700;margin-bottom:8px}
 .rule-box ul{list-style:none;padding:0}
 .rule-box li{font-size:.85rem;color:var(--muted);padding:3px 0;padding-left:16px;position:relative}
-.rule-box li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.rule-box li::before{content:'';position:absolute;left:0;top:11px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
 
 /* species cards */
 .species-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
@@ -92,9 +93,9 @@ p{margin-bottom:12px;color:var(--text)}
 .priority-table th{background:var(--panel2);color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
 .priority-table td{padding:10px 14px;font-size:.84rem;border-bottom:1px solid var(--border);vertical-align:top}
 .priority-table tr:last-child td{border-bottom:none}
-.tag-critical{color:#f08070;font-weight:700}
-.tag-watch{color:var(--gold-light);font-weight:700}
-.tag-stable{color:var(--teal-light);font-weight:700}
+.tag-critical{color:var(--alert);font-weight:700}
+.tag-watch{color:var(--gold);font-weight:700}
+.tag-stable{color:var(--teal);font-weight:700}
 
 /* conclusion cards */
 .conc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0}
@@ -104,14 +105,14 @@ p{margin-bottom:12px;color:var(--text)}
 .conc-card p{font-size:.82rem;color:var(--muted);margin:0}
 
 /* callout */
-.callout{background:linear-gradient(135deg,rgba(201,138,26,.1),rgba(220,80,60,.08));border:1px solid rgba(201,138,26,.3);border-radius:8px;padding:20px 24px;margin:20px 0;text-align:center}
-.callout p{font-size:.95rem;color:var(--gold-light);font-weight:700;margin:0;line-height:1.6}
+.callout{background:linear-gradient(135deg,rgba(122,188,157,.12),rgba(44,126,122,.08));border:1px solid var(--border2);border-radius:8px;padding:20px 24px;margin:20px 0;text-align:center}
+.callout p{font-size:.95rem;color:var(--teal);font-weight:700;margin:0;line-height:1.6}
 
 /* sources */
 .sources{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:16px 0}
 .sources ul{list-style:none;padding:0}
 .sources li{font-size:.82rem;color:var(--muted);padding:4px 0;padding-left:14px;position:relative}
-.sources li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--teal)}
+.sources li::before{content:'';position:absolute;left:0;top:11px;width:5px;height:5px;border-radius:50%;background:var(--teal-light)}
 
 /* qr */
 .qr-center{text-align:center;padding:40px 20px}
@@ -139,11 +140,12 @@ p{margin-bottom:12px;color:var(--text)}
      ════════════════════════════════════════════════════════════════════════ -->
 <div class="slide title-slide">
   <div class="slide-body">
-    <div class="badge">H.E.A.D Competition 2026</div>
+    <img src="../assets/citylab_logo.png" alt="CityLAB Hamilton" style="height:56px;margin-bottom:20px;display:inline-block"/>
     <h1>Climate-Driven Vulnerability Assessment<br>of Hamilton's Urban Forest</h1>
     <div class="subtitle">A Ward-Level Resilience Framework<br>for 2030, 2050, and 2080</div>
     <div class="team">Susana Carolina Romero Aparicio, Su Myat Aung, Tessy Ramirez, Yi Xin</div>
-    <div class="team" style="margin-top:4px;opacity:.7">University of Niagara Falls Canada &mdash; Team #20</div>
+    <div class="team" style="margin-top:4px">University of Niagara Falls Canada &mdash; Team #20</div>
+    <div class="badge">CityLAB Hamilton · Vibrant · Healthy · Sustainable</div>
   </div>
 </div>
 

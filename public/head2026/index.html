@@ -3,37 +3,37 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<base href="/head2026/"/>
-<title>Hamilton Urban Forest — Climate Vulnerability Analysis · H.E.A.D 2026</title>
+<base href="/citylib2026/"/>
+<title>CityLAB Hamilton — Hamilton Urban Forest Climate Vulnerability Analysis</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&family=Source+Code+Pro:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:       #0b1f30;
-  --navy-mid:   #122840;
-  --navy-light: #1a3a52;
-  --teal:       #1a7a7a;
-  --teal-mid:   #0f9090;
-  --teal-light: #5ecfcf;
-  --gold:       #c98a1a;
-  --gold-light: #f0c96a;
-  --bg:         #0e1117;
-  --panel:      #0f1923;
-  --panel2:     #152232;
-  --border:     #1e3346;
-  --border2:    #26445c;
-  --text:       #d8e8f0;
-  --muted:      #7a9ab0;
-  --muted2:     #4e6e84;
-  --sidebar-w:  268px;
-  --serif:      'Playfair Display', Georgia, serif;
-  --sans:       'Lato', Helvetica, sans-serif;
-  --mono:       'Source Code Pro', monospace;
+  --white:       #ffffff;
+  --bg-alt:      #f7faf8;
+  --teal-darker: #134744;
+  --teal-deep:   #1f6b68;
+  --teal:        #2c7e7a;
+  --teal-mid:    #4a8d82;
+  --sage:        #7abc9d;
+  --sage-light:  #e8f2ed;
+  --alert:       #9a2020;
+  --amber:       #d77a2b;
+  --maroon:      #7d1e3a;
+  --navy:        #1b3a5f;
+  --text:        #1f2e2b;
+  --muted:       #5a6b68;
+  --muted2:      #8ba094;
+  --border:      #d4e0da;
+  --border2:     #b8cec1;
+  --sidebar-w:   268px;
+  --serif:       'DM Serif Display', Georgia, serif;
+  --sans:        'DM Sans', Helvetica, sans-serif;
 }
 
 html,body{height:100%;overflow:hidden;font-family:var(--sans)}
-body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+body{background:var(--white);color:var(--text);font-size:14px;line-height:1.6}
 
 /* ═══ LAYOUT ════════════════════════════════════════════════════════════ */
 .layout{display:flex;height:100vh;overflow:hidden}
@@ -41,7 +41,7 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 /* ═══ SIDEBAR ═══════════════════════════════════════════════════════════ */
 .sidebar{
   width:var(--sidebar-w);flex-shrink:0;
-  background:var(--panel);
+  background:var(--bg-alt);
   border-right:1px solid var(--border);
   display:flex;flex-direction:column;
   overflow:hidden;
@@ -54,23 +54,17 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
   flex-shrink:0;
 }
 .sidebar-brand-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.brand-dot{
-  width:32px;height:32px;border-radius:8px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--teal),#0d5050);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.65rem;font-weight:700;color:var(--teal-light);
-  letter-spacing:.06em;
-}
-.brand-title{font-family:var(--serif);font-size:.88rem;font-weight:700;color:var(--text);line-height:1.25}
+.brand-logo{height:40px;width:auto;display:block}
+.brand-title{font-family:var(--serif);font-size:.88rem;font-weight:700;color:var(--teal-deep);line-height:1.25}
 .brand-sub{font-size:.68rem;color:var(--muted);line-height:1.4}
 .brand-badge{
   display:inline-flex;align-items:center;gap:5px;margin-top:4px;
-  background:rgba(201,138,26,.12);border:1px solid rgba(201,138,26,.3);
-  color:var(--gold-light);font-size:.65rem;font-weight:700;
+  background:var(--sage-light);border:1px solid var(--teal-mid);
+  color:var(--teal-deep);font-size:.65rem;font-weight:700;
   letter-spacing:.08em;text-transform:uppercase;
   padding:3px 9px;border-radius:12px;
 }
-.brand-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.brand-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--teal-deep)}
 
 /* nav */
 .sidebar-nav{flex:1;overflow-y:auto;padding:12px 0;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
@@ -85,37 +79,37 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
   transition:background .12s,border-color .12s;
   position:relative;
 }
-.nav-item:hover{background:rgba(255,255,255,.04)}
+.nav-item:hover{background:var(--sage-light)}
 .nav-item.active{
-  background:rgba(26,122,122,.1);
-  border-left-color:var(--teal-light);
+  background:var(--sage-light);
+  border-left-color:var(--teal-deep);
 }
-.nav-item.active .nav-step{background:var(--teal-light);color:#0b1f30}
-.nav-item.active .nav-title{color:var(--teal-light)}
+.nav-item.active .nav-step{background:var(--teal-deep);color:#fff}
+.nav-item.active .nav-title{color:var(--teal-deep)}
 
 .nav-step{
   flex-shrink:0;margin-top:1px;
   width:22px;height:22px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   font-size:.6rem;font-weight:700;letter-spacing:.04em;
-  background:var(--panel2);border:1px solid var(--border2);
+  background:var(--white);border:1px solid var(--border2);
   color:var(--muted);transition:all .12s;
 }
 .nav-poster-icon{
   flex-shrink:0;margin-top:1px;width:22px;height:22px;
-  border-radius:4px;background:var(--panel2);border:1px solid var(--border2);
+  border-radius:4px;background:var(--white);border:1px solid var(--border2);
   display:flex;align-items:center;justify-content:center;
   font-size:.7rem;color:var(--muted);transition:all .12s;
 }
-.nav-item.active .nav-poster-icon{background:var(--teal-light);color:#0b1f30;border-color:var(--teal-light)}
+.nav-item.active .nav-poster-icon{background:var(--teal-deep);color:#fff;border-color:var(--teal-deep)}
 .nav-text{flex:1;min-width:0}
 .nav-title{font-size:.8rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px}
 .nav-desc{font-size:.68rem;color:var(--muted);line-height:1.4}
 .nav-stat{
   margin-top:5px;display:inline-block;
   font-size:.65rem;font-weight:700;
-  color:var(--teal-light);background:rgba(94,207,207,.1);
-  border:1px solid rgba(94,207,207,.2);
+  color:var(--teal-deep);background:var(--sage-light);
+  border:1px solid var(--border2);
   padding:2px 7px;border-radius:8px;
 }
 
@@ -134,7 +128,7 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 /* topbar */
 .main-topbar{
   height:44px;flex-shrink:0;
-  background:var(--panel);border-bottom:1px solid var(--border);
+  background:var(--white);border-bottom:1px solid var(--border);
   display:flex;align-items:center;padding:0 24px;gap:12px;
 }
 .topbar-breadcrumb{font-size:.75rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -146,7 +140,7 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
   transition:all .12s;
   background:none;
 }
-.topbar-home-btn:hover{color:var(--text);border-color:var(--teal);background:rgba(26,122,122,.1)}
+.topbar-home-btn:hover{color:var(--teal-deep);border-color:var(--teal-deep);background:var(--sage-light)}
 
 /* frame wrapper */
 .main-content{flex:1;position:relative;overflow:hidden}
@@ -155,59 +149,47 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 .frame-panel iframe{width:100%;height:100%;border:none;display:block}
 
 /* ═══ LANDING ════════════════════════════════════════════════════════════ */
-.landing{width:100%;height:100%;overflow-y:auto;background:var(--bg)}
+.landing{width:100%;height:100%;overflow-y:auto;background:var(--white)}
 
 .landing-hero{
-  background:linear-gradient(160deg,var(--navy) 0%,#0f4040 60%,#1a6060 100%);
-  padding:56px 56px 48px;
-  border-bottom:3px solid var(--gold);
+  background:var(--white);
+  padding:56px 56px 40px;
+  border-bottom:2px solid var(--teal-deep);
   position:relative;overflow:hidden;
-}
-.landing-hero::before{
-  content:'';position:absolute;top:-100px;right:-60px;
-  width:420px;height:420px;border-radius:50%;
-  background:radial-gradient(circle,rgba(94,207,207,.06) 0%,transparent 70%);
-  pointer-events:none;
-}
-.landing-hero::after{
-  content:'';position:absolute;bottom:-60px;left:20%;
-  width:240px;height:240px;border-radius:50%;
-  background:rgba(201,138,26,.04);
-  pointer-events:none;
 }
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:6px;
-  background:rgba(201,138,26,.15);border:1px solid rgba(201,138,26,.35);
-  color:var(--gold-light);font-size:.68rem;font-weight:700;
+  background:var(--sage-light);border:1px solid var(--teal-mid);
+  color:var(--teal-deep);font-size:.68rem;font-weight:700;
   letter-spacing:.12em;text-transform:uppercase;
   padding:4px 12px;border-radius:12px;margin-bottom:20px;
 }
-.hero-eyebrow::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.hero-eyebrow::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--teal-deep)}
 .landing-hero h1{
-  font-family:var(--serif);font-size:2.1rem;font-weight:700;
-  color:#fff;max-width:700px;line-height:1.2;margin-bottom:14px;
+  font-family:var(--serif);font-size:2.1rem;font-weight:400;
+  color:var(--sage);max-width:700px;line-height:1.2;margin-bottom:14px;
 }
 .landing-hero p{
-  font-size:.9rem;color:rgba(255,255,255,.65);max-width:620px;
+  font-size:.9rem;color:var(--muted);max-width:620px;
   line-height:1.8;margin-bottom:28px;
 }
 .hero-tags{display:flex;gap:8px;flex-wrap:wrap}
 .hero-tag{
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
-  color:rgba(255,255,255,.78);font-size:.72rem;padding:4px 13px;border-radius:20px;
+  background:var(--bg-alt);border:1px solid var(--border);
+  color:var(--teal-deep);font-size:.72rem;padding:4px 13px;border-radius:20px;
 }
 
 /* stats row */
 .stats-row{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
   border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  background:var(--panel);
+  background:var(--white);
 }
 .stat-box{
   padding:18px 20px;border-right:1px solid var(--border);text-align:center;
 }
 .stat-box:last-child{border-right:none}
-.stat-val{font-family:var(--serif);font-size:1.6rem;color:var(--teal-light);font-weight:700;line-height:1}
+.stat-val{font-family:var(--serif);font-size:1.6rem;color:var(--teal-deep);font-weight:400;line-height:1}
 .stat-lbl{font-size:.68rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.05em}
 
 /* pipeline section */
@@ -220,38 +202,38 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 .pipeline{display:flex;flex-direction:column;gap:10px}
 .pipeline-card{
   display:flex;align-items:center;gap:16px;
-  background:var(--panel);border:1px solid var(--border);
+  background:var(--white);border:1px solid var(--border);
   border-radius:8px;padding:16px 20px;cursor:pointer;
   transition:border-color .14s,background .14s,transform .12s;
   text-decoration:none;color:inherit;
   position:relative;
 }
 .pipeline-card:hover{
-  border-color:var(--teal);background:var(--panel2);transform:translateX(4px);
+  border-color:var(--teal-deep);background:var(--sage-light);transform:translateX(4px);
 }
 .pipeline-card::before{
   content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
   background:var(--border2);border-radius:8px 0 0 8px;
   transition:background .14s;
 }
-.pipeline-card:hover::before,.pipeline-card.highlight::before{background:var(--teal)}
+.pipeline-card:hover::before,.pipeline-card.highlight::before{background:var(--teal-deep)}
 .pc-num{
   flex-shrink:0;width:36px;height:36px;border-radius:50%;
-  background:var(--panel2);border:1px solid var(--border2);
+  background:var(--sage-light);border:1px solid var(--teal-mid);
   display:flex;align-items:center;justify-content:center;
-  font-size:.7rem;font-weight:700;color:var(--muted);
+  font-size:.7rem;font-weight:700;color:var(--teal-deep);
 }
 .pc-body{flex:1;min-width:0}
 .pc-title{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px}
 .pc-desc{font-size:.75rem;color:var(--muted);line-height:1.5}
 .pc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
-.pc-tag{font-size:.65rem;color:var(--teal-light);background:rgba(94,207,207,.08);
-        border:1px solid rgba(94,207,207,.18);padding:2px 7px;border-radius:8px}
+.pc-tag{font-size:.65rem;color:var(--teal-deep);background:var(--sage-light);
+        border:1px solid var(--border2);padding:2px 7px;border-radius:8px}
 .pc-stats{flex-shrink:0;text-align:right;min-width:90px}
-.pc-stat-val{font-family:var(--serif);font-size:1.05rem;color:var(--teal-light);font-weight:700}
+.pc-stat-val{font-family:var(--serif);font-size:1.05rem;color:var(--teal-deep);font-weight:400}
 .pc-stat-lbl{font-size:.64rem;color:var(--muted2);margin-top:1px}
 .pc-arrow{
-  flex-shrink:0;font-size:1rem;color:var(--teal);
+  flex-shrink:0;font-size:1rem;color:var(--teal-deep);
   opacity:0;transition:opacity .12s,transform .12s;
   transform:translateX(-4px);
 }
@@ -260,27 +242,27 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 /* poster card */
 .poster-card{
   display:flex;align-items:center;gap:16px;
-  background:var(--panel);border:1px solid var(--border2);
+  background:var(--white);border:1px solid var(--border);
   border-radius:8px;padding:16px 20px;cursor:pointer;
   transition:all .14s;margin-top:6px;
 }
-.poster-card:hover{border-color:var(--gold);background:var(--panel2)}
+.poster-card:hover{border-color:var(--teal-deep);background:var(--sage-light)}
 .poster-card-icon{
   flex-shrink:0;width:36px;height:36px;border-radius:6px;
-  background:rgba(201,138,26,.15);border:1px solid rgba(201,138,26,.3);
+  background:var(--sage-light);border:1px solid var(--teal-mid);
   display:flex;align-items:center;justify-content:center;
   font-size:1rem;
 }
 .poster-card-title{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px}
 .poster-card-desc{font-size:.75rem;color:var(--muted);line-height:1.5}
-.poster-arrow{margin-left:auto;font-size:.9rem;color:var(--gold);opacity:0;transition:opacity .12s}
+.poster-arrow{margin-left:auto;font-size:.9rem;color:var(--teal-deep);opacity:0;transition:opacity .12s}
 .poster-card:hover .poster-arrow{opacity:1}
 
 /* nav teal variant for presentation */
-.nav-item.active .nav-pres-icon{background:var(--teal-light);color:#0b1f30;border-color:var(--teal-light)}
+.nav-item.active .nav-pres-icon{background:var(--teal-deep);color:#fff;border-color:var(--teal-deep)}
 .nav-pres-icon{
   flex-shrink:0;margin-top:1px;width:22px;height:22px;
-  border-radius:4px;background:var(--panel2);border:1px solid var(--border2);
+  border-radius:4px;background:var(--white);border:1px solid var(--border2);
   display:flex;align-items:center;justify-content:center;
   font-size:.7rem;color:var(--muted);transition:all .12s;
 }
@@ -310,7 +292,7 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
     width:min(var(--sidebar-w), 88vw);
   }
   .sidebar.open{transform:translateX(0)}
-  .mobile-nav-toggle{display:block;background:var(--panel);border-bottom:1px solid var(--border)}
+  .mobile-nav-toggle{display:block;background:var(--bg-alt);border-bottom:1px solid var(--border)}
 
   /* ── content ── */
   .landing-hero{padding:36px 24px 32px}
@@ -336,13 +318,11 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
   <!-- Brand -->
   <div class="sidebar-brand">
     <div class="sidebar-brand-top">
-      <div class="brand-dot">HUF</div>
-      <div>
-        <div class="brand-title">Hamilton Urban Forest</div>
-        <div class="brand-sub">Climate Vulnerability Analysis</div>
-      </div>
+      <img src="assets/citylab_logo.png" alt="CityLAB Hamilton" class="brand-logo"/>
     </div>
-    <div class="brand-badge">H.E.A.D Competition 2026</div>
+    <div class="brand-title">CityLAB Hamilton</div>
+    <div class="brand-sub">Hamilton Urban Forest · Climate Vulnerability</div>
+    <div class="brand-badge">Vibrant · Healthy · Sustainable</div>
   </div>
 
   <!-- Nav -->
@@ -402,7 +382,7 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
       <div class="nav-poster-icon">📋</div>
       <div class="nav-text">
         <div class="nav-title">Competition Poster</div>
-        <div class="nav-desc">Final H.E.A.D 2026 poster with all figures &amp; findings</div>
+        <div class="nav-desc">CityLAB Hamilton poster with all figures &amp; findings</div>
       </div>
     </div>
 
@@ -459,7 +439,7 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
       <div class="landing">
 
         <div class="landing-hero">
-          <div class="hero-eyebrow">H.E.A.D Competition 2026 · University of Niagara Falls Canada</div>
+          <div class="hero-eyebrow">CityLAB Hamilton · University of Niagara Falls Canada</div>
           <h1>Climate-Driven Vulnerability Assessment of Hamilton's Urban Forest</h1>
           <p>A ward-level resilience framework analysing 275,156 city-owned trees across 15 municipal wards, projecting vulnerability under SSP2-4.5 climate scenarios for 2030, 2050, and 2080. Built on the IPCC AR5 vulnerability equation with an ISA-proxy heat index following the Stewart &amp; Oke (2012) Local Climate Zone framework.</p>
           <div class="hero-tags">
@@ -609,7 +589,7 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
           <div class="poster-card" onclick="showPage('poster')">
             <div class="poster-card-icon">📋</div>
             <div>
-              <div class="poster-card-title">H.E.A.D 2026 Competition Poster</div>
+              <div class="poster-card-title">CityLAB Hamilton — Competition Poster</div>
               <div class="poster-card-desc">Final deliverable poster — vulnerability framework, ward trajectories, Santamour analysis, replanting priorities, recommended resilient species, and key findings.</div>
             </div>
             <div class="poster-arrow">→</div>
@@ -617,12 +597,12 @@ body{background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
 
           <!-- Presentation card -->
           <div class="poster-card" onclick="showPage('presentation')" style="border-color:var(--border)">
-            <div class="poster-card-icon" style="background:rgba(94,207,207,.12);border-color:rgba(94,207,207,.3);font-size:1.1rem">&#9654;</div>
+            <div class="poster-card-icon" style="font-size:1.1rem">&#9654;</div>
             <div>
               <div class="poster-card-title">Team #20 Final Presentation</div>
               <div class="poster-card-desc">8-act video presentation — climate context, biodiversity assessment, vulnerability scores, city comparisons, and implementation framework.</div>
             </div>
-            <div class="poster-arrow" style="color:var(--teal-light)">→</div>
+            <div class="poster-arrow">→</div>
           </div>
 
         </div>
@@ -676,7 +656,7 @@ const BREADCRUMBS = {
   '03':           'Step 3 of 5 — Santamour 10/20/30 Biodiversity Assessment',
   '04':           'Step 4 of 5 — Climate Vulnerability Score Framework',
   '05':           'Step 5 of 5 — Urban Forest Replanting Strategy',
-  'poster':       'Deliverable — H.E.A.D 2026 Competition Poster',
+  'poster':       'Deliverable — CityLAB Hamilton Competition Poster',
   'presentation': 'Presentation — Team #20 Final Presentation',
 };
 

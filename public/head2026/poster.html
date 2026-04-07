@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <base href="/head2026/">
-  <title>Climate-Driven Vulnerability Assessment of Hamilton's Urban Forest</title>
+  <base href="/citylib2026/">
+  <title>CityLAB Hamilton — Climate-Driven Vulnerability Assessment of Hamilton's Urban Forest</title>
   <style>
     *,
     *::before,
@@ -16,13 +16,19 @@
     }
 
     :root {
-      --teal: #02A3A6;
-      --dark: #1a1a2e;
-      --red: #C00000;
-      --bg: #ffffff;
-      --text: #222;
-      --muted: #555;
-      --border: #ddd
+      --teal-darker: #134744;
+      --teal-deep:   #1f6b68;
+      --teal:        #2c7e7a;
+      --teal-mid:    #4a8d82;
+      --sage:        #7abc9d;
+      --sage-light:  #e8f2ed;
+      --alert:       #9a2020;
+      --amber:       #d77a2b;
+      --maroon:      #7d1e3a;
+      --bg:          #ffffff;
+      --text:        #1f2e2b;
+      --muted:       #5a6b68;
+      --border:      #d4e0da
     }
 
     body {
@@ -42,7 +48,7 @@
 
     /* ── HEADER ───────────────────────────────────────────────────────────── */
     .header {
-      background: linear-gradient(135deg, #0d3b3e 0%, #02A3A6 40%, #0d3b3e 100%);
+      background: linear-gradient(135deg, var(--teal-darker) 0%, var(--teal-deep) 55%, var(--teal) 100%);
       color: #fff;
       padding: 28px 40px 20px;
       position: relative;
@@ -86,7 +92,7 @@
       display: flex;
       justify-content: space-between;
       padding: 10px 40px;
-      border-bottom: 2px solid var(--teal);
+      border-bottom: 2px solid var(--teal-deep);
       font-size: .85rem;
       font-weight: 700
     }
@@ -109,7 +115,7 @@
 
     /* ── SECTION HEADERS ──────────────────────────────────────────────────── */
     .section-header {
-      background: linear-gradient(135deg, #02A3A6, #046b6d);
+      background: linear-gradient(135deg, var(--teal-deep), var(--teal));
       color: #fff;
       font-size: .95rem;
       font-weight: 800;
@@ -125,7 +131,7 @@
     }
 
     .section-header.dark {
-      background: linear-gradient(135deg, #1a1a2e, #2d2d44)
+      background: linear-gradient(135deg, var(--teal-darker), #0d3b38)
     }
 
     /* ── CONTENT ──────────────────────────────────────────────────────────── */
@@ -141,7 +147,7 @@
       content: '▸';
       position: absolute;
       left: 0;
-      color: var(--teal);
+      color: var(--teal-deep);
       font-weight: 700
     }
 
@@ -160,12 +166,12 @@
     }
 
     .red-text {
-      color: var(--red);
+      color: var(--alert);
       font-weight: 700
     }
 
     .teal-text {
-      color: var(--teal);
+      color: var(--teal-deep);
       font-weight: 700
     }
 
@@ -217,7 +223,7 @@
     }
 
     .vuln-table thead th {
-      background: #02A3A6;
+      background: var(--teal-deep);
       color: #fff;
       font-weight: 700;
       text-align: center
@@ -249,12 +255,12 @@
     .finding-card h4 {
       font-size: .82rem;
       margin-bottom: 6px;
-      color: var(--dark)
+      color: var(--teal-deep)
     }
 
     /* ── FOOTER ───────────────────────────────────────────────────────────── */
     .footer {
-      background: #1a1a2e;
+      background: var(--teal-darker);
       color: #fff;
       padding: 16px 40px;
       font-size: .72rem;
@@ -262,7 +268,7 @@
     }
 
     .footer .label {
-      color: var(--red);
+      color: var(--sage);
       font-weight: 700;
       text-transform: uppercase
     }
@@ -297,12 +303,15 @@
     <!-- ═══ HEADER ═════════════════════════════════════════════════════════════ -->
     <div class="header">
       <div class="header-inner">
-        <div></div>
+        <div style="color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.05em;line-height:1.6;opacity:.9">
+          CityLAB Hamilton<br/>
+          <span style="font-weight:400;opacity:.8">Vibrant · Healthy · Sustainable</span>
+        </div>
         <div class="header-text">
           <h1>Climate-Driven Vulnerability Assessment of Hamilton&#8217;s Urban Forest:</h1>
           <h2>A Ward-Level Resilience Framework for 2030, 2050, and 2080</h2>
         </div>
-        <img class="header-logo" src="poster_images/img_00_Picture_175.png" alt="HEAD Competition Logo" />
+        <img class="header-logo" src="assets/citylab_logo.png" alt="CityLAB Hamilton Logo" style="background:rgba(255,255,255,.92);border-radius:6px;padding:6px;" />
       </div>
     </div>
 

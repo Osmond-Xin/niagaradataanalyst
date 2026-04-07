@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Step 2: Species &amp; Family Taxonomy Validation — Hamilton Urban Forest</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --forest:     #1b5e3b;
+  --forest-mid: #2e7d52;
+  --forest-lt:  #e8f5ee;
+  --bark:       #4a3728;
+  --amber:      #c47d1a;
+  --amber-lt:   #fdf3e0;
+  --sky:        #1a4a6b;
+  --sky-lt:     #e6f0f8;
+  --white:      #ffffff;
+  --bg:         #f6f8f5;
+  --border:     #d0ddd6;
+  --text:       #1c2a22;
+  --muted:      #5a6e60;
+  --serif:      'DM Serif Display', Georgia, serif;
+  --sans:       'DM Sans', Helvetica, sans-serif;
+  --mono:       'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(150deg, #0d2e1a 0%, #1b5e3b 50%, #2e7d52 100%);
+  padding: 64px 56px 56px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 5px solid var(--amber);
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.85);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 24px;
+  margin-bottom: 20px;
+}
+.step-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+}
+.hero h1 {
+  font-family: var(--serif);
+  color: white;
+  font-size: 2.4rem;
+  line-height: 1.2;
+  max-width: 820px;
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+.hero .lead {
+  color: rgba(255,255,255,0.78);
+  font-size: 1.05rem;
+  max-width: 680px;
+  line-height: 1.7;
+  margin-bottom: 30px;
+  font-weight: 300;
+}
+.hero-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  font-size: 0.74rem;
+  padding: 4px 13px;
+  border-radius: 20px;
+  font-weight: 400;
+}
+
+/* ── STAT STRIP ── */
+.stat-strip {
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  padding: 32px 56px;
+}
+.stat-strip-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--forest-mid);
+  margin-bottom: 20px;
+}
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+.stat-box {
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--forest-mid);
+  background: var(--bg);
+  padding: 16px 18px;
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+}
+.stat-box:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.stat-val {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  color: var(--forest);
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.stat-lbl {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+/* ── CONTENT LAYOUT ── */
+.page-body {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 48px 40px 100px;
+}
+
+/* ── SECTIONS ── */
+.section {
+  margin-bottom: 60px;
+  animation: fadeUp 0.5s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--forest-lt);
+}
+.section-icon {
+  width: 42px; height: 42px;
+  background: var(--forest);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.section-header h2 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--forest);
+}
+.section p {
+  font-size: 0.97rem;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.section p:last-child { margin-bottom: 0; }
+
+/* ── FINDING CALLOUT ── */
+.finding {
+  background: var(--forest-lt);
+  border-left: 5px solid var(--forest-mid);
+  padding: 16px 22px;
+  border-radius: 0 8px 8px 0;
+  margin: 20px 0;
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+.finding strong { color: var(--forest); }
+.finding.amber {
+  background: var(--amber-lt);
+  border-color: var(--amber);
+}
+.finding.amber strong { color: var(--bark); }
+.finding.sky {
+  background: var(--sky-lt);
+  border-color: var(--sky);
+}
+
+/* ── CHART ── */
+.chart-block {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  margin: 24px 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.chart-block img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+.chart-caption {
+  margin-top: 12px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-style: italic;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ── TWO-COL CHARTS ── */
+.chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 24px 0;
+}
+@media (max-width: 760px) { .chart-row { grid-template-columns: 1fr; } }
+
+/* ── DATA TABLE ── */
+.data-table-wrap { overflow-x: auto; margin: 20px 0; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+th {
+  background: var(--forest);
+  color: white;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+tr:nth-child(even) td { background: var(--forest-lt); }
+tr:hover td { background: #d4ebdd; }
+
+/* ── PILL LIST ── */
+.pill-list {
+  display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0;
+}
+.pill {
+  background: var(--forest-lt);
+  border: 1px solid #b0d4be;
+  color: var(--forest);
+  font-size: 0.82rem;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.pill.warn {
+  background: #fce8cc;
+  border-color: #e8b070;
+  color: var(--bark);
+}
+.pill.alert {
+  background: #fce8e8;
+  border-color: #e08080;
+  color: #8b1a1a;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #0d2e1a;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  padding: 32px 40px;
+  font-size: 0.78rem;
+  line-height: 1.9;
+  border-top: 4px solid var(--forest-mid);
+}
+footer strong { color: rgba(255,255,255,0.9); }
+
+@media (max-width: 700px) {
+  .hero { padding: 40px 24px 36px; }
+  .hero h1 { font-size: 1.65rem; }
+  .stat-strip { padding: 24px; }
+  .page-body { padding: 32px 20px 60px; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="step-pill"><span class="step-dot"></span>Step 2 of 5 &nbsp;·&nbsp; Hamilton Urban Forest Analysis</div>
+  <h1>Species &amp; Family Taxonomy Validation</h1>
+  <p class="lead">Every scientific species name in Hamilton's tree inventory was validated against the Global Biodiversity Information Facility (GBIF) backbone taxonomy to ensure accurate genus and family classification before biodiversity analysis.</p>
+  <div class="hero-chips"><span class="chip">GBIF Backbone Taxonomy</span><span class="chip">299 Species Queried</span><span class="chip">275,156 Records Validated</span><span class="chip">REST API</span></div>
+</header>
+
+<div class="stat-strip">
+  <p class="stat-strip-label">Key Findings at a Glance</p>
+  <div class="stats-row"><div class="stat-box"><div class="stat-val">299</div><div class="stat-lbl">Unique species names queried</div></div><div class="stat-box"><div class="stat-val">18,503→564</div><div class="stat-lbl">Genus mismatches resolved</div></div><div class="stat-box"><div class="stat-val">7,365→0</div><div class="stat-lbl">Family mismatches eliminated</div></div><div class="stat-box"><div class="stat-val">98.9%</div><div class="stat-lbl">Records with valid family assigned</div></div><div class="stat-box"><div class="stat-val">1.15%</div><div class="stat-lbl">Records with no family match</div></div><div class="stat-box"><div class="stat-val">5</div><div class="stat-lbl">New taxonomy columns added</div></div></div>
+</div>
+
+<div class="page-body">
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🔬</div>
+    <h2>Why Taxonomy Validation Matters</h2>
+  </div>
+  <p>Hamilton's tree inventory was recorded by municipal field staff, meaning species names were entered manually and inconsistently. Before the 10/20/30 biodiversity analysis could be performed, every scientific name needed to be checked against an authoritative global taxonomy to ensure the correct <strong>genus</strong> and <strong>family</strong> were assigned.</p>
+  <p>The <strong>Global Biodiversity Information Facility (GBIF)</strong> backbone taxonomy — the world's most comprehensive open-access species database — was used as the reference. Each of the <strong>299 unique species names</strong> in the inventory was queried through the GBIF API to obtain a validated genus, family, confidence score, and match type.</p>
+
+  <div class="finding amber">
+    <strong>The first pass revealed 18,503 genus mismatches and 7,365 family mismatches.</strong> The majority were caused by non-taxonomic entries (genus-only identifiers like "Fraxinus spp.", cultivar names, and hybrid notations) rather than true naming errors.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">🛠️</div>
+    <h2>Two-Pass Cleaning Process</h2>
+  </div>
+  <p>A two-stage validation approach was applied:</p>
+  <div class="pill-list">
+    <span class="pill">Pass 1 — Full species list queried against GBIF API</span>
+    <span class="pill warn">18,503 genus mismatches identified</span>
+    <span class="pill warn">7,365 family mismatches identified</span>
+  </div>
+  <p>Non-taxonomic entries (e.g., <em>Fraxinus spp.</em>, <em>Malus spp.</em>, cultivar names with apostrophes) were filtered out. These represent valid inventory entries — they indicate the field recorder knew the genus but not the exact species — but they cannot be matched to a single taxonomy record.</p>
+  <div class="pill-list">
+    <span class="pill">Pass 2 — Re-queried with cleaned names only</span>
+    <span class="pill">Genus mismatches reduced to 564</span>
+    <span class="pill">Family mismatches reduced to 0</span>
+  </div>
+  <div class="finding">
+    <strong>After the second pass: zero family mismatches remained.</strong> The 564 remaining genus mismatches are exclusively hybrid and cultivar names that GBIF maps to a parent species genus — a known, accepted discrepancy in botanical taxonomy.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">📋</div>
+    <h2>Final Validated Dataset</h2>
+  </div>
+  <p>The final GBIF-validated dataset adds five new columns to each of the <strong>275,156 tree records</strong>, enabling accurate family-level diversity analysis in Step 3.</p>
+
+  <div class="data-table-wrap">
+    <table>
+      <tr><th>New Column</th><th>What It Contains</th><th>Used For</th></tr>
+      <tr><td>GBIF_SPECIES</td><td>Validated scientific species name from GBIF</td><td>Exact species matching</td></tr>
+      <tr><td>GBIF_GENUS</td><td>Validated genus from GBIF backbone</td><td>20% genus rule check</td></tr>
+      <tr><td>GBIF_FAMILY</td><td>Validated plant family (e.g., Sapindaceae)</td><td>30% family rule check</td></tr>
+      <tr><td>MATCH_TYPE</td><td>EXACT, FUZZY, or HIGHERRANK</td><td>Quality filtering</td></tr>
+      <tr><td>CONFIDENCE</td><td>GBIF match confidence score (0–100)</td><td>Reliability assessment</td></tr>
+    </table>
+  </div>
+
+  <div class="finding">
+    <strong>1.15% of trees (3,154 records) had no family assignment</strong> — these are genus-only or cultivar entries with no GBIF family match. They are retained in the inventory but excluded from family-level diversity calculations in Step 3.
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon">✅</div>
+    <h2>Validation Summary</h2>
+  </div>
+  <div class="data-table-wrap">
+    <table>
+      <tr><th>Metric</th><th>Before Validation</th><th>After Validation</th></tr>
+      <tr><td>Total tree records</td><td>275,156</td><td>275,156</td></tr>
+      <tr><td>Unique species queried</td><td>299 names</td><td>299 names processed</td></tr>
+      <tr><td>Genus mismatches</td><td>18,503</td><td>564 (hybrid/cultivar only)</td></tr>
+      <tr><td>Family mismatches</td><td>7,365</td><td>0</td></tr>
+      <tr><td>Records with family assigned</td><td>Incomplete</td><td>272,002 (98.9%)</td></tr>
+      <tr><td>Records without family</td><td>—</td><td>3,154 (1.1%) — genus-only entries</td></tr>
+    </table>
+  </div>
+</div>
+
+</div>
+
+<footer>
+  <strong>Climate-Driven Vulnerability Assessment of Hamilton's Urban Forest</strong><br/>
+  University of Niagara Falls Canada &nbsp;·&nbsp; H.E.A.D. Competition 2026<br/>
+  Authors: Susana Carolina Romero Aparicio · Su Myat Aung · Tessy Ramirez · Yi Xin<br/><br/>
+  Data Source: Global Biodiversity Information Facility (GBIF) Backbone Taxonomy · api.gbif.org/v1/species/match
+</footer>
+</body>
+</html>
