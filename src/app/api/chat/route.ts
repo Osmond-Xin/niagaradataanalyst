@@ -1,15 +1,14 @@
 /**
- * Google AI Studio 聊天 API Route
- * 使用 generativelanguage.googleapis.com + GOOGLE_AI_API_KEY
- * 解析 JSON 响应，转发给前端
+ * MiniMax 聊天 API Route
+ * 使用 MiniMax OpenAI 兼容接口 + MINIMAX_API_KEY
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { aiPersona } from '@/data/ai-persona';
 
-/** Google AI Studio 配置（API Key 认证，对应 generativelanguage.googleapis.com） */
-const GOOGLE_AI_API_KEY = process.env.GOOGLE_AI_API_KEY;
-const MODEL_ID = process.env.GEMINI_MODEL_ID || 'gemini-2.0-flash';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_ID}:generateContent`;
+/** MiniMax 配置 */
+const MINIMAX_API_KEY = process.env.MINIMAX_API_KEY;
+const MODEL_ID = process.env.MINIMAX_MODEL_ID || 'MiniMax-Text-01';
+const API_URL = 'https://api.minimax.chat/v1/text/chatcompletion_v2';
 
 /** 限流配置：每IP每分钟50次，全局每天300次 */
 const RATE_LIMIT_WINDOW_MS = 60_000;
@@ -73,53 +72,44 @@ export async function POST(request: NextRequest) {
       : aiPersona.systemPrompt;
 
     /** API Key 未配置时返回回退响应 */
-    if (!GOOGLE_AI_API_KEY) {
+    if (!MINIMAX_API_KEY) {
       const fallback = mode === 'job-match'
-        ? 'Job matching requires GOOGLE_AI_API_KEY environment variable to be set in Vercel.'
+        ? 'Job matching requires MINIMAX_API_KEY environment variable to be set in Vercel.'
         : 'Hello! I\'m the NiagaraDataAnalyst AI assistant. AI service is not configured yet.';
       return NextResponse.json({ content: fallback });
     }
 
+    /** OpenAI 兼容格式请求体 */
     const requestBody = {
-      system_instruction: { parts: [{ text: systemPrompt }] },
-      contents: messages.map((msg) => ({
-        role: msg.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: msg.content }],
-      })),
-      generationConfig: { maxOutputTokens: 1000, temperature: 0.7 },
+      model: MODEL_ID,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...messages.map((msg) => ({ role: msg.role, content: msg.content })),
+      ],
+      max_tokens: 1000,
+      temperature: 0.7,
     };
 
-    /** 调用 Vertex AI（publisher URL，不含 project/location） */
-    const vertexResponse = await fetch(`${API_URL}?key=${GOOGLE_AI_API_KEY}`, {
+    const minimaxResponse = await fetch(API_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${MINIMAX_API_KEY}`,
+      },
       body: JSON.stringify(requestBody),
     });
 
-    if (!vertexResponse.ok) {
-      const errText = await vertexResponse.text();
-      console.error('[API/chat] Vertex AI error:', vertexResponse.status, errText.slice(0, 200));
+    if (!minimaxResponse.ok) {
+      const errText = await minimaxResponse.text();
+      console.error('[API/chat] MiniMax error:', minimaxResponse.status, errText.slice(0, 200));
       return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
     }
 
-    /**
-     * 使用 text() 读取原始响应，手动 parse 以便记录详细错误
-     */
-    const rawText = await vertexResponse.text();
-    let data: Record<string, unknown>;
-    try {
-      data = JSON.parse(rawText) as Record<string, unknown>;
-    } catch (e) {
-      console.error('[API/chat] JSON parse failed. Status:', vertexResponse.status);
-      console.error('[API/chat] Raw response (200 chars):', rawText.slice(0, 200));
-      return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
-    }
+    const data = await minimaxResponse.json() as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
 
-    const candidates = data.candidates as Array<Record<string, unknown>> | undefined;
-    const fullText = (candidates?.[0]?.content as Record<string, unknown> | undefined)
-      ?.parts as Array<{ text?: string }> | undefined;
-    const text = fullText?.[0]?.text;
-
+    const text = data.choices?.[0]?.message?.content;
     if (!text) {
       console.error('[API/chat] No text in response:', JSON.stringify(data).slice(0, 200));
       return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
