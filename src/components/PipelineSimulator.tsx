@@ -57,11 +57,11 @@ const confidenceData: ConfidenceData[] = [
   { time: 16, confidence: 0.92, stage: '完成' },
 ];
 
-/** 日志级别对应的样式 */
+/** 日志级别对应的样式（终端内部保持深色配色） */
 const logLevelColors: Record<string, string> = {
   info: 'text-blue-400',
-  success: 'text-green-400',
-  warning: 'text-yellow-400',
+  success: 'text-emerald-400',
+  warning: 'text-amber-400',
   error: 'text-red-400',
 };
 
@@ -113,22 +113,25 @@ const PipelineSimulator: React.FC = () => {
       {/* 标题和控制按钮 */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h3 className="text-2xl font-bold text-gray-100">{t('caseStudy.simulation.title')}</h3>
-          <p className="text-gray-400 text-sm mt-1">{t('caseStudy.simulation.subtitle')}</p>
+          <h3 className="font-display font-medium text-subhead-sm text-text-primary">
+            {t('caseStudy.simulation.title')}
+          </h3>
+          <p className="text-body-sm font-sans text-text-muted mt-1">{t('caseStudy.simulation.subtitle')}</p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={startSimulation}
             disabled={isRunning}
-            className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700
-                       disabled:cursor-not-allowed text-white text-sm font-medium transition-colors"
+            className="px-4 py-2 rounded-lg bg-terracotta hover:brightness-110
+                       disabled:opacity-40 disabled:cursor-not-allowed
+                       text-ivory text-body-sm font-sans font-medium transition-all"
           >
             {t('caseStudy.simulation.startSimulation')}
           </button>
           <button
             onClick={resetSimulation}
-            className="px-4 py-2 rounded-lg border border-gray-600 hover:bg-gray-800
-                       text-gray-300 text-sm font-medium transition-colors"
+            className="px-4 py-2 rounded-lg border border-border-warm hover:bg-warm-sand
+                       text-text-secondary text-body-sm font-sans font-medium transition-colors"
           >
             {t('caseStudy.simulation.resetSimulation')}
           </button>
@@ -136,16 +139,16 @@ const PipelineSimulator: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* 终端控制台 */}
-        <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden">
+        {/* 终端控制台 — 保持暗色 macOS 风格 */}
+        <div className="bg-near-black border border-border-dark rounded-xl overflow-hidden">
           {/* 终端标题栏 */}
-          <div className="flex items-center gap-2 px-4 py-2.5 bg-gray-900 border-b border-gray-800">
+          <div className="flex items-center gap-2 px-4 py-2.5 bg-dark-surface border-b border-border-dark">
             <div className="flex gap-1.5">
               <div className="w-3 h-3 rounded-full bg-red-500/80" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
               <div className="w-3 h-3 rounded-full bg-green-500/80" />
             </div>
-            <span className="text-gray-500 text-xs font-mono ml-2">pipeline-simulator</span>
+            <span className="text-text-muted text-xs font-mono ml-2">pipeline-simulator</span>
           </div>
 
           {/* 终端内容 */}
@@ -154,29 +157,29 @@ const PipelineSimulator: React.FC = () => {
             className="p-4 h-80 overflow-y-auto font-mono text-sm"
           >
             {visibleLogs.length === 0 && (
-              <p className="text-gray-600">
+              <p className="text-text-muted">
                 {'>'} {language === 'zh' ? '等待启动模拟...' : 'Waiting to start simulation...'}
                 <span className="animate-blink">_</span>
               </p>
             )}
             {visibleLogs.map((log, i) => (
               <div key={i} className="flex gap-2 mb-1">
-                <span className="text-gray-600 shrink-0">[{log.timestamp}]</span>
+                <span className="text-text-muted shrink-0">[{log.timestamp}]</span>
                 <span className={`shrink-0 ${logLevelColors[log.level]}`}>
                   [{log.level.toUpperCase().padEnd(7)}]
                 </span>
-                <span className="text-gray-300">{log.message}</span>
+                <span className="text-text-on-dark">{log.message}</span>
               </div>
             ))}
             {isRunning && (
-              <span className="text-green-400 animate-blink">_</span>
+              <span className="text-emerald-400 animate-blink">_</span>
             )}
           </div>
         </div>
 
-        {/* 置信度图表 */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h4 className="text-gray-300 font-medium mb-4">
+        {/* 置信度图表 — 暗色面板，暖色图表 */}
+        <div className="bg-dark-surface border border-border-dark rounded-xl p-6">
+          <h4 className="text-text-on-dark font-sans font-medium mb-4">
             {t('caseStudy.simulation.confidenceScore')}
           </h4>
           <div className="h-64">
@@ -184,39 +187,39 @@ const PipelineSimulator: React.FC = () => {
               <AreaChart data={chartData.length > 0 ? chartData : confidenceData}>
                 <defs>
                   <linearGradient id="confidenceGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#3B82F6" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#c96442" stopOpacity={0.35} />
+                    <stop offset="100%" stopColor="#c96442" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#30302e" />
                 <XAxis
                   dataKey="time"
-                  stroke="#6B7280"
-                  tick={{ fill: '#9CA3AF', fontSize: 12 }}
-                  label={{ value: 's', position: 'insideBottomRight', fill: '#9CA3AF' }}
+                  stroke="#4d4c48"
+                  tick={{ fill: '#87867f', fontSize: 12 }}
+                  label={{ value: 's', position: 'insideBottomRight', fill: '#87867f' }}
                 />
                 <YAxis
-                  stroke="#6B7280"
-                  tick={{ fill: '#9CA3AF', fontSize: 12 }}
+                  stroke="#4d4c48"
+                  tick={{ fill: '#87867f', fontSize: 12 }}
                   domain={[0, 1]}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1F2937',
-                    border: '1px solid #374151',
+                    backgroundColor: '#30302e',
+                    border: '1px solid #4d4c48',
                     borderRadius: '8px',
-                    color: '#E5E7EB',
+                    color: '#faf9f5',
                   }}
                   formatter={(value) => [`${(Number(value) * 100).toFixed(0)}%`, t('caseStudy.simulation.confidenceScore')]}
                 />
                 <Area
                   type="monotone"
                   dataKey="confidence"
-                  stroke="#3B82F6"
+                  stroke="#c96442"
                   strokeWidth={2}
                   fill="url(#confidenceGradient)"
-                  dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, fill: '#60A5FA' }}
+                  dot={{ fill: '#c96442', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, fill: '#d97757' }}
                 />
               </AreaChart>
             </ResponsiveContainer>

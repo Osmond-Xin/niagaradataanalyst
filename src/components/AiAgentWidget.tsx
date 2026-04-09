@@ -2,11 +2,10 @@
 
 /**
  * AI聊天小部件组件
- * Vertex AI驱动的浮动聊天窗口
- * 支持普通聊天和工作匹配两种模式
- * 呼吸动画启动按钮，流式响应显示
+ * Claude 编辑风：象牙白面板 + 暖灰边框 + 赤陶 CTA
+ * 浮动按钮使用 terracotta 色与呼吸动画
  */
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { ChatMessage, ChatMode } from '@/types';
 import { analytics } from '@/lib/analytics';
@@ -30,8 +29,6 @@ const AiAgentWidget: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  /** 当前会话ID和会话开始时间（用于计算时长） */
   const sessionIdRef = useRef<string>('');
   const sessionStartTimeRef = useRef<number>(0);
 
@@ -40,16 +37,14 @@ const AiAgentWidget: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  /** 打开聊天窗口时聚焦输入框，并上报会话开始事件 */
+  /** 打开时聚焦输入框并上报会话开始 */
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 300);
-      // 新建会话ID并上报
       sessionIdRef.current = generateSessionId();
       sessionStartTimeRef.current = Date.now();
       analytics.chatSessionStart(sessionIdRef.current, language);
     } else {
-      // 关闭时判断是否有消息，决定上报哪个事件
       if (sessionIdRef.current) {
         const userMessages = messages.filter((m) => m.role === 'user');
         if (userMessages.length === 0) {
@@ -76,7 +71,6 @@ const AiAgentWidget: React.FC = () => {
 
     const userMessage: ChatMessage = { role: 'user', content: input.trim() };
     const currentUserMessageCount = messages.filter((m) => m.role === 'user').length;
-    // 上报发送消息事件（message_index从0开始计数）
     analytics.chatMessageSent(sessionIdRef.current, currentUserMessageCount);
 
     setMessages((prev) => [...prev, userMessage, { role: 'assistant', content: '' }]);
@@ -87,10 +81,7 @@ const AiAgentWidget: React.FC = () => {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [...messages, userMessage],
-          mode: activeMode,
-        }),
+        body: JSON.stringify({ messages: [...messages, userMessage], mode: activeMode }),
       });
 
       if (!response.ok) throw new Error('API error');
@@ -98,7 +89,6 @@ const AiAgentWidget: React.FC = () => {
       const contentType = response.headers.get('content-type');
 
       if (contentType?.includes('text/event-stream')) {
-        /** 处理流式响应 */
         const reader = response.body?.getReader();
         const decoder = new TextDecoder();
         let assistantContent = '';
@@ -107,11 +97,8 @@ const AiAgentWidget: React.FC = () => {
           while (true) {
             const { done, value } = await reader.read();
             if (done) break;
-
             const chunk = decoder.decode(value);
-            const lines = chunk.split('\n');
-
-            for (const line of lines) {
+            for (const line of chunk.split('\n')) {
               if (line.startsWith('data: ')) {
                 const data = line.slice(6);
                 if (data === '[DONE]') break;
@@ -125,15 +112,12 @@ const AiAgentWidget: React.FC = () => {
                       return updated;
                     });
                   }
-                } catch {
-                  /* 忽略解析错误 */
-                }
+                } catch { /* 忽略解析错误 */ }
               }
             }
           }
         }
       } else {
-        /** 处理非流式响应（回退模式） */
         const data = await response.json();
         setMessages((prev) => [...prev, { role: 'assistant', content: data.content || data.error || t('ai.error') }]);
       }
@@ -154,17 +138,18 @@ const AiAgentWidget: React.FC = () => {
 
   return (
     <>
-      {/* 聊天窗口 */}
+      {/* 聊天窗口 — 象牙白面板 */}
       {isOpen && (
         <div className="fixed bottom-20 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-96 h-[500px] max-h-[80vh]
-                        bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl shadow-black/50
+                        bg-ivory border border-border-warm rounded-2xl shadow-whisper
                         flex flex-col z-50 overflow-hidden">
+
           {/* 标题栏 */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800 bg-gray-900/95">
-            <h3 className="text-sm font-semibold text-gray-200">{t('ai.widgetTitle')}</h3>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border-cream bg-ivory/95">
+            <h3 className="font-display font-medium text-feature text-text-primary">{t('ai.widgetTitle')}</h3>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-gray-500 hover:text-gray-300 transition-colors"
+              className="text-text-muted hover:text-text-primary transition-colors"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -173,15 +158,15 @@ const AiAgentWidget: React.FC = () => {
           </div>
 
           {/* 模式切换标签 */}
-          <div className="flex border-b border-gray-800">
+          <div className="flex border-b border-border-cream">
             {chatModes.map((mode) => (
               <button
                 key={mode.id}
                 onClick={() => switchMode(mode.id)}
-                className={`flex-1 px-3 py-2 text-sm font-medium transition-colors
+                className={`flex-1 px-3 py-2 text-body-sm font-sans font-medium transition-colors
                   ${activeMode === mode.id
-                    ? 'text-blue-400 border-b-2 border-blue-400 bg-gray-800/30'
-                    : 'text-gray-500 hover:text-gray-300'
+                    ? 'text-terracotta border-b-2 border-terracotta bg-warm-sand/30'
+                    : 'text-text-muted hover:text-text-secondary'
                   }`}
               >
                 {t(mode.nameKey)}
@@ -191,31 +176,27 @@ const AiAgentWidget: React.FC = () => {
 
           {/* 消息区域 */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
-            {/* 欢迎消息 */}
             {messages.length === 0 && (
-              <div className="bg-gray-800/50 rounded-lg p-3 text-sm text-gray-400">
+              <div className="bg-warm-sand/50 rounded-lg p-3 text-body-sm font-sans text-text-secondary">
                 {t(chatModes.find((m) => m.id === activeMode)?.descriptionKey || 'ai.greeting')}
               </div>
             )}
 
             {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
+              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div
-                  className={`max-w-[85%] rounded-lg px-3 py-2 text-sm whitespace-pre-wrap
+                  className={`max-w-[85%] rounded-xl px-3 py-2 text-body-sm font-sans whitespace-pre-wrap
                     ${msg.role === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-800 text-gray-300'
+                      ? 'bg-terracotta text-ivory'
+                      : 'bg-warm-sand text-text-primary border border-border-cream'
                     }`}
                 >
                   {msg.content || (isLoading && i === messages.length - 1 ? (
                     <span className="inline-flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                      <span className="ml-2 text-gray-400">{t('ai.thinking')}</span>
+                      <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <span className="ml-2 text-text-muted">{t('ai.thinking')}</span>
                     </span>
                   ) : '')}
                 </div>
@@ -225,7 +206,7 @@ const AiAgentWidget: React.FC = () => {
           </div>
 
           {/* 输入区域 */}
-          <div className="p-3 border-t border-gray-800">
+          <div className="p-3 border-t border-border-cream">
             <div className="flex gap-2">
               <input
                 ref={inputRef}
@@ -235,15 +216,18 @@ const AiAgentWidget: React.FC = () => {
                 onKeyDown={handleKeyDown}
                 placeholder={t('ai.placeholder')}
                 disabled={isLoading}
-                className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-200
-                           placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                className="flex-1 bg-white border border-border-warm rounded-lg px-3 py-2
+                           text-body-sm font-sans text-text-primary
+                           placeholder:text-text-muted
+                           focus:outline-none focus:ring-2 focus:ring-focus-blue focus:border-focus-blue
                            disabled:opacity-50"
               />
               <button
                 onClick={sendMessage}
                 disabled={isLoading || !input.trim()}
-                className="px-3 py-2 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700
-                           disabled:cursor-not-allowed rounded-lg text-white text-sm font-medium transition-colors"
+                className="px-3 py-2 bg-terracotta hover:brightness-110 disabled:bg-warm-sand
+                           disabled:cursor-not-allowed rounded-lg text-ivory text-body-sm font-sans font-medium
+                           transition-all duration-200"
               >
                 {t('ai.send')}
               </button>
@@ -252,23 +236,23 @@ const AiAgentWidget: React.FC = () => {
         </div>
       )}
 
-      {/* 浮动启动按钮 */}
+      {/* 浮动启动按钮 — terracotta + 呼吸动画 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-4 right-4 sm:right-6 w-14 h-14 rounded-full z-50
-                    bg-gradient-to-r from-blue-600 to-cyan-600
-                    hover:from-blue-500 hover:to-cyan-500
-                    shadow-lg shadow-blue-500/30
+                    bg-terracotta text-ivory
+                    shadow-whisper
                     flex items-center justify-center transition-all duration-300
+                    hover:brightness-110
                     ${!isOpen ? 'animate-breathe' : ''}`}
         aria-label={t('ai.widgetTitle')}
       >
         {isOpen ? (
-          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg>
         ) : (
-          <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z" />
           </svg>
         )}

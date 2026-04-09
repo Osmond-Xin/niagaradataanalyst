@@ -108,34 +108,44 @@ const getNodeDetails = (lang: 'zh' | 'en'): Record<string, NodeDetail> => {
   return data[lang];
 };
 
-/** 节点颜色映射 */
+/** 节点颜色映射（暖色图表调色板）*/
 const nodeColors: Record<string, string> = {
-  'user-client': '#3B82F6',
-  'kinesis': '#F59E0B',
-  'lambda': '#EF4444',
-  'rekognition': '#8B5CF6',
-  'airbyte': '#10B981',
-  'snowflake': '#06B6D4',
+  'user-client': '#c96442',  // terracotta
+  'kinesis':     '#c9a46a',  // ochre
+  'lambda':      '#d97757',  // coral
+  'rekognition': '#8b5a3c',  // clay
+  'airbyte':     '#d4b896',  // sand
+  'snowflake':   '#4d4c48',  // ink
 };
 
-/** 创建ReactFlow节点 */
+/** 创建ReactFlow节点（暗色面板 + 暖色边框）*/
+const nodeStyle = (id: string) => ({
+  background: '#30302e',
+  border: `2px solid ${nodeColors[id]}`,
+  color: '#faf9f5',
+  borderRadius: '12px',
+  padding: '12px 20px',
+  fontSize: '14px',
+  fontWeight: 600,
+});
+
 const createNodes = (details: Record<string, NodeDetail>): Node[] => [
-  { id: 'user-client', position: { x: 50, y: 150 }, data: { label: details['user-client'].label }, style: { background: '#1E293B', border: `2px solid ${nodeColors['user-client']}`, color: '#E5E7EB', borderRadius: '12px', padding: '12px 20px', fontSize: '14px', fontWeight: 600 } },
-  { id: 'kinesis', position: { x: 250, y: 50 }, data: { label: details['kinesis'].label }, style: { background: '#1E293B', border: `2px solid ${nodeColors['kinesis']}`, color: '#E5E7EB', borderRadius: '12px', padding: '12px 20px', fontSize: '14px', fontWeight: 600 } },
-  { id: 'lambda', position: { x: 250, y: 250 }, data: { label: details['lambda'].label }, style: { background: '#1E293B', border: `2px solid ${nodeColors['lambda']}`, color: '#E5E7EB', borderRadius: '12px', padding: '12px 20px', fontSize: '14px', fontWeight: 600 } },
-  { id: 'rekognition', position: { x: 480, y: 150 }, data: { label: details['rekognition'].label }, style: { background: '#1E293B', border: `2px solid ${nodeColors['rekognition']}`, color: '#E5E7EB', borderRadius: '12px', padding: '12px 20px', fontSize: '14px', fontWeight: 600 } },
-  { id: 'airbyte', position: { x: 680, y: 50 }, data: { label: details['airbyte'].label }, style: { background: '#1E293B', border: `2px solid ${nodeColors['airbyte']}`, color: '#E5E7EB', borderRadius: '12px', padding: '12px 20px', fontSize: '14px', fontWeight: 600 } },
-  { id: 'snowflake', position: { x: 680, y: 250 }, data: { label: details['snowflake'].label }, style: { background: '#1E293B', border: `2px solid ${nodeColors['snowflake']}`, color: '#E5E7EB', borderRadius: '12px', padding: '12px 20px', fontSize: '14px', fontWeight: 600 } },
+  { id: 'user-client', position: { x: 50, y: 150 }, data: { label: details['user-client'].label }, style: nodeStyle('user-client') },
+  { id: 'kinesis', position: { x: 250, y: 50 }, data: { label: details['kinesis'].label }, style: nodeStyle('kinesis') },
+  { id: 'lambda', position: { x: 250, y: 250 }, data: { label: details['lambda'].label }, style: nodeStyle('lambda') },
+  { id: 'rekognition', position: { x: 480, y: 150 }, data: { label: details['rekognition'].label }, style: nodeStyle('rekognition') },
+  { id: 'airbyte', position: { x: 680, y: 50 }, data: { label: details['airbyte'].label }, style: nodeStyle('airbyte') },
+  { id: 'snowflake', position: { x: 680, y: 250 }, data: { label: details['snowflake'].label }, style: nodeStyle('snowflake') },
 ];
 
-/** ReactFlow边连接 */
+/** ReactFlow边连接（暖色调色板）*/
 const edges: Edge[] = [
-  { id: 'e1', source: 'user-client', target: 'kinesis', animated: true, style: { stroke: '#3B82F6' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#3B82F6' } },
-  { id: 'e2', source: 'kinesis', target: 'lambda', animated: true, style: { stroke: '#F59E0B' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#F59E0B' } },
-  { id: 'e3', source: 'user-client', target: 'lambda', animated: true, style: { stroke: '#3B82F6' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#EF4444' } },
-  { id: 'e4', source: 'lambda', target: 'rekognition', animated: true, style: { stroke: '#EF4444' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#8B5CF6' } },
-  { id: 'e5', source: 'rekognition', target: 'airbyte', animated: true, style: { stroke: '#8B5CF6' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#10B981' } },
-  { id: 'e6', source: 'airbyte', target: 'snowflake', animated: true, style: { stroke: '#10B981' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#06B6D4' } },
+  { id: 'e1', source: 'user-client', target: 'kinesis', animated: true, style: { stroke: '#c96442' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#c96442' } },
+  { id: 'e2', source: 'kinesis', target: 'lambda', animated: true, style: { stroke: '#c9a46a' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#c9a46a' } },
+  { id: 'e3', source: 'user-client', target: 'lambda', animated: true, style: { stroke: '#c96442' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#d97757' } },
+  { id: 'e4', source: 'lambda', target: 'rekognition', animated: true, style: { stroke: '#d97757' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#8b5a3c' } },
+  { id: 'e5', source: 'rekognition', target: 'airbyte', animated: true, style: { stroke: '#8b5a3c' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#d4b896' } },
+  { id: 'e6', source: 'airbyte', target: 'snowflake', animated: true, style: { stroke: '#d4b896' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#4d4c48' } },
 ];
 
 const InteractiveArch: React.FC = () => {
@@ -157,13 +167,15 @@ const InteractiveArch: React.FC = () => {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-2xl font-bold text-gray-100">{t('caseStudy.architecture.title')}</h3>
-        <p className="text-gray-400 text-sm mt-1">{t('caseStudy.architecture.subtitle')}</p>
+        <h3 className="font-display font-medium text-subhead-sm text-text-primary">
+          {t('caseStudy.architecture.title')}
+        </h3>
+        <p className="text-body-sm font-sans text-text-muted mt-1">{t('caseStudy.architecture.subtitle')}</p>
       </div>
 
       <div className="relative">
-        {/* ReactFlow图表 */}
-        <div className="bg-gray-950 border border-gray-800 rounded-xl overflow-hidden" style={{ height: 400 }}>
+        {/* ReactFlow图表 — 保持暗色背景 */}
+        <div className="bg-near-black border border-border-dark rounded-xl overflow-hidden" style={{ height: 400 }}>
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -171,26 +183,26 @@ const InteractiveArch: React.FC = () => {
             fitView
             proOptions={{ hideAttribution: true }}
           >
-            <Background color="#374151" gap={20} />
+            <Background color="#30302e" gap={20} />
             <Controls
-              style={{ background: '#1F2937', border: '1px solid #374151', borderRadius: '8px' }}
+              style={{ background: '#30302e', border: '1px solid #4d4c48', borderRadius: '8px' }}
             />
           </ReactFlow>
         </div>
 
         {/* 节点详情面板 */}
         {detail && selectedNode && (
-          <div className="absolute top-4 right-4 w-80 bg-gray-900 border border-gray-700 rounded-xl shadow-2xl p-5 z-10">
+          <div className="absolute top-4 right-4 w-80 bg-dark-surface border border-border-dark rounded-xl shadow-2xl p-5 z-10">
             <div className="flex items-center justify-between mb-4">
               <h4
-                className="text-lg font-bold"
+                className="text-base font-display font-medium"
                 style={{ color: nodeColors[selectedNode] }}
               >
                 {detail.label}
               </h4>
               <button
                 onClick={closePanel}
-                className="text-gray-500 hover:text-gray-300 transition-colors"
+                className="text-text-muted hover:text-text-on-dark transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -198,16 +210,16 @@ const InteractiveArch: React.FC = () => {
               </button>
             </div>
 
-            <p className="text-gray-400 text-sm mb-4">{detail.description}</p>
+            <p className="text-text-muted text-sm mb-4 font-sans">{detail.description}</p>
 
             {/* 技术栈 */}
             <div className="mb-4">
-              <h5 className="text-gray-300 text-xs font-semibold uppercase tracking-wider mb-2">
+              <h5 className="text-text-on-dark text-xs font-sans font-semibold uppercase tracking-wider mb-2">
                 {t('caseStudy.architecture.technologies')}
               </h5>
               <div className="flex flex-wrap gap-1.5">
                 {detail.technologies.map((tech) => (
-                  <span key={tech} className="px-2 py-0.5 rounded text-xs bg-gray-800 text-gray-300">
+                  <span key={tech} className="px-2 py-0.5 rounded text-xs bg-near-black text-text-on-dark font-sans">
                     {tech}
                   </span>
                 ))}
@@ -216,14 +228,14 @@ const InteractiveArch: React.FC = () => {
 
             {/* 技术规格 */}
             <div>
-              <h5 className="text-gray-300 text-xs font-semibold uppercase tracking-wider mb-2">
+              <h5 className="text-text-on-dark text-xs font-sans font-semibold uppercase tracking-wider mb-2">
                 {t('caseStudy.architecture.specifications')}
               </h5>
               <div className="space-y-1.5">
                 {Object.entries(detail.specs).map(([key, value]) => (
                   <div key={key} className="flex justify-between text-xs">
-                    <span className="text-gray-500">{key}</span>
-                    <span className="text-gray-300 font-mono">{value}</span>
+                    <span className="text-text-muted font-sans">{key}</span>
+                    <span className="text-text-on-dark font-mono">{value}</span>
                   </div>
                 ))}
               </div>

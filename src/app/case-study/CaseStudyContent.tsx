@@ -14,8 +14,8 @@ import AiInsightSection from '@/components/AiInsightSection';
 const InteractiveArch = dynamic(() => import('@/components/InteractiveArch'), {
   ssr: false,
   loading: () => (
-    <div className="h-96 bg-gray-900 border border-gray-800 rounded-xl flex items-center justify-center">
-      <div className="text-gray-500">Loading architecture diagram...</div>
+    <div className="h-96 bg-near-black border border-border-dark rounded-xl flex items-center justify-center">
+      <div className="text-text-muted">Loading architecture diagram...</div>
     </div>
   ),
 });
@@ -24,15 +24,16 @@ const CaseStudyContent: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+    <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20">
       {/* 页面标题 */}
       <div className="text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-            {t('caseStudy.pageTitle')}
-          </span>
+        <p className="text-label font-sans font-medium text-terracotta uppercase tracking-widest mb-4">
+          InterviewPass · Case Study
+        </p>
+        <h1 className="font-display font-medium text-subhead lg:text-subhead-lg text-text-primary leading-[1.10] mb-4">
+          {t('caseStudy.pageTitle')}
         </h1>
-        <p className="text-gray-400 text-lg max-w-3xl mx-auto">
+        <p className="text-body font-sans text-text-secondary max-w-3xl mx-auto">
           {t('caseStudy.pageDescription')}
         </p>
       </div>

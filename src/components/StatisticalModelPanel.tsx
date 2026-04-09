@@ -76,78 +76,88 @@ const StatisticalModelPanel: React.FC = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h3 className="text-xl font-bold text-gray-100 mb-2">{t('dataAnalysis.step3.title')}</h3>
-        <p className="text-gray-400 text-sm">{t('dataAnalysis.step3.description')}</p>
+        <h3 className="font-display font-medium text-feature text-text-primary mb-2">
+          {t('dataAnalysis.step3.title')}
+        </h3>
+        <p className="text-body-sm font-sans text-text-muted">{t('dataAnalysis.step3.description')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 收益率分布直方图 */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <h4 className="text-gray-300 text-sm font-medium mb-3">{t('dataAnalysis.step3.returnDistribution')}</h4>
+        <div className="bg-dark-surface border border-border-dark rounded-xl p-4">
+          <h4 className="text-text-on-dark text-sm font-sans font-medium mb-3">
+            {t('dataAnalysis.step3.returnDistribution')}
+          </h4>
           <div className="h-52">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={analysisData.histogram}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="bin" stroke="#6B7280" tick={{ fontSize: 9, fill: '#9CA3AF' }} interval={4} />
-                <YAxis stroke="#6B7280" tick={{ fontSize: 11, fill: '#9CA3AF' }} />
-                <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151', borderRadius: '8px', color: '#E5E7EB', fontSize: 12 }} />
-                <Bar dataKey="count" fill="#3B82F6" opacity={0.7} />
-                <Bar dataKey="normal" fill="#F59E0B" opacity={0.5} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#30302e" />
+                <XAxis dataKey="bin" stroke="#4d4c48" tick={{ fontSize: 9, fill: '#87867f' }} interval={4} />
+                <YAxis stroke="#4d4c48" tick={{ fontSize: 11, fill: '#87867f' }} />
+                <Tooltip contentStyle={{ backgroundColor: '#30302e', border: '1px solid #4d4c48', borderRadius: '8px', color: '#faf9f5', fontSize: 12 }} />
+                <Bar dataKey="count" fill="#c96442" opacity={0.7} />
+                <Bar dataKey="normal" fill="#c9a46a" opacity={0.5} />
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <p className="text-gray-500 text-xs mt-2">
+          <p className="text-text-muted text-xs mt-2 font-sans">
             {t('dataAnalysis.step3.normalFit')}: μ={analysisData.stats.mean}, σ={analysisData.stats.std}
           </p>
         </div>
 
         {/* 散点图：价格 vs 成交量 */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <h4 className="text-gray-300 text-sm font-medium mb-3">{t('dataAnalysis.step3.correlationMatrix')}</h4>
+        <div className="bg-dark-surface border border-border-dark rounded-xl p-4">
+          <h4 className="text-text-on-dark text-sm font-sans font-medium mb-3">
+            {t('dataAnalysis.step3.correlationMatrix')}
+          </h4>
           <div className="h-52">
             <ResponsiveContainer width="100%" height="100%">
               <ScatterChart>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="price" stroke="#6B7280" tick={{ fontSize: 11, fill: '#9CA3AF' }} name="Price" />
-                <YAxis dataKey="volume" stroke="#6B7280" tick={{ fontSize: 11, fill: '#9CA3AF' }} name="Volume (M)" />
-                <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151', borderRadius: '8px', color: '#E5E7EB', fontSize: 12 }} />
-                <Scatter data={analysisData.scatterData} fill="#8B5CF6" opacity={0.6} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#30302e" />
+                <XAxis dataKey="price" stroke="#4d4c48" tick={{ fontSize: 11, fill: '#87867f' }} name="Price" />
+                <YAxis dataKey="volume" stroke="#4d4c48" tick={{ fontSize: 11, fill: '#87867f' }} name="Volume (M)" />
+                <Tooltip contentStyle={{ backgroundColor: '#30302e', border: '1px solid #4d4c48', borderRadius: '8px', color: '#faf9f5', fontSize: 12 }} />
+                <Scatter data={analysisData.scatterData} fill="#8b5a3c" opacity={0.6} />
               </ScatterChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* 回归分析 */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <h4 className="text-gray-300 text-sm font-medium mb-3">{t('dataAnalysis.step3.regression')}</h4>
+        <div className="bg-dark-surface border border-border-dark rounded-xl p-4">
+          <h4 className="text-text-on-dark text-sm font-sans font-medium mb-3">
+            {t('dataAnalysis.step3.regression')}
+          </h4>
           <div className="h-52">
             <ResponsiveContainer width="100%" height="100%">
               <ScatterChart>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="x" stroke="#6B7280" tick={{ fontSize: 11, fill: '#9CA3AF' }} name="R(t-1)" />
-                <YAxis dataKey="y" stroke="#6B7280" tick={{ fontSize: 11, fill: '#9CA3AF' }} name="R(t)" />
-                <Scatter data={analysisData.regressionData.slice(0, 100)} fill="#10B981" opacity={0.4} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#30302e" />
+                <XAxis dataKey="x" stroke="#4d4c48" tick={{ fontSize: 11, fill: '#87867f' }} name="R(t-1)" />
+                <YAxis dataKey="y" stroke="#4d4c48" tick={{ fontSize: 11, fill: '#87867f' }} name="R(t)" />
+                <Scatter data={analysisData.regressionData.slice(0, 100)} fill="#d97757" opacity={0.4} />
               </ScatterChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-2 text-xs text-gray-500 space-y-1">
+          <div className="mt-2 text-xs text-text-muted font-mono space-y-1">
             <p>y = {analysisData.slope.toFixed(4)}x + {analysisData.intercept.toFixed(6)}</p>
             <p>R² = {analysisData.rSquared.toFixed(4)}</p>
           </div>
         </div>
 
         {/* 假设检验结果 */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <h4 className="text-gray-300 text-sm font-medium mb-3">{t('dataAnalysis.step3.hypothesisTest')}</h4>
+        <div className="bg-dark-surface border border-border-dark rounded-xl p-4">
+          <h4 className="text-text-on-dark text-sm font-sans font-medium mb-3">
+            {t('dataAnalysis.step3.hypothesisTest')}
+          </h4>
           <div className="space-y-4 mt-4">
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-800/50 rounded-lg p-3">
-                <p className="text-gray-500 text-xs mb-1">H₀</p>
-                <p className="text-gray-300 text-sm">μ = 0</p>
+              <div className="bg-near-black rounded-lg p-3">
+                <p className="text-text-muted text-xs mb-1 font-sans">H₀</p>
+                <p className="text-text-on-dark text-sm font-mono">μ = 0</p>
               </div>
-              <div className="bg-gray-800/50 rounded-lg p-3">
-                <p className="text-gray-500 text-xs mb-1">H₁</p>
-                <p className="text-gray-300 text-sm">μ ≠ 0</p>
+              <div className="bg-near-black rounded-lg p-3">
+                <p className="text-text-muted text-xs mb-1 font-sans">H₁</p>
+                <p className="text-text-on-dark text-sm font-mono">μ ≠ 0</p>
               </div>
             </div>
 
@@ -162,16 +172,16 @@ const StatisticalModelPanel: React.FC = () => {
                 { label: t('dataAnalysis.step1.kurtosis'), value: analysisData.stats.kurtosis.toFixed(4) },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between text-sm">
-                  <span className="text-gray-500">{label}</span>
-                  <span className="text-gray-300 font-mono">{value}</span>
+                  <span className="text-text-muted font-sans">{label}</span>
+                  <span className="text-text-on-dark font-mono">{value}</span>
                 </div>
               ))}
             </div>
 
-            <div className={`rounded-lg p-3 text-sm font-medium ${
+            <div className={`rounded-lg p-3 text-sm font-sans font-medium ${
               analysisData.pValue < 0.05
-                ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                : 'bg-gray-800/50 text-gray-400'
+                ? 'bg-terracotta/10 text-coral border border-terracotta/20'
+                : 'bg-near-black text-text-muted'
             }`}>
               {analysisData.pValue < 0.05
                 ? 'p < 0.05 → Reject H₀ (significant)'

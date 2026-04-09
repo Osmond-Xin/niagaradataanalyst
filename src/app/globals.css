@@ -1,47 +1,102 @@
 /**
- * 全局样式
- * 暗色主题为主，Tailwind CSS基础配置
+ * 全局样式 — Claude 编辑风设计系统
+ * 色彩 token 在 tailwind.config.ts 中定义，此处设置 CSS 变量供 SVG 等直接引用
+ * 参考：docs/DESIGN.md
  */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── 浅色模式（默认）─────────────────────────────────────── */
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  /* 表面 */
+  --surface-page: #f5f4ed;       /* parchment */
+  --surface-card: #faf9f5;       /* ivory */
+  --surface-sand: #e8e6dc;       /* warm-sand */
+
+  /* 文字 */
+  --text-primary: #141413;
+  --text-secondary: #5e5d59;
+  --text-muted: #87867f;
+  --text-on-dark: #b0aea5;
+  --text-heading-dark: #faf9f5;
+
+  /* 强调色 */
+  --accent: #c96442;             /* terracotta */
+  --accent-coral: #d97757;
+
+  /* 边框 */
+  --border: #f0eee6;             /* border-cream */
+  --border-prominent: #e8e6dc;   /* border-warm */
+
+  /* 暗色区块 */
+  --dark-bg: #141413;
+  --dark-surface: #30302e;
+
+  /* 图表（Recharts / ReactFlow 可直接引用 CSS var）*/
+  --chart-1: #c96442;
+  --chart-2: #8b5a3c;
+  --chart-3: #c9a46a;
+  --chart-4: #d4b896;
+  --chart-5: #4d4c48;
 }
 
+/* ── 暗色模式覆写 ─────────────────────────────────────────── */
+.dark {
+  --surface-page: #141413;
+  --surface-card: #30302e;
+  --surface-sand: #3d3d3a;
+
+  --text-primary: #faf9f5;
+  --text-secondary: #b0aea5;
+  --text-muted: #87867f;
+
+  --border: #30302e;
+  --border-prominent: #4d4c48;
+}
+
+/* ── 基础排版 ─────────────────────────────────────────────── */
 body {
-  color: var(--foreground);
-  background: var(--background);
+  background-color: var(--surface-page);
+  color: var(--text-primary);
+  /* 抗锯齿 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* 自定义滚动条样式 */
+/* ── 自定义滚动条（暖色调）────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #f0eee6;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #d1cfc5;
   border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #b0aea5;
 }
 
-/* 低调脉动动画 - AI小部件使用 */
+.dark ::-webkit-scrollbar-track {
+  background: #30302e;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #4d4c48;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #5e5d59;
+}
+
+/* ── AI 小部件脉动动画（terracotta 光晕）─────────────────── */
 @keyframes breathe {
   0%, 100% {
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-    opacity: 0.3;
+    box-shadow: 0 4px 12px rgba(201, 100, 66, 0.15);
+    opacity: 0.4;
   }
   50% {
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 20px rgba(201, 100, 66, 0.35);
     opacity: 1;
   }
 }
@@ -50,7 +105,7 @@ body {
   animation: breathe 4s ease-in-out infinite;
 }
 
-/* 终端闪烁光标 */
+/* ── 终端闪烁光标 ─────────────────────────────────────────── */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
@@ -58,4 +113,14 @@ body {
 
 .animate-blink {
   animation: blink 1s step-end infinite;
+}
+
+/* ── 章节交替：暗色区块辅助类 ─────────────────────────────── */
+.section-dark {
+  background-color: #141413;
+  color: #faf9f5;
+}
+.section-light {
+  background-color: #f5f4ed;
+  color: #141413;
 }

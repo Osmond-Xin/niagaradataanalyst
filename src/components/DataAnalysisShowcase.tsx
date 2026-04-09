@@ -42,11 +42,11 @@ const DataAnalysisShowcase: React.FC = () => {
     };
   }, []);
 
-  /** 信号颜色 */
+  /** 信号颜色（暖色调色板）*/
   const signalColor = (signal: string) => {
-    if (signal === 'bullish') return 'text-green-400';
+    if (signal === 'bullish') return 'text-emerald-400';
     if (signal === 'bearish') return 'text-red-400';
-    return 'text-yellow-400';
+    return 'text-amber-400';
   };
 
   const signalLabel = (signal: string) => {
@@ -59,27 +59,30 @@ const DataAnalysisShowcase: React.FC = () => {
     <div className="space-y-16">
       {/* 概述 */}
       <div className="text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold mb-4">
-          <span className="bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-            {t('dataAnalysis.pageTitle')}
-          </span>
+        <p className="text-label font-sans font-medium text-terracotta uppercase tracking-widest mb-4">
+          Data Analysis · Methodology
+        </p>
+        <h1 className="font-display font-medium text-subhead lg:text-subhead-lg text-text-primary leading-[1.10] mb-4">
+          {t('dataAnalysis.pageTitle')}
         </h1>
-        <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-6">
+        <p className="text-body font-sans text-text-secondary max-w-3xl mx-auto mb-8">
           {t('dataAnalysis.pageDescription')}
         </p>
-        <div className="bg-gray-900/50 border border-gray-800 rounded-xl p-6 max-w-2xl mx-auto">
-          <h3 className="text-gray-300 font-medium mb-2">{t('dataAnalysis.overview')}</h3>
-          <p className="text-gray-500 text-sm">{t('dataAnalysis.overviewDescription')}</p>
+        <div className="bg-ivory border border-border-cream rounded-xl p-6 max-w-2xl mx-auto shadow-whisper">
+          <h3 className="font-sans font-medium text-text-primary mb-2">{t('dataAnalysis.overview')}</h3>
+          <p className="text-body-sm font-sans text-text-muted">{t('dataAnalysis.overviewDescription')}</p>
         </div>
       </div>
 
       {/* 第一步：数据探索与清洗 */}
       <section>
-        <h3 className="text-xl font-bold text-gray-100 mb-2">{t('dataAnalysis.step1.title')}</h3>
-        <p className="text-gray-400 text-sm mb-6">{t('dataAnalysis.step1.description')}</p>
+        <h3 className="font-display font-medium text-feature text-text-primary mb-2">
+          {t('dataAnalysis.step1.title')}
+        </h3>
+        <p className="text-body-sm font-sans text-text-muted mb-6">{t('dataAnalysis.step1.description')}</p>
 
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h4 className="text-gray-300 font-medium mb-4">{t('dataAnalysis.step1.stats')}</h4>
+        <div className="bg-dark-surface border border-border-dark rounded-xl p-6">
+          <h4 className="text-text-on-dark font-sans font-medium mb-4">{t('dataAnalysis.step1.stats')}</h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
               { label: t('dataAnalysis.step1.mean'), value: step1Data.mean.toFixed(2) },
@@ -89,13 +92,13 @@ const DataAnalysisShowcase: React.FC = () => {
               { label: t('dataAnalysis.step1.skewness'), value: step1Data.skewness.toFixed(4) },
               { label: t('dataAnalysis.step1.kurtosis'), value: step1Data.kurtosis.toFixed(4) },
             ].map(({ label, value }) => (
-              <div key={label} className="bg-gray-800/50 rounded-lg p-3 text-center">
-                <p className="text-gray-500 text-xs mb-1">{label}</p>
-                <p className="text-gray-200 font-mono text-lg font-semibold">{value}</p>
+              <div key={label} className="bg-near-black rounded-lg p-3 text-center">
+                <p className="text-text-muted text-xs mb-1 font-sans">{label}</p>
+                <p className="text-text-on-dark font-mono text-lg font-semibold">{value}</p>
               </div>
             ))}
           </div>
-          <p className="text-gray-600 text-xs mt-4">
+          <p className="text-text-muted text-xs mt-4 font-sans">
             N = {syntheticStockData.length} trading days | Synthetic data (seed=42)
           </p>
         </div>
@@ -113,24 +116,28 @@ const DataAnalysisShowcase: React.FC = () => {
 
       {/* 第四步：分析结论与决策框架 */}
       <section>
-        <h3 className="text-xl font-bold text-gray-100 mb-2">{t('dataAnalysis.step4.title')}</h3>
-        <p className="text-gray-400 text-sm mb-6">{t('dataAnalysis.step4.description')}</p>
+        <h3 className="font-display font-medium text-feature text-text-primary mb-2">
+          {t('dataAnalysis.step4.title')}
+        </h3>
+        <p className="text-body-sm font-sans text-text-muted mb-6">{t('dataAnalysis.step4.description')}</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* 信号汇总 */}
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <h4 className="text-gray-300 font-medium mb-4">{t('dataAnalysis.step4.signalSummary')}</h4>
+          <div className="bg-dark-surface border border-border-dark rounded-xl p-6">
+            <h4 className="text-text-on-dark font-sans font-medium mb-4">
+              {t('dataAnalysis.step4.signalSummary')}
+            </h4>
             <div className="space-y-3">
               {[
                 { label: 'RSI', signal: signalSummary.rsiSignal, value: `${signalSummary.rsiValue.toFixed(1)}` },
                 { label: 'MACD', signal: signalSummary.macdSignal, value: `${signalSummary.macdValue.toFixed(4)}` },
                 { label: 'Trend (20d)', signal: signalSummary.trendSignal, value: `${signalSummary.trendPct.toFixed(2)}%` },
               ].map(({ label, signal, value }) => (
-                <div key={label} className="flex items-center justify-between bg-gray-800/30 rounded-lg p-3">
-                  <span className="text-gray-400 text-sm">{label}</span>
+                <div key={label} className="flex items-center justify-between bg-near-black rounded-lg p-3">
+                  <span className="text-text-muted text-sm font-sans">{label}</span>
                   <div className="flex items-center gap-3">
-                    <span className="text-gray-500 font-mono text-sm">{value}</span>
-                    <span className={`font-medium text-sm ${signalColor(signal)}`}>
+                    <span className="text-text-muted font-mono text-sm">{value}</span>
+                    <span className={`font-medium text-sm font-sans ${signalColor(signal)}`}>
                       {signalLabel(signal)}
                     </span>
                   </div>
@@ -140,25 +147,22 @@ const DataAnalysisShowcase: React.FC = () => {
           </div>
 
           {/* 方法论总结 */}
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <h4 className="text-gray-300 font-medium mb-4">{t('dataAnalysis.step4.methodology')}</h4>
-            <div className="space-y-3 text-sm text-gray-400">
-              <div className="flex gap-3">
-                <span className="text-blue-400 font-bold shrink-0">01</span>
-                <p>{t('dataAnalysis.step1.title')}</p>
-              </div>
-              <div className="flex gap-3">
-                <span className="text-green-400 font-bold shrink-0">02</span>
-                <p>{t('dataAnalysis.step2.title')}</p>
-              </div>
-              <div className="flex gap-3">
-                <span className="text-purple-400 font-bold shrink-0">03</span>
-                <p>{t('dataAnalysis.step3.title')}</p>
-              </div>
-              <div className="flex gap-3">
-                <span className="text-amber-400 font-bold shrink-0">04</span>
-                <p>{t('dataAnalysis.step4.title')}</p>
-              </div>
+          <div className="bg-ivory border border-border-cream rounded-xl p-6 shadow-whisper">
+            <h4 className="text-text-primary font-sans font-medium mb-4">
+              {t('dataAnalysis.step4.methodology')}
+            </h4>
+            <div className="space-y-3 text-body-sm text-text-secondary font-sans">
+              {[
+                { num: '01', key: 'dataAnalysis.step1.title', color: 'text-terracotta' },
+                { num: '02', key: 'dataAnalysis.step2.title', color: 'text-coral' },
+                { num: '03', key: 'dataAnalysis.step3.title', color: 'text-terracotta' },
+                { num: '04', key: 'dataAnalysis.step4.title', color: 'text-coral' },
+              ].map(({ num, key, color }) => (
+                <div key={num} className="flex gap-3">
+                  <span className={`${color} font-bold shrink-0`}>{num}</span>
+                  <p>{t(key)}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

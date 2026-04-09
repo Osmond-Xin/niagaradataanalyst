@@ -15,13 +15,17 @@ export const translations = {
       logo: 'NiagaraDataAnalyst',
     },
     hero: {
+      overline: 'AI时代软件架构师',
       title: 'AI时代一人军团',
       subtitle: '产品 × 架构 × 数据',
       description: '18年软件架构经验，专注于无服务器架构、AI集成和数据工程。从0到1打造InterviewPass——一个AI驱动的技术面试平台。',
       cta: '查看案例研究',
+      secondary: '关于我',
+      tagline: '产品 · 架构 · 数据',
     },
     capabilities: {
       sectionTitle: '能力证明',
+      sectionHeading: '一个人，全栈能力',
       engineering: {
         title: '工程能力',
         description: '100% 无服务器架构',
@@ -414,13 +418,17 @@ export const translations = {
       logo: 'NiagaraDataAnalyst',
     },
     hero: {
+      overline: 'Software Architect for the AI Era',
       title: 'AI-Era One-Person Army',
       subtitle: 'Product × Architecture × Data',
       description: '18 years of software architecture experience, specializing in serverless architecture, AI integration, and data engineering. Built InterviewPass from 0 to 1 — an AI-powered technical interview platform.',
       cta: 'View Case Study',
+      secondary: 'About Me',
+      tagline: 'Product · Architecture · Data',
     },
     capabilities: {
       sectionTitle: 'Proof of Capabilities',
+      sectionHeading: 'One Person. Full-Stack Capability.',
       engineering: {
         title: 'Engineering',
         description: '100% Serverless Architecture',

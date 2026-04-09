@@ -73,8 +73,10 @@ const TechnicalIndicatorChart: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-xl font-bold text-gray-100 mb-2">{t('dataAnalysis.step2.title')}</h3>
-        <p className="text-gray-400 text-sm">{t('dataAnalysis.step2.description')}</p>
+        <h3 className="font-display font-medium text-feature text-text-primary mb-2">
+          {t('dataAnalysis.step2.title')}
+        </h3>
+        <p className="text-body-sm font-sans text-text-muted">{t('dataAnalysis.step2.description')}</p>
       </div>
 
       {/* 指标切换按钮 */}
@@ -83,10 +85,10 @@ const TechnicalIndicatorChart: React.FC = () => {
           <button
             key={key}
             onClick={() => toggleIndicator(key)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors
+            className={`px-3 py-1.5 rounded-lg text-body-sm font-sans font-medium transition-colors
               ${activeIndicators.has(key)
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                ? 'bg-terracotta text-ivory'
+                : 'bg-warm-sand text-text-secondary hover:text-text-primary'
               }`}
           >
             {label}
@@ -95,33 +97,33 @@ const TechnicalIndicatorChart: React.FC = () => {
       </div>
 
       {/* 价格图表 + MA/EMA/布林带 */}
-      <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-        <h4 className="text-gray-300 text-sm font-medium mb-3">{t('dataAnalysis.step2.price')}</h4>
+      <div className="bg-dark-surface border border-border-dark rounded-xl p-4">
+        <h4 className="text-text-on-dark text-sm font-sans font-medium mb-3">{t('dataAnalysis.step2.price')}</h4>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="date" stroke="#6B7280" tick={{ fontSize: 10, fill: '#9CA3AF' }} interval={19} />
-              <YAxis stroke="#6B7280" tick={{ fontSize: 11, fill: '#9CA3AF' }} domain={['auto', 'auto']} />
-              <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151', borderRadius: '8px', color: '#E5E7EB', fontSize: 12 }} />
-              <Line type="monotone" dataKey="close" stroke="#E5E7EB" strokeWidth={1.5} dot={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#30302e" />
+              <XAxis dataKey="date" stroke="#4d4c48" tick={{ fontSize: 10, fill: '#87867f' }} interval={19} />
+              <YAxis stroke="#4d4c48" tick={{ fontSize: 11, fill: '#87867f' }} domain={['auto', 'auto']} />
+              <Tooltip contentStyle={{ backgroundColor: '#30302e', border: '1px solid #4d4c48', borderRadius: '8px', color: '#faf9f5', fontSize: 12 }} />
+              <Line type="monotone" dataKey="close" stroke="#faf9f5" strokeWidth={1.5} dot={false} />
               {activeIndicators.has('ma') && (
                 <>
-                  <Line type="monotone" dataKey="ma20" stroke="#F59E0B" strokeWidth={1} dot={false} strokeDasharray="4 2" />
-                  <Line type="monotone" dataKey="ma50" stroke="#EF4444" strokeWidth={1} dot={false} strokeDasharray="4 2" />
+                  <Line type="monotone" dataKey="ma20" stroke="#c9a46a" strokeWidth={1} dot={false} strokeDasharray="4 2" />
+                  <Line type="monotone" dataKey="ma50" stroke="#c96442" strokeWidth={1} dot={false} strokeDasharray="4 2" />
                 </>
               )}
               {activeIndicators.has('ema') && (
                 <>
-                  <Line type="monotone" dataKey="ema12" stroke="#10B981" strokeWidth={1} dot={false} />
-                  <Line type="monotone" dataKey="ema26" stroke="#8B5CF6" strokeWidth={1} dot={false} />
+                  <Line type="monotone" dataKey="ema12" stroke="#d97757" strokeWidth={1} dot={false} />
+                  <Line type="monotone" dataKey="ema26" stroke="#8b5a3c" strokeWidth={1} dot={false} />
                 </>
               )}
               {activeIndicators.has('bollinger') && (
                 <>
-                  <Line type="monotone" dataKey="bollingerUpper" stroke="#06B6D4" strokeWidth={1} dot={false} opacity={0.6} />
-                  <Line type="monotone" dataKey="bollingerMiddle" stroke="#06B6D4" strokeWidth={1} dot={false} strokeDasharray="4 2" opacity={0.4} />
-                  <Line type="monotone" dataKey="bollingerLower" stroke="#06B6D4" strokeWidth={1} dot={false} opacity={0.6} />
+                  <Line type="monotone" dataKey="bollingerUpper" stroke="#d4b896" strokeWidth={1} dot={false} opacity={0.6} />
+                  <Line type="monotone" dataKey="bollingerMiddle" stroke="#d4b896" strokeWidth={1} dot={false} strokeDasharray="4 2" opacity={0.4} />
+                  <Line type="monotone" dataKey="bollingerLower" stroke="#d4b896" strokeWidth={1} dot={false} opacity={0.6} />
                 </>
               )}
             </LineChart>
@@ -130,15 +132,15 @@ const TechnicalIndicatorChart: React.FC = () => {
       </div>
 
       {/* 成交量 */}
-      <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-        <h4 className="text-gray-300 text-sm font-medium mb-3">{t('dataAnalysis.step2.volume')}</h4>
+      <div className="bg-dark-surface border border-border-dark rounded-xl p-4">
+        <h4 className="text-text-on-dark text-sm font-sans font-medium mb-3">{t('dataAnalysis.step2.volume')}</h4>
         <div className="h-32">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="date" stroke="#6B7280" tick={{ fontSize: 10, fill: '#9CA3AF' }} interval={19} />
-              <YAxis stroke="#6B7280" tick={{ fontSize: 10, fill: '#9CA3AF' }} />
-              <Bar dataKey="volume" fill="#3B82F6" opacity={0.6} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#30302e" />
+              <XAxis dataKey="date" stroke="#4d4c48" tick={{ fontSize: 10, fill: '#87867f' }} interval={19} />
+              <YAxis stroke="#4d4c48" tick={{ fontSize: 10, fill: '#87867f' }} />
+              <Bar dataKey="volume" fill="#c96442" opacity={0.6} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -146,17 +148,17 @@ const TechnicalIndicatorChart: React.FC = () => {
 
       {/* RSI面板 */}
       {activeIndicators.has('rsi') && (
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <h4 className="text-gray-300 text-sm font-medium mb-3">{t('dataAnalysis.step2.rsi')}</h4>
+        <div className="bg-dark-surface border border-border-dark rounded-xl p-4">
+          <h4 className="text-text-on-dark text-sm font-sans font-medium mb-3">{t('dataAnalysis.step2.rsi')}</h4>
           <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="date" stroke="#6B7280" tick={{ fontSize: 10, fill: '#9CA3AF' }} interval={19} />
-                <YAxis stroke="#6B7280" tick={{ fontSize: 11, fill: '#9CA3AF' }} domain={[0, 100]} />
-                <ReferenceLine y={70} stroke="#EF4444" strokeDasharray="3 3" label={{ value: t('dataAnalysis.step2.overbought'), fill: '#EF4444', fontSize: 10 }} />
-                <ReferenceLine y={30} stroke="#10B981" strokeDasharray="3 3" label={{ value: t('dataAnalysis.step2.oversold'), fill: '#10B981', fontSize: 10 }} />
-                <Line type="monotone" dataKey="rsi" stroke="#F59E0B" strokeWidth={1.5} dot={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#30302e" />
+                <XAxis dataKey="date" stroke="#4d4c48" tick={{ fontSize: 10, fill: '#87867f' }} interval={19} />
+                <YAxis stroke="#4d4c48" tick={{ fontSize: 11, fill: '#87867f' }} domain={[0, 100]} />
+                <ReferenceLine y={70} stroke="#c96442" strokeDasharray="3 3" label={{ value: t('dataAnalysis.step2.overbought'), fill: '#c96442', fontSize: 10 }} />
+                <ReferenceLine y={30} stroke="#c9a46a" strokeDasharray="3 3" label={{ value: t('dataAnalysis.step2.oversold'), fill: '#c9a46a', fontSize: 10 }} />
+                <Line type="monotone" dataKey="rsi" stroke="#c9a46a" strokeWidth={1.5} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -165,18 +167,18 @@ const TechnicalIndicatorChart: React.FC = () => {
 
       {/* MACD面板 */}
       {activeIndicators.has('macd') && (
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
-          <h4 className="text-gray-300 text-sm font-medium mb-3">{t('dataAnalysis.step2.macd')}</h4>
+        <div className="bg-dark-surface border border-border-dark rounded-xl p-4">
+          <h4 className="text-text-on-dark text-sm font-sans font-medium mb-3">{t('dataAnalysis.step2.macd')}</h4>
           <div className="h-40">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="date" stroke="#6B7280" tick={{ fontSize: 10, fill: '#9CA3AF' }} interval={19} />
-                <YAxis stroke="#6B7280" tick={{ fontSize: 11, fill: '#9CA3AF' }} />
-                <ReferenceLine y={0} stroke="#6B7280" />
-                <Bar dataKey="histogram" fill="#3B82F6" opacity={0.5} />
-                <Line type="monotone" dataKey="macd" stroke="#EF4444" strokeWidth={1.5} dot={false} />
-                <Line type="monotone" dataKey="signal" stroke="#10B981" strokeWidth={1.5} dot={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#30302e" />
+                <XAxis dataKey="date" stroke="#4d4c48" tick={{ fontSize: 10, fill: '#87867f' }} interval={19} />
+                <YAxis stroke="#4d4c48" tick={{ fontSize: 11, fill: '#87867f' }} />
+                <ReferenceLine y={0} stroke="#4d4c48" />
+                <Bar dataKey="histogram" fill="#c96442" opacity={0.5} />
+                <Line type="monotone" dataKey="macd" stroke="#d97757" strokeWidth={1.5} dot={false} />
+                <Line type="monotone" dataKey="signal" stroke="#c9a46a" strokeWidth={1.5} dot={false} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>

@@ -1,18 +1,33 @@
 /**
  * 根布局组件
- * 包含全局SEO Metadata、LanguageProvider、Navbar和暗色主题
+ * Claude 编辑风设计系统：羊皮纸基底 + 暖赤陶强调
+ * 字体：Fraunces（display，500 权重）+ Inter（正文）
+ * 默认浅色模式（darkMode: 'class' 可按需添加 dark className）
  */
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Fraunces } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import Navbar from '@/components/Navbar';
 import AiAgentWidget from '@/components/AiAgentWidget';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 
-const inter = Inter({ subsets: ['latin'] });
+// Inter：正文 / UI — 400 & 500 权重
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-inter',
+});
 
-/** 全局SEO元数据 */
+// Fraunces：标题 display 字体（类 Anthropic Serif）— 500 权重
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['500'],
+  variable: '--font-fraunces',
+  display: 'swap',
+});
+
+/** 全局 SEO 元数据 */
 export const metadata: Metadata = {
   title: {
     default: 'NiagaraDataAnalyst - AI时代软件架构师',
@@ -55,8 +70,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.className} bg-gray-950 text-gray-100 antialiased`}>
+    // 默认浅色模式（移除了硬编码的 className="dark"）
+    <html lang="en">
+      <body className={`${inter.variable} ${fraunces.variable} font-sans bg-parchment text-text-primary antialiased`}>
         <GoogleAnalytics />
         <LanguageProvider>
           <Navbar />
