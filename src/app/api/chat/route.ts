@@ -1,15 +1,15 @@
 /**
- * Vertex AI 聊天 API Route
- * 使用 /v1/publishers/google/models/{model}:streamGenerateContent + API Key
- * 解析 JSON 数组流响应，转发给前端
+ * Google AI Studio 聊天 API Route
+ * 使用 generativelanguage.googleapis.com + GOOGLE_AI_API_KEY
+ * 解析 JSON 响应，转发给前端
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { aiPersona } from '@/data/ai-persona';
 
-/** Vertex AI 配置 */
+/** Google AI Studio 配置（API Key 认证，对应 generativelanguage.googleapis.com） */
 const GOOGLE_AI_API_KEY = process.env.GOOGLE_AI_API_KEY;
-const MODEL_ID = process.env.GEMINI_MODEL_ID || 'gemini-3-flash-preview';
-const API_URL = `https://aiplatform.googleapis.com/v1/publishers/google/models/${MODEL_ID}:generateContent`;
+const MODEL_ID = process.env.GEMINI_MODEL_ID || 'gemini-2.0-flash';
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_ID}:generateContent`;
 
 /** 限流配置：每IP每分钟50次，全局每天300次 */
 const RATE_LIMIT_WINDOW_MS = 60_000;
