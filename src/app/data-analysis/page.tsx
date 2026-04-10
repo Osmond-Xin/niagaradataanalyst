@@ -1,20 +1,25 @@
 /**
- * 数据分析方法论页面
- * 展示技术指标分析和统计建模能力
+ * 数据分析页面 — H.E.A.D. Competition 2026
+ * 展示 Hamilton Urban Forest 气候脆弱性分析竞赛作品与获奖证书
  */
 import type { Metadata } from 'next';
-import DataAnalysisShowcase from '@/components/DataAnalysisShowcase';
+import HEAD2026Showcase from '@/components/HEAD2026Showcase';
 
 export const metadata: Metadata = {
-  title: '数据分析方法论 - 技术指标分析与统计建模',
-  description: '展示数据分析全流程：数据探索、技术指标计算(MA/RSI/MACD)、统计建模、可视化分析。Data Analysis, Technical Indicators, Statistical Modeling.',
-  keywords: ['数据分析', 'Data Analysis', '技术指标', 'Technical Indicators', '统计建模', 'Statistical Modeling', 'MA', 'RSI', 'MACD'],
+  title: 'H.E.A.D. Competition 2026 — Hamilton Urban Forest Climate Vulnerability Analysis',
+  description: 'H.E.A.D. Competition 2026 竞赛作品：Hamilton 城市森林气候脆弱性分析，涵盖数据清洗、GBIF验证、Santamour分析、脆弱性评分与重植策略五大模块。University of Niagara Falls Canada.',
+  keywords: [
+    'H.E.A.D. Competition', 'Hamilton Urban Forest', 'Climate Vulnerability',
+    'Data Analysis', 'Urban Ecology', 'GIS', 'Python', 'Pandas',
+    'Biodiversity', 'Replanting Strategy', 'Santamour Rule',
+    '城市森林', '气候脆弱性', '数据分析竞赛',
+  ],
 };
 
 export default function DataAnalysisPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <DataAnalysisShowcase />
+      <HEAD2026Showcase />
     </div>
   );
 }
