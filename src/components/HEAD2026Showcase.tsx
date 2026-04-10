@@ -476,6 +476,119 @@ const HEAD2026Showcase: React.FC = () => {
         </div>
       </section>
 
+      {/* ══ 6. CityLAB 项目展示会（2026年4月7日受邀展示） ══ */}
+      <section>
+        <SectionLabel label={lang === 'zh' ? 'CityLAB 项目展示会' : 'CityLAB Project Showcase'} />
+
+        {/* 邀请说明 */}
+        <div className="mb-6 flex flex-col sm:flex-row items-start gap-4
+                        p-5 rounded-xl
+                        bg-blue-50 dark:bg-blue-900/10
+                        border border-blue-200 dark:border-blue-800">
+          <span className="flex-shrink-0 text-3xl leading-none mt-0.5">🏙️</span>
+          <div className="space-y-1.5">
+            <p className="font-display font-medium text-body-serif text-text-primary leading-snug">
+              {lang === 'zh'
+                ? '受邀参加 Winter 2026 CityLAB 项目展示会'
+                : 'Invited to Winter 2026 CityLAB Project Showcase'}
+            </p>
+            <p className="text-body-sm font-sans text-text-muted">
+              {lang === 'zh'
+                ? '2026年4月7日 · 下午1:00–3:30 · 58 Jackson St W · CityLAB 空间'
+                : 'April 7, 2026 · 1:00 PM – 3:30 PM · 58 Jackson St W · CityLAB Space'}
+            </p>
+            <p className="text-body-sm font-sans text-text-muted leading-relaxed">
+              {lang === 'zh'
+                ? '凭借 H.E.A.D. 2026 竞赛第一名，团队受 CityLAB 邀请，在 Winter 2026 项目展示会上呈现研究成果。团队制作了信息图海报与 3 分钟演示，向城市规划从业者和社区合作伙伴展示 Hamilton 城市森林气候脆弱性分析。'
+                : 'As first-prize winners of H.E.A.D. 2026, our team was invited by CityLAB to present at the Winter 2026 Project Showcase. We prepared an infographic poster and a 3-minute presentation to share our Hamilton Urban Forest Climate Vulnerability Analysis with urban planners and community partners.'}
+            </p>
+          </div>
+        </div>
+
+        {/* 材料展示区 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* 左：PDF 下载 */}
+          <div className="space-y-3">
+            <p className="text-label font-sans font-medium text-text-muted uppercase tracking-widest">
+              {lang === 'zh' ? '展示材料' : 'Presentation Materials'}
+            </p>
+            <a
+              href="/head2026/City Lab Presentation.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 p-4 rounded-xl
+                         bg-ivory dark:bg-dark-surface
+                         border border-border-cream dark:border-border-dark
+                         hover:border-terracotta shadow-whisper hover:shadow-ring-warm
+                         transition-all duration-300"
+            >
+              <span className="flex-shrink-0 w-10 h-10 rounded-lg bg-terracotta/10 text-terracotta
+                               flex items-center justify-center text-lg">📋</span>
+              <div className="min-w-0 flex-1">
+                <p className="font-display font-medium text-body-serif text-text-primary
+                               group-hover:text-terracotta transition-colors duration-200 leading-snug">
+                  {lang === 'zh' ? 'CityLAB 演示文稿' : 'CityLAB Presentation'}
+                </p>
+                <p className="text-sm font-sans text-text-muted mt-0.5">PDF</p>
+              </div>
+              <span className="flex-shrink-0 text-terracotta text-sm font-medium
+                               group-hover:translate-x-0.5 transition-transform duration-200">↗</span>
+            </a>
+            <a
+              href="/head2026/CityLab Infographic.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-4 p-4 rounded-xl
+                         bg-ivory dark:bg-dark-surface
+                         border border-border-cream dark:border-border-dark
+                         hover:border-terracotta shadow-whisper hover:shadow-ring-warm
+                         transition-all duration-300"
+            >
+              <span className="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30
+                               text-amber-700 dark:text-amber-400
+                               flex items-center justify-center text-lg">🖼</span>
+              <div className="min-w-0 flex-1">
+                <p className="font-display font-medium text-body-serif text-text-primary
+                               group-hover:text-terracotta transition-colors duration-200 leading-snug">
+                  {lang === 'zh' ? 'CityLAB 信息图海报' : 'CityLAB Infographic Poster'}
+                </p>
+                <p className="text-sm font-sans text-text-muted mt-0.5">PDF</p>
+              </div>
+              <span className="flex-shrink-0 text-terracotta text-sm font-medium
+                               group-hover:translate-x-0.5 transition-transform duration-200">↗</span>
+            </a>
+          </div>
+
+          {/* 右：Canva 交互式信息图（iframe 嵌入，embed URL 比分享链接更稳定） */}
+          <div className="space-y-3">
+            <p className="text-label font-sans font-medium text-text-muted uppercase tracking-widest">
+              {lang === 'zh' ? '交互式信息图' : 'Interactive Infographic'}
+            </p>
+            <div className="rounded-xl overflow-hidden border border-border-cream dark:border-border-dark shadow-whisper">
+              <iframe
+                src="https://www.canva.com/design/DAHFGQaB1-o/2Z61hedjKJL2WgK1xv0zOQ/view?embed"
+                className="w-full aspect-video block"
+                allowFullScreen
+                loading="lazy"
+                title="CityLAB Interactive Infographic"
+              />
+            </div>
+            <a
+              href="https://www.canva.com/design/DAHFGQaB1-o/2Z61hedjKJL2WgK1xv0zOQ/view?utm_content=DAHFGQaB1-o&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he6b310ba46"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-body-sm font-sans
+                         text-text-muted hover:text-terracotta transition-colors duration-200"
+            >
+              <span>{lang === 'zh' ? '在 Canva 中查看全尺寸' : 'View full size on Canva'}</span>
+              <span>↗</span>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
     </div>
   );
 };

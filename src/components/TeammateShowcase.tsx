@@ -349,6 +349,109 @@ const TeammateShowcase: React.FC<{ person: TeammatePerson }> = ({ person }) => (
       </div>
     </section>
 
+    {/* ══ CityLAB Project Showcase — April 7, 2026 ══ */}
+    <section>
+      <SectionLabel label="CityLAB Project Showcase" />
+
+      {/* Event announcement */}
+      <div className="mb-6 flex flex-col sm:flex-row items-start gap-4
+                      p-5 rounded-xl bg-blue-50 border border-blue-200">
+        <span className="flex-shrink-0 text-3xl leading-none mt-0.5">🏙️</span>
+        <div className="space-y-1.5">
+          <p className="font-display font-medium text-body-serif text-text-primary leading-snug">
+            Invited to Winter 2026 CityLAB Project Showcase
+          </p>
+          <p className="text-body-sm font-sans text-text-muted">
+            April 7, 2026 · 1:00 PM – 3:30 PM · 58 Jackson St W · CityLAB Space
+          </p>
+          <p className="text-body-sm font-sans text-text-muted leading-relaxed">
+            As first-prize winners of H.E.A.D. 2026, our team was invited by CityLAB to present at the
+            Winter 2026 Project Showcase. We prepared an infographic poster and a 3-minute presentation
+            to share our Hamilton Urban Forest Climate Vulnerability Analysis with urban planners and
+            community partners.
+          </p>
+        </div>
+      </div>
+
+      {/* Materials grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* Left: PDF Downloads */}
+        <div className="space-y-3">
+          <p className="text-label font-sans font-medium text-text-muted uppercase tracking-widest">
+            Presentation Materials
+          </p>
+          <a
+            href="/head2026/City Lab Presentation.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-4 p-4 rounded-xl bg-ivory
+                       border border-border-cream hover:border-terracotta
+                       shadow-whisper hover:shadow-ring-warm transition-all duration-300"
+          >
+            <span className="flex-shrink-0 w-10 h-10 rounded-lg bg-terracotta/10 text-terracotta
+                             flex items-center justify-center text-lg">📋</span>
+            <div className="min-w-0 flex-1">
+              <p className="font-display font-medium text-body-serif text-text-primary
+                             group-hover:text-terracotta transition-colors duration-200 leading-snug">
+                CityLAB Presentation
+              </p>
+              <p className="text-sm font-sans text-text-muted mt-0.5">PDF</p>
+            </div>
+            <span className="flex-shrink-0 text-terracotta text-sm font-medium
+                             group-hover:translate-x-0.5 transition-transform duration-200">↗</span>
+          </a>
+          <a
+            href="/head2026/CityLab Infographic.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-4 p-4 rounded-xl bg-ivory
+                       border border-border-cream hover:border-terracotta
+                       shadow-whisper hover:shadow-ring-warm transition-all duration-300"
+          >
+            <span className="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100
+                             text-amber-700 flex items-center justify-center text-lg">🖼</span>
+            <div className="min-w-0 flex-1">
+              <p className="font-display font-medium text-body-serif text-text-primary
+                             group-hover:text-terracotta transition-colors duration-200 leading-snug">
+                CityLAB Infographic Poster
+              </p>
+              <p className="text-sm font-sans text-text-muted mt-0.5">PDF</p>
+            </div>
+            <span className="flex-shrink-0 text-terracotta text-sm font-medium
+                             group-hover:translate-x-0.5 transition-transform duration-200">↗</span>
+          </a>
+        </div>
+
+        {/* Right: Canva embedded interactive infographic */}
+        <div className="space-y-3">
+          <p className="text-label font-sans font-medium text-text-muted uppercase tracking-widest">
+            Interactive Infographic
+          </p>
+          <div className="rounded-xl overflow-hidden border border-border-cream shadow-whisper">
+            <iframe
+              src="https://www.canva.com/design/DAHFGQaB1-o/2Z61hedjKJL2WgK1xv0zOQ/view?embed"
+              className="w-full aspect-video block"
+              allowFullScreen
+              loading="lazy"
+              title="CityLAB Interactive Infographic"
+            />
+          </div>
+          <a
+            href="https://www.canva.com/design/DAHFGQaB1-o/2Z61hedjKJL2WgK1xv0zOQ/view?utm_content=DAHFGQaB1-o&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he6b310ba46"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-body-sm font-sans
+                       text-text-muted hover:text-terracotta transition-colors duration-200"
+          >
+            <span>View full size on Canva</span>
+            <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
   </div>
 );
 
