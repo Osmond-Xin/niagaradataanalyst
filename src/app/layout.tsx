@@ -8,8 +8,6 @@ import type { Metadata } from 'next';
 import { Inter, Fraunces } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '@/contexts/LanguageContext';
-import Navbar from '@/components/Navbar';
-import AiAgentWidget from '@/components/AiAgentWidget';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 // Inter：正文 / UI — 400 & 500 权重
@@ -75,11 +73,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${fraunces.variable} font-sans bg-parchment text-text-primary antialiased`}>
         <GoogleAnalytics />
         <LanguageProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <AiAgentWidget />
+          {children}
         </LanguageProvider>
       </body>
     </html>
