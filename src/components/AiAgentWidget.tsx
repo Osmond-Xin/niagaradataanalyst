@@ -188,35 +188,34 @@ const AiAgentWidget: React.FC = () => {
           {/* 标题栏 */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border-cream bg-ivory/95">
             <h3 className="font-display font-medium text-feature text-text-primary">{t('ai.widgetTitle')}</h3>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-text-muted hover:text-text-primary transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-2">
+              {/* 始终可见的联系按钮 */}
+              <button
+                onClick={insertContactCard}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full
+                           border border-terracotta/30 text-terracotta text-label font-sans
+                           hover:bg-terracotta/5 transition-colors duration-200"
+              >
+                <span>📇</span>
+                <span className="hidden sm:inline">{t('ai.contactChip')}</span>
+              </button>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="text-text-muted hover:text-text-primary transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* 消息区域 */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.length === 0 && (
-              <>
-                <div className="bg-warm-sand/50 rounded-lg p-3 text-body-sm font-sans text-text-secondary">
-                  {t('ai.greeting')}
-                </div>
-
-                {/* 常驻联系按钮 */}
-                <button
-                  onClick={insertContactCard}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5
-                             rounded-full border border-terracotta/30 text-terracotta
-                             text-label font-sans hover:bg-terracotta/5 transition-colors duration-200"
-                >
-                  <span>📇</span>
-                  <span>{t('ai.contactChip')}</span>
-                </button>
-              </>
+              <div className="bg-warm-sand/50 rounded-lg p-3 text-body-sm font-sans text-text-secondary">
+                {t('ai.greeting')}
+              </div>
             )}
 
             {messages.map((msg, i) => {
