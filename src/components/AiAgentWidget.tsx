@@ -8,7 +8,7 @@
  */
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import type { ChatMessage, ChatMode } from '@/types';
+import type { ChatMessage } from '@/types';
 import { analytics } from '@/lib/analytics';
 import ContactCard from '@/components/ContactCard';
 
@@ -16,16 +16,9 @@ import ContactCard from '@/components/ContactCard';
 const generateSessionId = (): string =>
   `chat_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
-/** 聊天模式配置 */
-const chatModes: ChatMode[] = [
-  { id: 'chat', nameKey: 'ai.chatTab', descriptionKey: 'ai.greeting' },
-  { id: 'job-match', nameKey: 'ai.jobMatchTab', descriptionKey: 'ai.jobMatchGreeting' },
-];
-
 const AiAgentWidget: React.FC = () => {
   const { t, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeMode, setActiveMode] = useState<'chat' | 'job-match'>('chat');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -60,12 +53,6 @@ const AiAgentWidget: React.FC = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
-
-  /** 切换模式时重置消息 */
-  const switchMode = (mode: 'chat' | 'job-match') => {
-    setActiveMode(mode);
-    setMessages([]);
-  };
 
   /** 插入联系表单气泡（常驻按钮点击时调用） */
   const insertContactCard = () => {
@@ -113,7 +100,7 @@ const AiAgentWidget: React.FC = () => {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMessage], mode: activeMode }),
+        body: JSON.stringify({ messages: [...messages, userMessage], mode: 'chat' }),
       });
 
       if (!response.ok) throw new Error('API error');
@@ -211,43 +198,24 @@ const AiAgentWidget: React.FC = () => {
             </button>
           </div>
 
-          {/* 模式切换标签 */}
-          <div className="flex border-b border-border-cream">
-            {chatModes.map((mode) => (
-              <button
-                key={mode.id}
-                onClick={() => switchMode(mode.id)}
-                className={`flex-1 px-3 py-2 text-body-sm font-sans font-medium transition-colors
-                  ${activeMode === mode.id
-                    ? 'text-terracotta border-b-2 border-terracotta bg-warm-sand/30'
-                    : 'text-text-muted hover:text-text-secondary'
-                  }`}
-              >
-                {t(mode.nameKey)}
-              </button>
-            ))}
-          </div>
-
           {/* 消息区域 */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.length === 0 && (
               <>
                 <div className="bg-warm-sand/50 rounded-lg p-3 text-body-sm font-sans text-text-secondary">
-                  {t(chatModes.find((m) => m.id === activeMode)?.descriptionKey || 'ai.greeting')}
+                  {t('ai.greeting')}
                 </div>
 
-                {/* 常驻联系按钮（仅 chat 模式 + 无消息时显示） */}
-                {activeMode === 'chat' && (
-                  <button
-                    onClick={insertContactCard}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5
-                               rounded-full border border-terracotta/30 text-terracotta
-                               text-label font-sans hover:bg-terracotta/5 transition-colors duration-200"
-                  >
-                    <span>📇</span>
-                    <span>{t('ai.contactChip')}</span>
-                  </button>
-                )}
+                {/* 常驻联系按钮 */}
+                <button
+                  onClick={insertContactCard}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5
+                             rounded-full border border-terracotta/30 text-terracotta
+                             text-label font-sans hover:bg-terracotta/5 transition-colors duration-200"
+                >
+                  <span>📇</span>
+                  <span>{t('ai.contactChip')}</span>
+                </button>
               </>
             )}
 
