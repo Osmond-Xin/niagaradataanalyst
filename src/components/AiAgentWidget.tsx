@@ -103,11 +103,10 @@ const AiAgentWidget: React.FC = () => {
         body: JSON.stringify({ messages: [...messages, userMessage], mode: 'chat' }),
       });
 
-      if (!response.ok) throw new Error('API error');
-
       const contentType = response.headers.get('content-type');
 
       if (contentType?.includes('text/event-stream')) {
+        if (!response.ok) throw new Error('API error');
         const reader = response.body?.getReader();
         const decoder = new TextDecoder();
         let assistantContent = '';
@@ -137,15 +136,13 @@ const AiAgentWidget: React.FC = () => {
           }
         }
       } else {
+        /** 无论状态码是否 ok，都读取 JSON body 获取 error 字段 */
         const data = await response.json() as { content?: string; error?: string; showContactForm?: boolean };
+        const replyText = data.content || data.error || t('ai.error');
 
-        /** 替换占位气泡为实际 AI 回复 */
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1] = {
-            role: 'assistant',
-            content: data.content || data.error || t('ai.error'),
-          };
+          updated[updated.length - 1] = { role: 'assistant', content: replyText };
           return updated;
         });
 
