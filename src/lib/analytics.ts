@@ -131,4 +131,18 @@ export const analytics = {
   /** GitHub链接点击（高意图信号） */
   githubLinkClick: (projectName: string) =>
     trackEvent('github_link_click', { project_name: projectName }),
+
+  // ─── 联系表单事件 ────────────────────────────────────────
+
+  /** 联系表单展示（区分触发来源：button = 常驻按钮 / ai = AI 智能触发） */
+  contactFormShown: (trigger: 'button' | 'ai', sessionId: string) =>
+    trackEvent('contact_form_shown', { trigger, session_id: sessionId }),
+
+  /** 联系表单成功提交 */
+  contactFormSubmitted: (sessionId: string) =>
+    trackEvent('contact_form_submitted', { session_id: sessionId }),
+
+  /** 联系表单提交失败 */
+  contactFormError: (sessionId: string) =>
+    trackEvent('contact_form_error', { session_id: sessionId }),
 };

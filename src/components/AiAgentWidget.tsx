@@ -4,11 +4,13 @@
  * AI聊天小部件组件
  * Claude 编辑风：象牙白面板 + 暖灰边框 + 赤陶 CTA
  * 浮动按钮使用 terracotta 色与呼吸动画
+ * 支持内联联系表单：常驻按钮触发 + AI 意图检测自动触发
  */
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { ChatMessage, ChatMode } from '@/types';
 import { analytics } from '@/lib/analytics';
+import ContactCard from '@/components/ContactCard';
 
 /** 生成唯一会话ID */
 const generateSessionId = (): string =>
@@ -65,6 +67,36 @@ const AiAgentWidget: React.FC = () => {
     setMessages([]);
   };
 
+  /** 插入联系表单气泡（常驻按钮点击时调用） */
+  const insertContactCard = () => {
+    setMessages((prev) => [
+      ...prev,
+      { role: 'assistant', content: '', type: 'contact-form' },
+    ]);
+    analytics.contactFormShown('button', sessionIdRef.current);
+  };
+
+  /** 联系表单提交回调：把 contact-form 气泡替换为成功/失败气泡 */
+  const handleContactResult = (status: 'success' | 'error') => {
+    setMessages((prev) => {
+      const idx = [...prev].reverse().findIndex((m) => m.type === 'contact-form');
+      if (idx === -1) return prev;
+      const realIdx = prev.length - 1 - idx;
+      const updated = [...prev];
+      updated[realIdx] = {
+        role: 'assistant',
+        content: status === 'success' ? t('ai.contactSuccess') : t('ai.contactError'),
+        type: status === 'success' ? 'contact-success' : 'contact-error',
+      };
+      return updated;
+    });
+    if (status === 'success') {
+      analytics.contactFormSubmitted(sessionIdRef.current);
+    } else {
+      analytics.contactFormError(sessionIdRef.current);
+    }
+  };
+
   /** 发送消息 */
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -118,12 +150,26 @@ const AiAgentWidget: React.FC = () => {
           }
         }
       } else {
-        const data = await response.json();
+        const data = await response.json() as { content?: string; error?: string; showContactForm?: boolean };
+
+        /** 替换占位气泡为实际 AI 回复 */
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1] = { role: 'assistant', content: data.content || data.error || t('ai.error') };
+          updated[updated.length - 1] = {
+            role: 'assistant',
+            content: data.content || data.error || t('ai.error'),
+          };
           return updated;
         });
+
+        /** AI 检测到联系意图时，自动追加联系表单气泡 */
+        if (data.showContactForm) {
+          setMessages((prev) => [
+            ...prev,
+            { role: 'assistant', content: '', type: 'contact-form' },
+          ]);
+          analytics.contactFormShown('ai', sessionIdRef.current);
+        }
       }
     } catch {
       setMessages((prev) => {
@@ -185,31 +231,88 @@ const AiAgentWidget: React.FC = () => {
           {/* 消息区域 */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.length === 0 && (
-              <div className="bg-warm-sand/50 rounded-lg p-3 text-body-sm font-sans text-text-secondary">
-                {t(chatModes.find((m) => m.id === activeMode)?.descriptionKey || 'ai.greeting')}
-              </div>
+              <>
+                <div className="bg-warm-sand/50 rounded-lg p-3 text-body-sm font-sans text-text-secondary">
+                  {t(chatModes.find((m) => m.id === activeMode)?.descriptionKey || 'ai.greeting')}
+                </div>
+
+                {/* 常驻联系按钮（仅 chat 模式 + 无消息时显示） */}
+                {activeMode === 'chat' && (
+                  <button
+                    onClick={insertContactCard}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5
+                               rounded-full border border-terracotta/30 text-terracotta
+                               text-label font-sans hover:bg-terracotta/5 transition-colors duration-200"
+                  >
+                    <span>📇</span>
+                    <span>{t('ai.contactChip')}</span>
+                  </button>
+                )}
+              </>
             )}
 
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div
-                  className={`max-w-[85%] rounded-xl px-3 py-2 text-body-sm font-sans whitespace-pre-wrap
-                    ${msg.role === 'user'
-                      ? 'bg-terracotta text-ivory'
-                      : 'bg-warm-sand text-text-primary border border-border-cream'
-                    }`}
-                >
-                  {msg.content || (isLoading && i === messages.length - 1 ? (
-                    <span className="inline-flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                      <span className="ml-2 text-text-muted">{t('ai.thinking')}</span>
-                    </span>
-                  ) : '')}
+            {messages.map((msg, i) => {
+              /** 联系表单气泡 */
+              if (msg.type === 'contact-form') {
+                return (
+                  <div key={i} className="flex justify-start w-full">
+                    <div className="w-full">
+                      <ContactCard
+                        context={messages.filter((m) => !m.type).slice(-10)}
+                        sessionId={sessionIdRef.current}
+                        onSubmitted={handleContactResult}
+                      />
+                    </div>
+                  </div>
+                );
+              }
+
+              /** 联系成功气泡 */
+              if (msg.type === 'contact-success') {
+                return (
+                  <div key={i} className="flex justify-start">
+                    <div className="max-w-[85%] rounded-xl px-3 py-2 text-body-sm font-sans
+                                    bg-green-50 text-green-800 border border-green-200">
+                      {msg.content}
+                    </div>
+                  </div>
+                );
+              }
+
+              /** 联系失败气泡 */
+              if (msg.type === 'contact-error') {
+                return (
+                  <div key={i} className="flex justify-start">
+                    <div className="max-w-[85%] rounded-xl px-3 py-2 text-body-sm font-sans
+                                    bg-red-50 text-red-800 border border-red-200">
+                      {msg.content}
+                    </div>
+                  </div>
+                );
+              }
+
+              /** 普通文本气泡 */
+              return (
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div
+                    className={`max-w-[85%] rounded-xl px-3 py-2 text-body-sm font-sans whitespace-pre-wrap
+                      ${msg.role === 'user'
+                        ? 'bg-terracotta text-ivory'
+                        : 'bg-warm-sand text-text-primary border border-border-cream'
+                      }`}
+                  >
+                    {msg.content || (isLoading && i === messages.length - 1 ? (
+                      <span className="inline-flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-1.5 h-1.5 bg-terracotta rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <span className="ml-2 text-text-muted">{t('ai.thinking')}</span>
+                      </span>
+                    ) : '')}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             <div ref={messagesEndRef} />
           </div>
 

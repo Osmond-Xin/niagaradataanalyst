@@ -87,6 +87,8 @@ export interface ArchEdge {
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
+  /** 特殊气泡类型：普通文本 / 联系表单 / 成功 / 错误（可选，默认视为 text） */
+  type?: 'text' | 'contact-form' | 'contact-success' | 'contact-error';
 }
 
 /** 聊天模式 */

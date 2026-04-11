@@ -5,44 +5,24 @@
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { aiPersona } from '@/data/ai-persona';
+import { createRateLimiter } from '@/lib/rate-limit';
 
 /** MiniMax 代理配置 */
-const MINIMAX_API_KEY   = process.env.MINIMAX_API_KEY;
-const MINIMAX_API_URL   = process.env.MINIMAX_API_URL || 'https://mini.niagaradataanalyst.com/v1';
+const MINIMAX_API_KEY     = process.env.MINIMAX_API_KEY;
+const MINIMAX_API_URL     = process.env.MINIMAX_API_URL || 'https://mini.niagaradataanalyst.com/v1';
 const MINIMAX_PROXY_TOKEN = process.env.MINIMAX_PROXY_TOKEN;
-const MODEL_ID          = process.env.MINIMAX_MODEL_ID || 'MiniMax-M2.7';
+const MODEL_ID            = process.env.MINIMAX_MODEL_ID || 'MiniMax-M2.7';
 
 /** 去除推理模型输出的 <think>...</think> 块 */
 function stripThinkingBlock(text: string): string {
   return text.replace(/<think>[\s\S]*?<\/think>\s*/g, '').trim();
 }
 
-/** 限流配置：每IP每分钟50次，全局每天300次 */
-const RATE_LIMIT_WINDOW_MS  = 60_000;
-const RATE_LIMIT_MAX_PER_IP = 50;
-const DAILY_LIMIT_MAX       = 300;
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-let dailyCount   = 0;
-let dailyResetAt = Date.now() + 86_400_000;
+/** 限流：每IP每分钟50次，全局每天300次 */
+const isRateLimited = createRateLimiter({ perIp: 50, perDay: 300, windowMs: 60_000 });
 
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  if (now > dailyResetAt) { dailyCount = 0; dailyResetAt = now + 86_400_000; }
-  dailyCount += 1;
-  if (dailyCount > DAILY_LIMIT_MAX) return true;
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return false;
-  }
-  entry.count += 1;
-  return entry.count > RATE_LIMIT_MAX_PER_IP;
-}
-
-setInterval(() => {
-  const now = Date.now();
-  rateLimitMap.forEach((entry, ip) => { if (now > entry.resetAt) rateLimitMap.delete(ip); });
-}, RATE_LIMIT_WINDOW_MS);
+/** 联系意图关键词：匹配时自动展示联系表单 */
+const CONTACT_INTENT_RE = /\b(contact|hire|reach|email|get in touch|connect with|work with)\b|联系|雇佣?|邮箱|找你|合作|怎么联系/i;
 
 interface ChatRequestBody {
   messages: { role: 'user' | 'assistant'; content: string }[];
@@ -76,7 +56,7 @@ export async function POST(request: NextRequest) {
       const fallback = mode === 'job-match'
         ? 'Job matching requires MINIMAX_API_KEY to be set in Vercel environment variables.'
         : "Hello! I'm the NiagaraDataAnalyst AI assistant. AI service is not configured yet.";
-      return NextResponse.json({ content: fallback });
+      return NextResponse.json({ content: fallback, showContactForm: false });
     }
 
     /** 构造请求头 */
@@ -123,7 +103,12 @@ export async function POST(request: NextRequest) {
 
     /** 过滤推理块，只返回最终回答 */
     const text = stripThinkingBlock(raw);
-    return NextResponse.json({ content: text });
+
+    /** 检测联系意图，仅在普通聊天模式下触发 */
+    const lastUserContent = messages[messages.length - 1]?.content || '';
+    const showContactForm = mode === 'chat' && CONTACT_INTENT_RE.test(lastUserContent);
+
+    return NextResponse.json({ content: text, showContactForm });
 
   } catch (error) {
     console.error('[API/chat] Error:', error);
