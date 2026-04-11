@@ -10,7 +10,7 @@ import type { ChatMessage } from '@/types';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const CONTACT_FROM   = process.env.CONTACT_FROM_EMAIL || 'NiagaraDataAnalyst <onboarding@resend.dev>';
-const CONTACT_TO     = process.env.CONTACT_TO_EMAIL   || 'jonzy.xin@outlook.com';
+const CONTACT_TO     = process.env.CONTACT_TO_EMAIL   || 'yi.xin7319@myunfc.ca';
 
 /** 限流：每IP每分钟5次，全局每天50次 */
 const isRateLimited = createRateLimiter({ perIp: 5, perDay: 50, windowMs: 60_000 });
