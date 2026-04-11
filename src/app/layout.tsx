@@ -9,6 +9,7 @@ import { Inter, Fraunces } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import { Analytics } from '@vercel/analytics/next';
 
 // Inter：正文 / UI — 400 & 500 权重
 const inter = Inter({
@@ -72,6 +73,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${fraunces.variable} font-sans bg-parchment text-text-primary antialiased`}>
         <GoogleAnalytics />
+        <Analytics />
         <LanguageProvider>
           {children}
         </LanguageProvider>
