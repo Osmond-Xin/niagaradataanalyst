@@ -1,25 +1,18 @@
 /**
- * MiniMax 聊天 API Route
- * 使用自定义代理端点 + Bearer Key + X-Proxy-Token
- * MiniMax-M2.7 为推理模型，响应含 <think>...</think> 块，需过滤
+ * Claude Haiku 聊天 API Route
+ * 使用 Anthropic Messages API，替换原 MiniMax 实现
+ * 响应速度约 1-3s，远低于 Vercel 10s 限制
  */
 import { NextRequest, NextResponse } from 'next/server';
 import { aiPersona } from '@/data/ai-persona';
 import { createRateLimiter } from '@/lib/rate-limit';
 
-/** Vercel 函数最大执行时间（秒），Hobby 套餐上限为 10s */
+/** Vercel 函数最大执行时间（秒） */
 export const maxDuration = 10;
 
-/** MiniMax 代理配置 */
-const MINIMAX_API_KEY     = process.env.MINIMAX_API_KEY;
-const MINIMAX_API_URL     = process.env.MINIMAX_API_URL || 'https://mini.niagaradataanalyst.com/v1';
-const MINIMAX_PROXY_TOKEN = process.env.MINIMAX_PROXY_TOKEN;
-const MODEL_ID            = process.env.MINIMAX_MODEL_ID || 'MiniMax-M2.7';
-
-/** 去除推理模型输出的 <think>...</think> 块 */
-function stripThinkingBlock(text: string): string {
-  return text.replace(/<think>[\s\S]*?<\/think>\s*/g, '').trim();
-}
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const ANTHROPIC_API_URL = process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com';
+const MODEL_ID          = 'claude-haiku-4-5';
 
 /** 限流：每IP每分钟50次，全局每天300次 */
 const isRateLimited = createRateLimiter({ perIp: 50, perDay: 300, windowMs: 60_000 });
@@ -37,9 +30,10 @@ export async function POST(request: NextRequest) {
     const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
       || request.headers.get('x-real-ip')
       || 'unknown';
+
     if (isRateLimited(ip)) {
       return NextResponse.json(
-        { error: '请求过于频繁，请稍后再试。Too many requests, please try again later.' },
+        { error: '请求过于频繁，请稍后再试。Too many requests.' },
         { status: 429 },
       );
     }
@@ -50,79 +44,60 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '消息不能为空' }, { status: 400 });
     }
 
-    const systemPrompt = mode === 'job-match'
-      ? aiPersona.jobMatchingPrompt
-      : aiPersona.systemPrompt;
-
-    /** API Key 未配置时返回回退响应 */
-    if (!MINIMAX_API_KEY) {
-      const fallback = mode === 'job-match'
-        ? 'Job matching requires MINIMAX_API_KEY to be set in Vercel environment variables.'
-        : "Hello! I'm the NiagaraDataAnalyst AI assistant. AI service is not configured yet.";
-      return NextResponse.json({ content: fallback, showContactForm: false });
+    if (!ANTHROPIC_API_KEY) {
+      return NextResponse.json({
+        content: "Hello! I'm the NiagaraDataAnalyst AI assistant. AI service is not configured yet.",
+        showContactForm: false,
+      });
     }
 
-    /** 构造请求头 */
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${MINIMAX_API_KEY}`,
-    };
-    if (MINIMAX_PROXY_TOKEN) {
-      headers['X-Proxy-Token'] = MINIMAX_PROXY_TOKEN;
-    }
-
-    /** OpenAI 兼容格式请求体 */
-    const requestBody = {
-      model: MODEL_ID,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        ...messages.map((msg) => ({ role: msg.role, content: msg.content })),
-      ],
-      max_tokens: 600,
-      temperature: 0.7,
-    };
-
-    /** 8 秒超时，留 2 秒余量在 Vercel 10s 限制前返回 */
+    /** 8 秒超时，留余量在 Vercel 10s 限制前返回 */
     const abort = new AbortController();
     const abortTimer = setTimeout(() => abort.abort(), 8_000);
 
-    let minimaxResponse: Response;
+    let response: Response;
     try {
-      minimaxResponse = await fetch(`${MINIMAX_API_URL}/chat/completions`, {
+      response = await fetch(`${ANTHROPIC_API_URL}/v1/messages`, {
         method: 'POST',
-        headers,
-        body: JSON.stringify(requestBody),
+        headers: {
+          'Content-Type':    'application/json',
+          'x-api-key':       ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model:      MODEL_ID,
+          max_tokens: 600,
+          system:     aiPersona.systemPrompt,
+          messages:   messages.map((m) => ({ role: m.role, content: m.content })),
+        }),
         signal: abort.signal,
       });
     } catch (err) {
       clearTimeout(abortTimer);
       const isTimeout = err instanceof Error && err.name === 'AbortError';
       console.error('[API/chat] Fetch error:', isTimeout ? 'timeout' : err);
-      const msg = isTimeout
-        ? 'AI 响应超时，请稍后重试。Response timed out, please try again.'
-        : '服务暂时不可用，请稍后重试。';
-      return NextResponse.json({ error: msg }, { status: 504 });
+      return NextResponse.json(
+        { error: isTimeout ? 'AI 响应超时，请稍后重试。' : '服务暂时不可用，请稍后重试。' },
+        { status: 504 },
+      );
     }
     clearTimeout(abortTimer);
 
-    if (!minimaxResponse.ok) {
-      const errText = await minimaxResponse.text();
-      console.error('[API/chat] MiniMax error:', minimaxResponse.status, errText.slice(0, 200));
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('[API/chat] Anthropic error:', response.status, errText.slice(0, 200));
       return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
     }
 
-    const data = await minimaxResponse.json() as {
-      choices?: Array<{ message?: { content?: string } }>;
+    const data = await response.json() as {
+      content?: Array<{ type: string; text: string }>;
     };
 
-    const raw = data.choices?.[0]?.message?.content;
-    if (!raw) {
+    const text = data.content?.find((b) => b.type === 'text')?.text;
+    if (!text) {
       console.error('[API/chat] No text in response:', JSON.stringify(data).slice(0, 200));
       return NextResponse.json({ error: '服务暂时不可用，请稍后重试。' }, { status: 500 });
     }
-
-    /** 过滤推理块，只返回最终回答 */
-    const text = stripThinkingBlock(raw);
 
     /** 检测联系意图，仅在普通聊天模式下触发 */
     const lastUserContent = messages[messages.length - 1]?.content || '';
