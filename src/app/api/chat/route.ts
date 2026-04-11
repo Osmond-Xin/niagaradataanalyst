@@ -7,6 +7,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { aiPersona } from '@/data/ai-persona';
 import { createRateLimiter } from '@/lib/rate-limit';
 
+/** Vercel 函数最大执行时间（秒），Hobby 套餐上限为 10s */
+export const maxDuration = 10;
+
 /** MiniMax 代理配置 */
 const MINIMAX_API_KEY     = process.env.MINIMAX_API_KEY;
 const MINIMAX_API_URL     = process.env.MINIMAX_API_URL || 'https://mini.niagaradataanalyst.com/v1';
@@ -75,15 +78,32 @@ export async function POST(request: NextRequest) {
         { role: 'system', content: systemPrompt },
         ...messages.map((msg) => ({ role: msg.role, content: msg.content })),
       ],
-      max_tokens: 1000,
+      max_tokens: 600,
       temperature: 0.7,
     };
 
-    const minimaxResponse = await fetch(`${MINIMAX_API_URL}/chat/completions`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(requestBody),
-    });
+    /** 8 秒超时，留 2 秒余量在 Vercel 10s 限制前返回 */
+    const abort = new AbortController();
+    const abortTimer = setTimeout(() => abort.abort(), 8_000);
+
+    let minimaxResponse: Response;
+    try {
+      minimaxResponse = await fetch(`${MINIMAX_API_URL}/chat/completions`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(requestBody),
+        signal: abort.signal,
+      });
+    } catch (err) {
+      clearTimeout(abortTimer);
+      const isTimeout = err instanceof Error && err.name === 'AbortError';
+      console.error('[API/chat] Fetch error:', isTimeout ? 'timeout' : err);
+      const msg = isTimeout
+        ? 'AI 响应超时，请稍后重试。Response timed out, please try again.'
+        : '服务暂时不可用，请稍后重试。';
+      return NextResponse.json({ error: msg }, { status: 504 });
+    }
+    clearTimeout(abortTimer);
 
     if (!minimaxResponse.ok) {
       const errText = await minimaxResponse.text();
