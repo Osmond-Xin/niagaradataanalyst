@@ -119,10 +119,18 @@ const AiAgentWidget: React.FC = () => {
         }
       } else {
         const data = await response.json();
-        setMessages((prev) => [...prev, { role: 'assistant', content: data.content || data.error || t('ai.error') }]);
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: 'assistant', content: data.content || data.error || t('ai.error') };
+          return updated;
+        });
       }
     } catch {
-      setMessages((prev) => [...prev, { role: 'assistant', content: t('ai.error') }]);
+      setMessages((prev) => {
+        const updated = [...prev];
+        updated[updated.length - 1] = { role: 'assistant', content: t('ai.error') };
+        return updated;
+      });
     } finally {
       setIsLoading(false);
     }

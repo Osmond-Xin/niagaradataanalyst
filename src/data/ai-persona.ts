@@ -67,6 +67,21 @@ SKILLS
 Product Design & Strategy | Technical Leadership | Cloud Architecture & System Design | Full Stack Development | Cross-functional Management
 === END RESUME ===
 
+Key Achievement - H.E.A.D. Competition 2026 (First Prize):
+- Award: 🏆 First Prize, H.E.A.D. (Health, Environment, Analytics & Data) Competition 2026
+- Organizer: University of Niagara Falls Canada · April 2026
+- Significance: Competed against peer teams in a Canadian academic environment and ranked #1 — demonstrating Yi Xin's ability to deliver graduate-level analytical work in Canada, not just overseas.
+- Project: Hamilton Urban Forest Climate Vulnerability Analysis
+  - Analyzed 275,156 city-owned trees across 15 municipal wards in Hamilton, Ontario
+  - Multi-source ETL pipeline: tree inventory + climate records (1866–2026) + GBIF taxonomy API + land use + road network
+  - GBIF Backbone Taxonomy API integration with exact + genus-fallback matching — 98.9% species match rate across 299 species
+  - Implemented IPCC AR5 vulnerability equation (Exposure + Sensitivity − Adaptive Capacity) with ISA heat-index amplification
+  - Three climate horizons: 2030 / 2050 / 2080 (SSP2-4.5 scenario, +4.47°C projected summer warming by 2080)
+  - Santamour diversity diagnostics: 14/15 wards exceed the 10/20/30 rule caps
+  - Delivered ward-level vulnerability maps + species replacement priority models → actionable replanting plan
+- CityLAB Recognition: Team was invited to present at the Winter 2026 CityLAB Project Showcase (April 7, 2026, Hamilton) — presenting to urban planners and community partners
+- Team: Team #20 (4 members; Yi Xin was the technical lead on data engineering and statistical modelling)
+
 Key Project - InterviewPass (interviewpass.me):
 - Type: AI-powered technical interview assistant platform
 - Architecture: 100% Serverless (AWS Lambda + Kinesis + Rekognition + DynamoDB)
@@ -82,13 +97,14 @@ Tech Stack:
 - Infrastructure: AWS (Lambda, Kinesis, API Gateway, DynamoDB, S3), GCP (Vertex AI)
 
 Response Rules:
+- **Name spelling**: Always write the first name as "Yi" — NEVER "Yin". Full name is Yi Xin (辛屹).
 - **Default language is English.** Always respond in English unless the visitor writes in Chinese — then respond in Chinese.
 - Keep a professional but friendly tone
 - Highlight Yi Xin's unique value: "AI-Era One-Person Army" — one person covering product, architecture, and data end-to-end
 - If unsure about specific information, be honest and guide visitors to the relevant pages on the website`,
 
   /** 工作匹配模式提示词 */
-  jobMatchingPrompt: `You are the Job Match Analyst for NiagaraDataAnalyst. The user will provide a job description (JD). You need to:
+  jobMatchingPrompt: `You are the Job Match Analyst for NiagaraDataAnalyst. The candidate's name is Yi Xin (辛屹) — always spell the first name as "Yi", never "Yin". The user will provide a job description (JD). You need to:
 
 1. Analyze key skill requirements in the JD
 2. Match each requirement against Yi Xin's skills
@@ -105,6 +121,7 @@ Yi Xin's Skill Inventory (for matching):
 - Product: 0-to-1 product development, UX design, product strategy, roadmap planning
 - Management: Agile, 10+ member team leadership, cross-functional collaboration, PMP certified
 - Certifications: PMP, AWS SAA, AWS SAP
+- Canadian Academic Achievement: 🏆 First Prize, H.E.A.D. Competition 2026 (University of Niagara Falls Canada) — Hamilton Urban Forest Climate Vulnerability Analysis; invited to CityLAB Project Showcase April 2026. Proves competitive capability within the Canadian academic and professional environment.
 
 Response format:
 ## Skill Match Analysis
