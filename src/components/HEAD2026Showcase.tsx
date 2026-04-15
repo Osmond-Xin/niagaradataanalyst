@@ -352,14 +352,14 @@ const HEAD2026Showcase: React.FC = () => {
       {/* ══ 5. 分析模块快速导航 ══ */}
       <section>
         <SectionLabel label={t('head2026.modulesTitle')} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
           {/* Interactive Dashboard — 置顶，跨两列突出显示 */}
           <a
             href="/head2026/index.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="group sm:col-span-2 lg:col-span-3 flex items-center gap-5 p-5 rounded-xl
+            className="group sm:col-span-2 flex items-center gap-5 p-5 rounded-xl
                        bg-terracotta/5 dark:bg-terracotta/10
                        border border-terracotta/20 hover:border-terracotta
                        shadow-whisper hover:shadow-ring-warm
@@ -386,6 +386,7 @@ const HEAD2026Showcase: React.FC = () => {
             </span>
           </a>
 
+          {/* 分析步骤 01–05 已隐藏
           {MODULES.map((mod) => (
             <a
               key={mod.step}
@@ -415,6 +416,7 @@ const HEAD2026Showcase: React.FC = () => {
                                transition-colors duration-200 text-sm mt-0.5">↗</span>
             </a>
           ))}
+          */}
 
           {/* 竞赛海报 */}
           <a

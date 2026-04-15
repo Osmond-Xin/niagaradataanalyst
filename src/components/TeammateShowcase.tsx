@@ -278,11 +278,11 @@ const TeammateShowcase: React.FC<{ person: TeammatePerson }> = ({ person }) => (
     {/* ══ 4. Analysis Modules ══ */}
     <section>
       <SectionLabel label="Analysis Modules" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
         {/* Interactive Dashboard — full width */}
         <a href="/head2026/index.html" target="_blank" rel="noopener noreferrer"
-          className="group sm:col-span-2 lg:col-span-3 flex items-center gap-5 p-5 rounded-xl
+          className="group sm:col-span-2 flex items-center gap-5 p-5 rounded-xl
                      bg-terracotta/5 border border-terracotta/20 hover:border-terracotta
                      shadow-whisper hover:shadow-ring-warm transition-all duration-300">
           <span className="flex-shrink-0 w-10 h-10 rounded-lg bg-terracotta text-ivory
@@ -302,6 +302,7 @@ const TeammateShowcase: React.FC<{ person: TeammatePerson }> = ({ person }) => (
           </span>
         </a>
 
+        {/* 分析步骤 01–05 已隐藏
         {MODULES.map((mod) => (
           <a key={mod.step} href={mod.href} target="_blank" rel="noopener noreferrer"
             className="group flex items-start gap-4 p-5 rounded-xl bg-ivory
@@ -317,6 +318,7 @@ const TeammateShowcase: React.FC<{ person: TeammatePerson }> = ({ person }) => (
             <span className="flex-shrink-0 text-text-muted group-hover:text-terracotta transition-colors duration-200 text-sm mt-0.5">↗</span>
           </a>
         ))}
+        */}
 
         <a href="/head2026/poster.html" target="_blank" rel="noopener noreferrer"
           className="group flex items-start gap-4 p-5 rounded-xl bg-amber-50
