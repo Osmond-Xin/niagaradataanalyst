@@ -184,7 +184,73 @@ export default function EdgeOrBetaContent() {
     alphaTText: language === 'zh' ? 'Alpha t 统计量 (t-stat)' : 'Alpha t-statistic',
     betaShareText: language === 'zh' ? 'Beta 收益占比' : 'Beta Explained Share',
     backBtn: language === 'zh' ? '返回个人主页' : 'Back to Home',
+    // —— 新增：使用引导与各区块的“如何阅读”说明 ——
+    howTitle: language === 'zh' ? '这个工具是做什么的？三步看懂' : 'What is this tool? Three steps',
+    howIntro: language === 'zh'
+      ? '很多技术指标“看起来能赚钱”，其实只是赶上了大盘上涨。本工具帮你区分：你的规则是真有选股本事（Alpha），还是只是搭了大盘的便车（Beta）。'
+      : 'Many technical rules “look profitable” simply because the market went up. This tool separates genuine skill (Alpha) from just riding the rising market (Beta).',
+    step1Title: language === 'zh' ? '① 选一个规则' : '① Pick a rule',
+    step1Body: language === 'zh' ? '从下面三个预设里选一个交易规则。' : 'Choose one of the three preset trading rules below.',
+    step2Title: language === 'zh' ? '② 跑四道对照' : '② Run four benchmarks',
+    step2Body: language === 'zh' ? '用相同日期，对比 1000 次随机选股、随机择时和被动持有 SPY。' : 'On the same dates, we race it against 1,000 random stock picks, random timing, and buy-and-hold SPY.',
+    step3Title: language === 'zh' ? '③ 读判决' : '③ Read the verdict',
+    step3Body: language === 'zh' ? '看它能否同时跑赢“随机选股”和“大盘 SPY”。' : 'See whether it beats both random picking AND just holding SPY.',
+    // 预设说明
+    presetDescLabel: language === 'zh' ? '当前规则：' : 'Current rule:',
+    // 判决区
+    verdictHelp: language === 'zh'
+      ? '判决把规则放在四个等级上（从优到劣）。两个关键问题：① 能否跑赢随机选股（是否有 Alpha）？② 能否跑赢只持有 SPY？'
+      : 'The verdict places the rule on a 4-level scale (best → worst). Two key questions: (1) does it beat random stock-picking (any Alpha)? (2) does it beat simply holding SPY?',
+    legendTitle: language === 'zh' ? '判决等级（从优到劣）' : 'Verdict scale (best → worst)',
+    // 各区块“如何阅读”
+    metricsHelp: language === 'zh'
+      ? 'CAGR = 年化收益率。随机对照只在年化收益上可比，故其余列显示“-”。关键看：策略 CAGR 是否高于最后一行“大盘买入持有”。'
+      : 'CAGR = annualized return. Random benchmarks are only comparable on CAGR, so other columns show “-”. Key check: is the strategy CAGR above the last row “Buy & Hold SPY”?',
+    equityHelp: language === 'zh'
+      ? '红色实线（策略）高于棕色虚线（SPY）= 真正跑赢大盘；低于 = 只是搭了大盘的便车。'
+      : 'The red line (strategy) above the brown dashed line (SPY) = genuinely beat the market; below = it merely rode market beta.',
+    distHelp: language === 'zh'
+      ? '灰柱 = 1000 次同日期随机选股的收益分布；红色竖线 = 你的规则。竖线越靠右，说明越优于随机选股。'
+      : 'Grey bars = the return distribution of 1,000 same-date random stock picks; the red line = your rule. The further right the line sits, the more it beats random picking.',
+    capmHelp: language === 'zh'
+      ? '把收益拆成两块：大盘 Beta（免费就能拿到）与 Alpha（真正的超额本事）。Alpha 的 t 值 ≥ 2 才算统计显著。'
+      : 'Splits the return into two parts: market Beta (free to obtain) and Alpha (genuine excess skill). Alpha only counts as statistically real when its t-statistic ≥ 2.',
+    howToRead: language === 'zh' ? '如何阅读：' : 'How to read:',
   };
+
+  // 判决状态 → 友好的中英文标签（替换原始下划线状态名）
+  const statusMeta: Record<string, { en: string; zh: string }> = {
+    candidate_edge_needs_validation: { en: 'Candidate edge — needs validation', zh: '疑似有效 · 待进一步验证' },
+    beats_random_but_not_spy: { en: 'Beats random, but trails SPY', zh: '赢随机选股 · 但跑输大盘' },
+    mostly_beta: { en: 'Mostly market beta', zh: '主要是大盘 Beta' },
+    no_evidence_of_edge: { en: 'No evidence of an edge', zh: '无优势证据' },
+  };
+  const statusLabel = (status: string) =>
+    statusMeta[status] ? (language === 'zh' ? statusMeta[status].zh : statusMeta[status].en) : status.replace(/_/g, ' ');
+
+  // 预设规则的一句话说明
+  const presetMeta: Record<string, { en: string; zh: string }> = {
+    capstone_expiry_rule: {
+      en: 'Our capstone rule: RSI oversold + 3 consecutive red candles before monthly SPY expiry.',
+      zh: '本毕业项目规则：SPY 月度到期日前，RSI 超卖 + 连续 3 根阴线。',
+    },
+    rsi_oversold: {
+      en: 'Textbook entry: buy when RSI falls below the oversold threshold.',
+      zh: '教科书式入场：RSI 跌破超卖阈值时买入。',
+    },
+    ma_crossover: {
+      en: 'Trend-following: buy on a fast/slow moving-average golden cross (SMA 9/50).',
+      zh: '趋势跟随：均线金叉买入（SMA 9/50）。',
+    },
+  };
+
+  // 判决等级图例（从优到劣），用于帮助用户理解当前结果的位置
+  const verdictLegend = [
+    { key: 'candidate_edge_needs_validation', dot: 'bg-green-600', en: 'Candidate edge', zh: '疑似有效' },
+    { key: 'beats_random_but_not_spy', dot: 'bg-yellow-500', en: 'Beats random, trails SPY', zh: '赢随机 · 输大盘' },
+    { key: 'mostly_beta', dot: 'bg-terracotta', en: 'Mostly beta', zh: '主要是 Beta' },
+    { key: 'no_evidence_of_edge', dot: 'bg-red-600', en: 'No edge', zh: '无优势' },
+  ];
 
   // Helper to translate JSON reasons array
   const translateReason = (engReason: string) => {
@@ -355,6 +421,24 @@ export default function EdgeOrBetaContent() {
         </div>
       </header>
 
+      {/* 使用引导：三步看懂工具 */}
+      <section className="mb-8 bg-ivory border border-border-warm rounded-xl p-6 shadow-whisper">
+        <h2 className="text-lg font-display text-near-black mb-1">{ui.howTitle}</h2>
+        <p className="text-sm text-text-secondary leading-relaxed max-w-3xl mb-5">{ui.howIntro}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            { t: ui.step1Title, b: ui.step1Body },
+            { t: ui.step2Title, b: ui.step2Body },
+            { t: ui.step3Title, b: ui.step3Body },
+          ].map((step, i) => (
+            <div key={i} className="relative bg-parchment/40 border border-border-cream rounded-lg p-4">
+              <p className="text-sm font-semibold text-terracotta mb-1.5">{step.t}</p>
+              <p className="text-xs text-text-secondary leading-relaxed">{step.b}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Preset Rule Selector */}
       <section className="mb-8">
         <label className="block text-sm font-medium text-text-secondary mb-3">
@@ -379,6 +463,12 @@ export default function EdgeOrBetaContent() {
             </button>
           ))}
         </div>
+        {presetMeta[selectedRule] && (
+          <p className="mt-3 text-xs text-text-secondary leading-relaxed">
+            <span className="font-medium text-text-primary">{ui.presetDescLabel}</span>{' '}
+            {language === 'zh' ? presetMeta[selectedRule].zh : presetMeta[selectedRule].en}
+          </p>
+        )}
       </section>
 
       {loading || !bundle ? (
@@ -399,10 +489,15 @@ export default function EdgeOrBetaContent() {
                   {ui.verdictTitle}
                 </h2>
               </div>
-              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${getVerdictStyles(bundle.verdict.status).badge}`}>
-                {bundle.verdict.status.replace(/_/g, ' ')}
+              <span className={`px-2.5 py-1 rounded-full text-xs font-semibold tracking-wide ${getVerdictStyles(bundle.verdict.status).badge}`}>
+                {statusLabel(bundle.verdict.status)}
               </span>
             </div>
+
+            {/* 如何阅读判决 */}
+            <p className="text-xs text-text-muted leading-relaxed mb-4 border-l-2 border-border-warm pl-3">
+              <span className="font-medium text-text-secondary">{ui.howToRead}</span> {ui.verdictHelp}
+            </p>
 
             <p className="text-lg font-medium text-near-black mb-4 leading-snug">
               {language === 'zh' ? bundle.verdict.headline_zh : bundle.verdict.headline}
@@ -416,6 +511,30 @@ export default function EdgeOrBetaContent() {
                 </div>
               ))}
             </div>
+
+            {/* 判决等级图例：高亮当前结果所在位置 */}
+            <div className="mt-5 pt-4 border-t border-border-warm/50">
+              <p className="text-[11px] uppercase tracking-wider text-text-muted mb-2">{ui.legendTitle}</p>
+              <div className="flex flex-wrap gap-2">
+                {verdictLegend.map((lv) => {
+                  const isActive = lv.key === bundle.verdict.status;
+                  return (
+                    <span
+                      key={lv.key}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border transition-all ${
+                        isActive
+                          ? 'border-near-black bg-ivory text-near-black font-semibold shadow-whisper'
+                          : 'border-border-cream bg-ivory/40 text-text-muted'
+                      }`}
+                    >
+                      <span className={`w-2 h-2 rounded-full ${lv.dot} ${isActive ? '' : 'opacity-40'}`}></span>
+                      {language === 'zh' ? lv.zh : lv.en}
+                      {isActive && <span className="ml-0.5">←</span>}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
           </section>
 
           {/* Comparison Metrics Grid */}
@@ -428,6 +547,10 @@ export default function EdgeOrBetaContent() {
                 {ui.settingsText}
               </span>
             </div>
+
+            <p className="text-xs text-text-muted leading-relaxed mb-4 border-l-2 border-border-warm pl-3">
+              <span className="font-medium text-text-secondary">{ui.howToRead}</span> {ui.metricsHelp}
+            </p>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm border-collapse">
@@ -513,6 +636,20 @@ export default function EdgeOrBetaContent() {
                 </button>
               </div>
             </div>
+
+            <p className="text-xs text-text-muted leading-relaxed mb-4 border-l-2 border-border-warm pl-3">
+              <span className="font-medium text-text-secondary">{ui.howToRead}</span>{' '}
+              {activeChartTab === 'equity' ? ui.equityHelp : ui.distHelp}
+              {activeChartTab === 'distribution' && (
+                <span className="block mt-1 text-text-secondary">
+                  {language === 'zh' ? '本策略位于第 ' : 'This rule sits at the '}
+                  <span className="font-semibold text-terracotta">{bundle.benchmarks.random_stock_same_dates.percentile.toFixed(1)}</span>
+                  {language === 'zh' ? ' 百分位，p = ' : 'th percentile, p = '}
+                  <span className="font-semibold text-terracotta">{bundle.benchmarks.random_stock_same_dates.p_value.toFixed(3)}</span>
+                  {language === 'zh' ? '（p < 0.05 才算显著跑赢随机选股）。' : ' (p < 0.05 = significantly beats random picking).'}
+                </span>
+              )}
+            </p>
 
             {activeChartTab === 'equity' ? (
               <div className="h-[350px] w-full">
@@ -606,9 +743,12 @@ export default function EdgeOrBetaContent() {
 
           {/* CAPM Attribution Panel */}
           <section className="bg-near-black text-ivory border border-border-dark rounded-xl p-6">
-            <h2 className="text-lg font-display text-text-heading-dark mb-6">
+            <h2 className="text-lg font-display text-text-heading-dark mb-2">
               {ui.capmTitle}
             </h2>
+            <p className="text-xs text-text-on-dark leading-relaxed mb-6 border-l-2 border-border-dark/60 pl-3 max-w-3xl">
+              <span className="font-medium text-text-heading-dark">{ui.howToRead}</span> {ui.capmHelp}
+            </p>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="border-r border-border-dark/60 pr-4">
