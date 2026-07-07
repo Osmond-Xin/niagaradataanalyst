@@ -22,6 +22,7 @@ PROFESSIONAL SUMMARY
 EXPERIENCE
 Master of Data Analytics | University of Niagara Falls Canada (Jan 2025 - 2026, coursework completed)
 - Data analytics projects with diverse datasets, applying data cleaning, exploratory analysis, and machine learning (Random Forest, XGBoost). GPA 4.13/4.3.
+- Named to the President's Academic Distinction List (Spring 2026) — a university-wide honor awarded by the President and Vice-Chancellor for a term GPA of 4.00+ on a full course load.
 
 Data & ML Engineer (Internship) | FindGrant, Remote - Toronto, ON (Jan 2026 - Mar 2026)
 - Engineered a real-time stock-trading data pipeline integrating live market APIs, EMA/ADX momentum signals, and options-expiry factors, validated through a custom-built backtesting engine
@@ -63,7 +64,7 @@ Software Engineer | Zhongxun, Beijing (May 2005 - Dec 2007)
 
 EDUCATION
 B.S. Computer Science and Technology — Beijing University of Posts and Telecommunications (2005)
-Master of Data Analytics — University of Niagara Falls Canada (Jan 2025 - 2026, coursework completed), GPA 4.13/4.3
+Master of Data Analytics — University of Niagara Falls Canada (Jan 2025 - 2026, coursework completed), GPA 4.13/4.3 — President's Academic Distinction List (Spring 2026)
 
 CERTIFICATIONS
 - PMP Certified (Project Management Professional) - 2014
@@ -73,6 +74,11 @@ CERTIFICATIONS
 SKILLS
 AI & LLM (LangGraph, LangChain, RAG, Claude/OpenAI APIs) | Data Science & Analytics (Python, SQL, ML) | Software Engineering (Go, Node.js, React, REST APIs) | Cloud & Database (AWS SAA+SAP, PostgreSQL/TimescaleDB, Docker) | Product Strategy & Cross-functional Collaboration
 === END RESUME ===
+
+Key Achievement - President's Academic Distinction List (Spring 2026):
+- University-wide academic honor at the University of Niagara Falls Canada, awarded by the President and Vice-Chancellor (letter dated June 25, 2026)
+- Criteria: a term average GPA of 4.00 or higher while carrying a full course load
+- Significance: independent, university-certified proof of sustained academic excellence in Canada — complements the overall GPA of 4.13/4.3
 
 Key Achievement - H.E.A.D. Competition 2026 (First Prize):
 - Award: 🏆 First Prize, H.E.A.D. (Health, Environment, Analytics & Data) Competition 2026
@@ -131,6 +137,7 @@ Yi Xin's Skill Inventory (for matching):
 - Certifications: AWS SAA, AWS SAP, PMP
 - Work authorization: PGWP-eligible in Canada, no LMIA / sponsorship required
 - Canadian Academic Achievement: 🏆 First Prize, H.E.A.D. Competition 2026 (Mohawk College · McKeil School of Business) — Hamilton Urban Forest Climate Vulnerability Analysis; invited to CityLAB Project Showcase. Proves graduate-level analytical work delivered in Canada.
+- Academic Honor: President's Academic Distinction List, University of Niagara Falls Canada (Spring 2026) — term GPA 4.00+ on a full course load; overall GPA 4.13/4.3.
 
 Response format:
 ## Skill Match Analysis

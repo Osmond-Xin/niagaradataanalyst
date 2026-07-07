@@ -324,7 +324,7 @@ export const translations = {
             period: '2025 - 2026',
             title: '数据分析硕士',
             company: 'University of Niagara Falls Canada',
-            description: '课程已修完，GPA 4.13/4.3，专注数据分析方法论、机器学习与 AI 应用',
+            description: '课程已修完，GPA 4.13/4.3，入选校长学术荣誉榜（President\'s Academic Distinction List，2026 春季学期），专注数据分析方法论、机器学习与 AI 应用',
           },
           freelancer: {
             period: '2022 - 2024',
@@ -392,6 +392,7 @@ export const translations = {
         awsSap: { name: 'AWS SAP', issuer: 'Amazon Web Services', year: '2021' },
         bupt: { name: '计算机科学 学士', issuer: '北京邮电大学', year: '2005' },
         unfc: { name: '数据分析硕士（课程已修完）', issuer: 'University of Niagara Falls Canada', year: '2026' },
+        presList: { name: '校长学术荣誉榜（President\'s Academic Distinction List）', issuer: 'University of Niagara Falls Canada · 学期 GPA 4.00+（满课量）', year: '2026 春季学期' },
       },
       // SkillRadar
       radar: {
@@ -407,7 +408,7 @@ export const translations = {
       // KeyMetrics
       metrics: {
         sectionTitle: '关键数字',
-        years: { value: '4.13', label: '硕士 GPA (4.3 制)' },
+        years: { value: '4.13', label: '硕士 GPA · 校长荣誉榜' },
         team: { value: '5+', label: '近期端到端项目' },
         availability: { value: '460+', label: 'pytest 测试' },
         certs: { value: '3', label: '项专业认证' },
@@ -757,7 +758,7 @@ export const translations = {
             period: '2025 - 2026',
             title: 'Master of Data Analytics',
             company: 'University of Niagara Falls Canada',
-            description: 'Coursework completed, GPA 4.13/4.3 — data analytics methodology, machine learning, and AI applications',
+            description: 'Coursework completed, GPA 4.13/4.3, named to the President\'s Academic Distinction List (Spring 2026) — data analytics methodology, machine learning, and AI applications',
           },
           freelancer: {
             period: '2022 - 2024',
@@ -825,6 +826,7 @@ export const translations = {
         awsSap: { name: 'AWS SAP', issuer: 'Amazon Web Services', year: '2021' },
         bupt: { name: 'B.S. Computer Science', issuer: 'Beijing University of Posts and Telecommunications', year: '2005' },
         unfc: { name: 'Master of Data Analytics (coursework completed)', issuer: 'University of Niagara Falls Canada', year: '2026' },
+        presList: { name: "President's Academic Distinction List", issuer: 'University of Niagara Falls Canada · term GPA 4.00+ on a full course load', year: 'Spring 2026' },
       },
       // SkillRadar
       radar: {
@@ -840,7 +842,7 @@ export const translations = {
       // KeyMetrics
       metrics: {
         sectionTitle: 'Key Numbers',
-        years: { value: '4.13', label: "Master's GPA (/4.3)" },
+        years: { value: '4.13', label: "Master's GPA · President's List" },
         team: { value: '5+', label: 'Recent end-to-end projects' },
         availability: { value: '460+', label: 'pytest tests' },
         certs: { value: '3', label: 'Certifications' },

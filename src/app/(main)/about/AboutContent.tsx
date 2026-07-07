@@ -46,6 +46,7 @@ const certifications = [
 const educationEntries = [
   { id: 'bupt', icon: '🎓', color: 'purple' },
   { id: 'unfc', icon: '📊', color: 'green' },
+  { id: 'presList', icon: '🏅', color: 'amber' },
 ];
 
 /** 关键指标列表 */

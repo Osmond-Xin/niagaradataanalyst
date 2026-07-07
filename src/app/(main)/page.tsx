@@ -20,6 +20,10 @@ const jsonLd = {
     'Prompt Engineering', 'Playwright Automation',
   ],
   description: 'Data & AI-application engineer in Canada. Builds LLM agents, RAG pipelines, and data/IIoT backends. Master of Data Analytics; PGWP-eligible, no sponsorship required.',
+  award: [
+    "President's Academic Distinction List, University of Niagara Falls Canada (Spring 2026)",
+    'First Prize, H.E.A.D. Competition 2026 — Hamilton Urban Forest Climate Vulnerability Analysis',
+  ],
 };
 
 export default function HomePage() {
