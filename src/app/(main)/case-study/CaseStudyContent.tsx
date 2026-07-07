@@ -28,7 +28,7 @@ const CaseStudyContent: React.FC = () => {
       {/* 页面标题 */}
       <div className="text-center">
         <p className="text-label font-sans font-medium text-terracotta uppercase tracking-widest mb-4">
-          InterviewPass · Case Study
+          job-hunt · Case Study
         </p>
         <h1 className="font-display font-medium text-subhead lg:text-subhead-lg text-text-primary leading-[1.10] mb-4">
           {t('caseStudy.pageTitle')}

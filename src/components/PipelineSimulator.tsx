@@ -2,7 +2,7 @@
 
 /**
  * 管道模拟器组件
- * 展示InterviewPass数据处理管道的终端控制台和Recharts置信度图表
+ * 展示 job-hunt 流水线运行的终端控制台和 Recharts 匹配分图表
  * 支持双语，暗色终端美学
  */
 import React, { useState, useEffect, useRef } from 'react';
@@ -16,45 +16,45 @@ import type { SimulationLog, ConfidenceData } from '@/types';
 const getSimulationLogs = (lang: 'zh' | 'en'): SimulationLog[] => {
   const logs: Record<'zh' | 'en', SimulationLog[]> = {
     zh: [
-      { timestamp: '10:30:00', level: 'info', message: '初始化视频流接收服务...' },
-      { timestamp: '10:30:01', level: 'success', message: 'Kinesis视频流连接已建立' },
-      { timestamp: '10:30:02', level: 'info', message: '开始H.264视频解码 (1080p@30fps)' },
-      { timestamp: '10:30:03', level: 'info', message: '发送帧到Lambda处理管道...' },
-      { timestamp: '10:30:05', level: 'success', message: 'Rekognition面部检测完成 - 检测到1张面部' },
-      { timestamp: '10:30:06', level: 'info', message: '分析面部表情: 置信度=0.65' },
-      { timestamp: '10:30:08', level: 'warning', message: '面试者表情紧张度上升 - 调整评分权重' },
-      { timestamp: '10:30:10', level: 'success', message: 'LLM评估引擎返回结果: 综合得分=78/100' },
-      { timestamp: '10:30:12', level: 'info', message: '数据写入DynamoDB - 会话ID: sess_a1b2c3' },
-      { timestamp: '10:30:13', level: 'success', message: 'Airbyte同步触发 → Snowflake数据仓库' },
-      { timestamp: '10:30:15', level: 'info', message: '分析报告生成完成' },
-      { timestamp: '10:30:16', level: 'success', message: '✓ 管道处理完成 - 总耗时: 16秒' },
+      { timestamp: '10:30:00', level: 'info', message: '扫描 ATS 与 WebSearch 职位源...' },
+      { timestamp: '10:30:01', level: 'success', message: '发现新职位，去重后入队' },
+      { timestamp: '10:30:02', level: 'info', message: '抽取职位描述 (LangGraph extract_jd)' },
+      { timestamp: '10:30:03', level: 'success', message: '资格门控通过 (mode=full)' },
+      { timestamp: '10:30:05', level: 'success', message: 'CV 匹配完成 — 命中核心技能关键词' },
+      { timestamp: '10:30:07', level: 'info', message: '按加权维度评分中 (Claude/OpenAI)...' },
+      { timestamp: '10:30:09', level: 'success', message: '综合匹配分 = 4.3 / 5 → 生成材料' },
+      { timestamp: '10:30:11', level: 'info', message: '定制简历与求职信生成 (HTML → PDF)' },
+      { timestamp: '10:30:13', level: 'success', message: '质量审计循环通过' },
+      { timestamp: '10:30:14', level: 'info', message: 'Playwright 打开申请页 (fill-only)' },
+      { timestamp: '10:30:16', level: 'warning', message: '停在审核页 — 等待人工检查并提交' },
+      { timestamp: '10:30:16', level: 'success', message: '✓ 就绪待提交 — 门槛未满足绝不自动提交' },
     ],
     en: [
-      { timestamp: '10:30:00', level: 'info', message: 'Initializing video stream receiver...' },
-      { timestamp: '10:30:01', level: 'success', message: 'Kinesis video stream connected' },
-      { timestamp: '10:30:02', level: 'info', message: 'Starting H.264 decode (1080p@30fps)' },
-      { timestamp: '10:30:03', level: 'info', message: 'Sending frames to Lambda pipeline...' },
-      { timestamp: '10:30:05', level: 'success', message: 'Rekognition face detection complete - 1 face found' },
-      { timestamp: '10:30:06', level: 'info', message: 'Analyzing facial expression: confidence=0.65' },
-      { timestamp: '10:30:08', level: 'warning', message: 'Nervousness rising - adjusting score weight' },
-      { timestamp: '10:30:10', level: 'success', message: 'LLM evaluation result: score=78/100' },
-      { timestamp: '10:30:12', level: 'info', message: 'Writing to DynamoDB - session: sess_a1b2c3' },
-      { timestamp: '10:30:13', level: 'success', message: 'Airbyte sync triggered → Snowflake' },
-      { timestamp: '10:30:15', level: 'info', message: 'Analysis report generated' },
-      { timestamp: '10:30:16', level: 'success', message: '✓ Pipeline complete - total: 16s' },
+      { timestamp: '10:30:00', level: 'info', message: 'Scanning ATS APIs and WebSearch...' },
+      { timestamp: '10:30:01', level: 'success', message: 'New posting found; de-duplicated into queue' },
+      { timestamp: '10:30:02', level: 'info', message: 'Extracting job description (LangGraph extract_jd)' },
+      { timestamp: '10:30:03', level: 'success', message: 'Eligibility gate passed (mode=full)' },
+      { timestamp: '10:30:05', level: 'success', message: 'CV match complete — core skill keywords hit' },
+      { timestamp: '10:30:07', level: 'info', message: 'Scoring weighted dimensions (Claude/OpenAI)...' },
+      { timestamp: '10:30:09', level: 'success', message: 'Fit score = 4.3 / 5 → generating artifacts' },
+      { timestamp: '10:30:11', level: 'info', message: 'Tailoring resume and cover letter (HTML → PDF)' },
+      { timestamp: '10:30:13', level: 'success', message: 'Quality-audit loop passed' },
+      { timestamp: '10:30:14', level: 'info', message: 'Playwright opened application page (fill-only)' },
+      { timestamp: '10:30:16', level: 'warning', message: 'Stopped at review — awaiting human submit' },
+      { timestamp: '10:30:16', level: 'success', message: '✓ Ready to submit — never auto-submits behind unmet gates' },
     ],
   };
   return logs[lang];
 };
 
-/** 置信度图表数据 */
+/** 匹配分进度图表数据（随流水线阶段上升） */
 const confidenceData: ConfidenceData[] = [
-  { time: 0, confidence: 0.45, stage: '初始' },
-  { time: 5, confidence: 0.65, stage: '面部检测' },
-  { time: 8, confidence: 0.72, stage: '表情分析' },
-  { time: 10, confidence: 0.78, stage: 'LLM评估' },
-  { time: 13, confidence: 0.85, stage: '数据同步' },
-  { time: 16, confidence: 0.92, stage: '完成' },
+  { time: 0, confidence: 0.45, stage: 'Extract' },
+  { time: 3, confidence: 0.60, stage: 'CV match' },
+  { time: 6, confidence: 0.72, stage: 'Score' },
+  { time: 9, confidence: 0.82, stage: 'Generate' },
+  { time: 12, confidence: 0.88, stage: 'Apply' },
+  { time: 15, confidence: 0.92, stage: 'Review' },
 ];
 
 /** 日志级别对应的样式（终端内部保持深色配色） */

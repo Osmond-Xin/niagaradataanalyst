@@ -9,17 +9,17 @@ import CapabilityCards from '@/components/CapabilityCards';
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  name: 'NiagaraDataAnalyst',
-  jobTitle: 'AI & Data Architect | Software Architect',
+  name: 'Yi Xin',
+  jobTitle: 'Data & AI-Application Engineer',
   url: 'https://niagaradataanalyst.com',
   knowsAbout: [
-    'Artificial Intelligence', 'Machine Learning', 'LLM Integration',
-    'Software Architecture', 'Serverless Computing', 'AWS',
-    'Data Analysis', 'Data Engineering', 'Data Pipeline',
-    'Product Design', 'Product Development',
-    'Prompt Engineering', 'RAG', 'MCP Protocol',
+    'Artificial Intelligence', 'Machine Learning', 'LLM Applications',
+    'LangGraph', 'LangChain', 'RAG', 'Retrieval-Augmented Generation',
+    'Data Engineering', 'Data Pipelines', 'Python',
+    'AWS', 'PostgreSQL', 'TimescaleDB',
+    'Prompt Engineering', 'Playwright Automation',
   ],
-  description: '18年经验的软件架构师，专注于AI集成、数据工程和产品设计。AI-Era One-Person Army.',
+  description: 'Data & AI-application engineer in Canada. Builds LLM agents, RAG pipelines, and data/IIoT backends. Master of Data Analytics; PGWP-eligible, no sponsorship required.',
 };
 
 export default function HomePage() {

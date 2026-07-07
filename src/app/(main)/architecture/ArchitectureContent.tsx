@@ -175,7 +175,7 @@ const ProjectShowcase: React.FC<{ t: (key: string) => string }> = ({ t }) => (
     </div>
 
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-      {/* InterviewPass 卡片 */}
+      {/* job-hunt 卡片 */}
       <div className="bg-ivory border border-border-cream rounded-xl p-6 lg:p-8
                       shadow-whisper hover:translate-y-[-2px] transition-all duration-300">
         <h3 className="font-display font-medium text-subhead-sm text-text-primary mb-1">

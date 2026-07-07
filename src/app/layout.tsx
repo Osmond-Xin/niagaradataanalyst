@@ -29,16 +29,16 @@ const fraunces = Fraunces({
 /** 全局 SEO 元数据 */
 export const metadata: Metadata = {
   title: {
-    default: 'NiagaraDataAnalyst - AI时代软件架构师',
-    template: '%s | NiagaraDataAnalyst',
+    default: 'Yi Xin — Data & AI-Application Engineer',
+    template: '%s | Yi Xin',
   },
-  description: 'AI工程、软件架构与数据分析专家。18年经验，专注无服务器架构、AI集成、数据工程与产品设计。AI Engineer, Software Architect, Data Analyst.',
+  description: 'Data & AI-application engineer in Canada. Builds LLM agents (LangGraph), RAG pipelines, and data/IIoT backends. Master of Data Analytics; PGWP-eligible, no sponsorship required.',
   keywords: [
-    'AI Engineer', 'Software Architect', 'Data Analyst', 'Product Design',
-    'AI工程师', '软件架构师', '数据分析', '产品设计',
-    'Serverless', 'LLM', 'MCP', 'Vertex AI',
-    'Next.js', 'TypeScript', 'Full-Stack Developer',
-    'Niagara', 'Data Pipeline', 'Airbyte', 'Snowflake',
+    'AI Engineer', 'Data Engineer', 'AI Application Engineer', 'ML Engineer',
+    'LangGraph', 'LangChain', 'RAG', 'LLM', 'Prompt Engineering',
+    'Python', 'Playwright', 'FAISS', 'Chroma',
+    'Data Pipeline', 'TimescaleDB', 'AWS',
+    'Canada', 'Ontario', 'PGWP',
   ],
   authors: [{ name: 'NiagaraDataAnalyst' }],
   creator: 'NiagaraDataAnalyst',
@@ -50,8 +50,8 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: 'NiagaraDataAnalyst',
-    title: 'NiagaraDataAnalyst - AI & Data Architect',
-    description: 'AI-Era One-Person Army: Software Architecture × Data Engineering × Product Design. 18 years of experience.',
+    title: 'Yi Xin — Data & AI-Application Engineer',
+    description: 'Building production AI end to end: LangGraph agents, RAG pipelines, and data/IIoT backends. Master of Data Analytics in Canada; PGWP-eligible.',
   },
   twitter: {
     card: 'summary_large_image',

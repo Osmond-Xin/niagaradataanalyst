@@ -2,7 +2,7 @@
 
 /**
  * 交互式架构图组件
- * 使用ReactFlow展示InterviewPass系统的6节点架构
+ * 使用ReactFlow展示job-hunt系统的流水线架构（发现 → 评估图 → 投递助手）
  * 支持节点点击查看详情面板，动画数据流
  */
 import React, { useState, useCallback } from 'react';
@@ -29,79 +29,79 @@ interface NodeDetail {
 const getNodeDetails = (lang: 'zh' | 'en'): Record<string, NodeDetail> => {
   const data: Record<'zh' | 'en', Record<string, NodeDetail>> = {
     zh: {
-      'user-client': {
-        label: '用户客户端',
-        description: '面试者视频输入界面，支持实时视频流传输',
-        technologies: ['React', 'WebRTC', 'MediaStream API'],
-        specs: { '输入格式': 'H.264视频流', '分辨率': '1080p', '帧率': '30fps' },
+      'discovery': {
+        label: '发现服务',
+        description: '扫描直连 ATS 与 WebSearch，去重后进入待评估队列',
+        technologies: ['Brave WebSearch', 'Greenhouse / Lever / Ashby API', 'Python'],
+        specs: { '来源': 'ATS API + WebSearch', '去重': '本地 tracker + 历史', '缓存': '24 小时磁盘缓存' },
       },
-      'kinesis': {
-        label: 'Kinesis视频流',
-        description: '实时视频流接收和缓冲服务',
-        technologies: ['AWS Kinesis Video Streams'],
-        specs: { '吞吐量': '每秒1000帧', '延迟': '<100ms', '存储': '7天自动删除' },
+      'extract': {
+        label: 'JD 抽取与门控',
+        description: 'LangGraph 节点抽取职位描述，做资格与在招门控',
+        technologies: ['LangGraph', 'Claude / OpenAI API'],
+        specs: { '图节点': '约 20 个类型化节点', '门控': '资格 + 是否在招', '输出': '结构化 JD' },
       },
-      'lambda': {
-        label: 'Lambda处理',
-        description: '无服务器计算，帧提取和预处理',
-        technologies: ['AWS Lambda', 'Python', 'FFmpeg'],
-        specs: { '内存': '3008MB', '超时': '15分钟', '并发': '1000' },
+      'score': {
+        label: '匹配评分',
+        description: '按加权维度对 JD 与候选人做匹配打分，决定是否生成材料',
+        technologies: ['LangGraph', '加权评分', 'Claude / OpenAI API'],
+        specs: { '维度': '多维加权', '模式': 'student | full 开关', '测试': '460+ pytest' },
       },
-      'rekognition': {
-        label: 'Rekognition',
-        description: 'AI面部表情分析和情绪检测',
-        technologies: ['Amazon Rekognition', 'Face Detection API'],
-        specs: { '检测类型': '面部+表情+情绪', '准确率': '>95%', '响应时间': '<200ms' },
+      'generate': {
+        label: '定制材料生成',
+        description: '通过评分后，生成定制简历、求职信与评估报告',
+        technologies: ['Jinja2', 'Playwright PDF', 'Claude / OpenAI API'],
+        specs: { '产物': '简历 + 求职信 + 报告', '格式': 'HTML → PDF', '质量': '生成-审计循环' },
       },
-      'airbyte': {
-        label: 'Airbyte',
-        description: '数据同步管道，DynamoDB到Snowflake',
-        technologies: ['Airbyte', 'CDC', 'ELT'],
-        specs: { '同步频率': '每小时', '数据格式': 'JSON→Parquet', '压缩': 'Snappy' },
+      'apply': {
+        label: '投递助手',
+        description: 'Playwright 自动填表（Workday / LinkedIn），只填不提交',
+        technologies: ['Playwright', 'Workday', 'LinkedIn Easy Apply'],
+        specs: { '模式': '仅填写（fill-only）', '提交': '人工点击', '协调': '文件锁 IPC sentinel' },
       },
-      'snowflake': {
-        label: 'Snowflake',
-        description: '数据仓库，多维面试数据分析',
-        technologies: ['Snowflake', 'dbt', 'SQL'],
-        specs: { '存储': '列式存储', '查询引擎': 'MPP', '缓存': '自动结果缓存' },
+      'review': {
+        label: '人工审核与提交',
+        description: '停在审核页，人工检查后提交；不满足门槛绝不自动提交',
+        technologies: ['Human-in-the-loop', 'JSONL 事件日志'],
+        specs: { '门槛': '默认永不自动提交', '证据': '截图存档', '日志': '每次运行 JSONL' },
       },
     },
     en: {
-      'user-client': {
-        label: 'User Client',
-        description: 'Interview video input interface with real-time streaming',
-        technologies: ['React', 'WebRTC', 'MediaStream API'],
-        specs: { 'Input': 'H.264 Stream', 'Resolution': '1080p', 'FPS': '30' },
+      'discovery': {
+        label: 'Discovery Service',
+        description: 'Scans direct ATS APIs and WebSearch; de-duplicates into a queue',
+        technologies: ['Brave WebSearch', 'Greenhouse / Lever / Ashby API', 'Python'],
+        specs: { 'Sources': 'ATS APIs + WebSearch', 'Dedup': 'local tracker + history', 'Cache': '24h on-disk' },
       },
-      'kinesis': {
-        label: 'Kinesis Video',
-        description: 'Real-time video stream ingestion and buffering',
-        technologies: ['AWS Kinesis Video Streams'],
-        specs: { 'Throughput': '1000 frames/s', 'Latency': '<100ms', 'Retention': '7 days' },
+      'extract': {
+        label: 'JD Extract & Gate',
+        description: 'LangGraph nodes extract the job description and gate on eligibility',
+        technologies: ['LangGraph', 'Claude / OpenAI API'],
+        specs: { 'Graph': '~20 typed nodes', 'Gate': 'eligibility + active', 'Output': 'structured JD' },
       },
-      'lambda': {
-        label: 'Lambda',
-        description: 'Serverless compute for frame extraction & preprocessing',
-        technologies: ['AWS Lambda', 'Python', 'FFmpeg'],
-        specs: { 'Memory': '3008MB', 'Timeout': '15min', 'Concurrency': '1000' },
+      'score': {
+        label: 'Fit Scoring',
+        description: 'Scores the JD against the candidate across weighted dimensions',
+        technologies: ['LangGraph', 'Weighted rubric', 'Claude / OpenAI API'],
+        specs: { 'Dimensions': 'weighted', 'Mode': 'student | full switch', 'Tests': '460+ pytest' },
       },
-      'rekognition': {
-        label: 'Rekognition',
-        description: 'AI facial expression & emotion analysis',
-        technologies: ['Amazon Rekognition', 'Face Detection API'],
-        specs: { 'Detection': 'Face+Expression+Emotion', 'Accuracy': '>95%', 'Response': '<200ms' },
+      'generate': {
+        label: 'Tailored Generation',
+        description: 'On a passing score, generates a tailored resume, cover letter, and report',
+        technologies: ['Jinja2', 'Playwright PDF', 'Claude / OpenAI API'],
+        specs: { 'Artifacts': 'CV + cover letter + report', 'Format': 'HTML → PDF', 'Quality': 'generate-audit loop' },
       },
-      'airbyte': {
-        label: 'Airbyte',
-        description: 'Data sync pipeline from DynamoDB to Snowflake',
-        technologies: ['Airbyte', 'CDC', 'ELT'],
-        specs: { 'Sync': 'Hourly', 'Format': 'JSON→Parquet', 'Compression': 'Snappy' },
+      'apply': {
+        label: 'Application Assistant',
+        description: 'Playwright fills the ATS form (Workday / LinkedIn) — fill-only',
+        technologies: ['Playwright', 'Workday', 'LinkedIn Easy Apply'],
+        specs: { 'Mode': 'fill-only', 'Submit': 'manual click', 'IPC': 'file-lock sentinels' },
       },
-      'snowflake': {
-        label: 'Snowflake',
-        description: 'Data warehouse for multi-dimensional interview analytics',
-        technologies: ['Snowflake', 'dbt', 'SQL'],
-        specs: { 'Storage': 'Columnar', 'Engine': 'MPP', 'Cache': 'Auto Result Cache' },
+      'review': {
+        label: 'Human Review & Submit',
+        description: 'Stops at review; a human submits. Never auto-submits behind unmet gates',
+        technologies: ['Human-in-the-loop', 'JSONL event log'],
+        specs: { 'Gate': 'never auto-submit by default', 'Evidence': 'screenshots', 'Log': 'per-run JSONL' },
       },
     },
   };
@@ -110,12 +110,12 @@ const getNodeDetails = (lang: 'zh' | 'en'): Record<string, NodeDetail> => {
 
 /** 节点颜色映射（暖色图表调色板）*/
 const nodeColors: Record<string, string> = {
-  'user-client': '#c96442',  // terracotta
-  'kinesis':     '#c9a46a',  // ochre
-  'lambda':      '#d97757',  // coral
-  'rekognition': '#8b5a3c',  // clay
-  'airbyte':     '#d4b896',  // sand
-  'snowflake':   '#4d4c48',  // ink
+  'discovery': '#c96442',  // terracotta
+  'extract':   '#c9a46a',  // ochre
+  'score':     '#d97757',  // coral
+  'generate':  '#8b5a3c',  // clay
+  'apply':     '#d4b896',  // sand
+  'review':    '#4d4c48',  // ink
 };
 
 /** 创建ReactFlow节点（暗色面板 + 暖色边框）*/
@@ -130,22 +130,21 @@ const nodeStyle = (id: string) => ({
 });
 
 const createNodes = (details: Record<string, NodeDetail>): Node[] => [
-  { id: 'user-client', position: { x: 50, y: 150 }, data: { label: details['user-client'].label }, style: nodeStyle('user-client') },
-  { id: 'kinesis', position: { x: 250, y: 50 }, data: { label: details['kinesis'].label }, style: nodeStyle('kinesis') },
-  { id: 'lambda', position: { x: 250, y: 250 }, data: { label: details['lambda'].label }, style: nodeStyle('lambda') },
-  { id: 'rekognition', position: { x: 480, y: 150 }, data: { label: details['rekognition'].label }, style: nodeStyle('rekognition') },
-  { id: 'airbyte', position: { x: 680, y: 50 }, data: { label: details['airbyte'].label }, style: nodeStyle('airbyte') },
-  { id: 'snowflake', position: { x: 680, y: 250 }, data: { label: details['snowflake'].label }, style: nodeStyle('snowflake') },
+  { id: 'discovery', position: { x: 50, y: 150 }, data: { label: details['discovery'].label }, style: nodeStyle('discovery') },
+  { id: 'extract', position: { x: 250, y: 50 }, data: { label: details['extract'].label }, style: nodeStyle('extract') },
+  { id: 'score', position: { x: 250, y: 250 }, data: { label: details['score'].label }, style: nodeStyle('score') },
+  { id: 'generate', position: { x: 480, y: 150 }, data: { label: details['generate'].label }, style: nodeStyle('generate') },
+  { id: 'apply', position: { x: 680, y: 50 }, data: { label: details['apply'].label }, style: nodeStyle('apply') },
+  { id: 'review', position: { x: 680, y: 250 }, data: { label: details['review'].label }, style: nodeStyle('review') },
 ];
 
 /** ReactFlow边连接（暖色调色板）*/
 const edges: Edge[] = [
-  { id: 'e1', source: 'user-client', target: 'kinesis', animated: true, style: { stroke: '#c96442' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#c96442' } },
-  { id: 'e2', source: 'kinesis', target: 'lambda', animated: true, style: { stroke: '#c9a46a' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#c9a46a' } },
-  { id: 'e3', source: 'user-client', target: 'lambda', animated: true, style: { stroke: '#c96442' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#d97757' } },
-  { id: 'e4', source: 'lambda', target: 'rekognition', animated: true, style: { stroke: '#d97757' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#8b5a3c' } },
-  { id: 'e5', source: 'rekognition', target: 'airbyte', animated: true, style: { stroke: '#8b5a3c' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#d4b896' } },
-  { id: 'e6', source: 'airbyte', target: 'snowflake', animated: true, style: { stroke: '#d4b896' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#4d4c48' } },
+  { id: 'e1', source: 'discovery', target: 'extract', animated: true, style: { stroke: '#c96442' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#c9a46a' } },
+  { id: 'e2', source: 'extract', target: 'score', animated: true, style: { stroke: '#c9a46a' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#d97757' } },
+  { id: 'e3', source: 'score', target: 'generate', animated: true, style: { stroke: '#d97757' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#8b5a3c' } },
+  { id: 'e4', source: 'generate', target: 'apply', animated: true, style: { stroke: '#8b5a3c' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#d4b896' } },
+  { id: 'e5', source: 'apply', target: 'review', animated: true, style: { stroke: '#d4b896' }, markerEnd: { type: MarkerType.ArrowClosed, color: '#4d4c48' } },
 ];
 
 const InteractiveArch: React.FC = () => {
