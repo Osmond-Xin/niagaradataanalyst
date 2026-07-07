@@ -15,16 +15,21 @@ Yi Xin (辛屹)
 249-874-5096 | jonzy.xin@outlook.com | Niagara Falls, ON, Canada
 
 PROFESSIONAL SUMMARY
-- Demonstrated strong product management capabilities through successful roadmap planning and execution, while maintaining the ability to independently develop and deploy complex technical solutions
-- Led full-stack development projects from concept to deployment, utilizing modern tech stacks (React, Node.js, Python) and demonstrating expertise in both AI and backend development
-- Architected and delivered end-to-end cloud solutions leveraging AWS services (Lambda, API Gateway, DynamoDB), while implementing microservices architecture and RESTful APIs
+- Data and AI-application engineer who builds production systems end to end — from data pipelines and AWS cloud infrastructure to applied LLM/agent workflows and the dashboards that make results usable
+- Recent hands-on work: a ~20-node LangGraph job-search agent (job-hunt), a LangChain RAG pipeline, an IIoT predictive-maintenance backend (Matrix-Sync), and an award-winning geospatial analysis of 275,156 trees — built alongside a Master of Data Analytics (GPA 4.13/4.3) in Canada
+- Earlier engineering and architecture work, including an AWS solution featured as an official case study, is the foundation these projects build on
 
 EXPERIENCE
-Graduate Student | University of Niagara Falls Canada (Jan 2025 - Current)
-- Data analytics projects with diverse datasets, applying data cleaning, exploratory analysis, and machine learning (Random Forest, XGBoost). GPA 4.13.
+Master of Data Analytics | University of Niagara Falls Canada (Jan 2025 - 2026, coursework completed)
+- Data analytics projects with diverse datasets, applying data cleaning, exploratory analysis, and machine learning (Random Forest, XGBoost). GPA 4.13/4.3.
 
-Product Manager & Software Engineer | Freelancer, Beijing (Oct 2022 - Dec 2024)
-- Architected and delivered customized business solutions and RESTful APIs, leading to 40% reduction in processing time and 92% client satisfaction rate
+Data & ML Engineer (Internship) | FindGrant, Remote - Toronto, ON (Jan 2026 - Mar 2026)
+- Engineered a real-time stock-trading data pipeline integrating live market APIs, EMA/ADX momentum signals, and options-expiry factors, validated through a custom-built backtesting engine
+- Deployed an interactive Streamlit/Python dashboard monitoring live strategy signals; the strategy returned a 10% average monthly ROI in backtesting
+
+Software Engineer & Technical Consultant (Freelance) | Beijing (Oct 2022 - Dec 2024)
+- Built end-to-end data solutions and RESTful APIs for diverse clients, accelerating data processing by 40%; maintained a 92% client-satisfaction rate
+- Developed conversational bots on the OpenAI and Claude APIs, plus the data-collection and visualization platforms behind them
 
 Platform Product Manager | Beijing Bailongma (Aug 2021 - Sep 2022)
 - Optimized ride-hailing SaaS fleet management: 25% fleet efficiency improvement, 30% cost reduction
@@ -58,7 +63,7 @@ Software Engineer | Zhongxun, Beijing (May 2005 - Dec 2007)
 
 EDUCATION
 B.S. Computer Science and Technology — Beijing University of Posts and Telecommunications (2005)
-Data Analytics (Graduate, in progress) — University of Niagara Falls Canada (2025)
+Master of Data Analytics — University of Niagara Falls Canada (Jan 2025 - 2026, coursework completed), GPA 4.13/4.3
 
 CERTIFICATIONS
 - PMP Certified (Project Management Professional) - 2014
@@ -66,7 +71,7 @@ CERTIFICATIONS
 - AWS Certified Solutions Architect – Professional - 2021
 
 SKILLS
-Product Design & Strategy | Technical Leadership | Cloud Architecture & System Design | Full Stack Development | Cross-functional Management
+AI & LLM (LangGraph, LangChain, RAG, Claude/OpenAI APIs) | Data Science & Analytics (Python, SQL, ML) | Software Engineering (Go, Node.js, React, REST APIs) | Cloud & Database (AWS SAA+SAP, PostgreSQL/TimescaleDB, Docker) | Product Strategy & Cross-functional Collaboration
 === END RESUME ===
 
 Key Achievement - H.E.A.D. Competition 2026 (First Prize):

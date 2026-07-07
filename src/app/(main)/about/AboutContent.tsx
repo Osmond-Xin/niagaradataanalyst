@@ -3,7 +3,7 @@
 /**
  * 关于页面客户端内容
  * 包含6个模块：ProfileHero、DualIdentity、CareerTimeline、Certifications、SkillRadar、KeyMetrics
- * 核心叙事：产品×技术双栖的稀缺复合型人才
+ * 核心叙事：数据/AI 应用工程师（中级 IC），产品×技术复合背景为辅
  */
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -111,7 +111,7 @@ const ProfileHero: React.FC<{ t: (key: string) => string; language: string }> = 
         LinkedIn
       </a>
       <a
-        href="/resume/Yi_Xin_Data_Analyst_Resume.pdf"
+        href="/resume/Yi_Xin_Resume.pdf"
         download
         className="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-terracotta hover:brightness-110
                    text-ivory font-sans font-medium text-body-sm shadow-btn-terracotta transition-all duration-300"
@@ -334,10 +334,10 @@ const Certifications: React.FC<{ t: (key: string) => string }> = ({ t }) => (
 const SkillRadar: React.FC<{ t: (key: string) => string }> = ({ t }) => {
   const radarData = [
     { subject: t('about.radar.productStrategy'), value: 85, fullMark: 100 },
-    { subject: t('about.radar.techLeadership'), value: 92, fullMark: 100 },
-    { subject: t('about.radar.cloudArch'), value: 88, fullMark: 100 },
-    { subject: t('about.radar.fullStackDev'), value: 90, fullMark: 100 },
-    { subject: t('about.radar.dataAnalysis'), value: 78, fullMark: 100 },
+    { subject: t('about.radar.aiLlm'), value: 90, fullMark: 100 },
+    { subject: t('about.radar.cloudArch'), value: 86, fullMark: 100 },
+    { subject: t('about.radar.fullStackDev'), value: 88, fullMark: 100 },
+    { subject: t('about.radar.dataAnalysis'), value: 88, fullMark: 100 },
     { subject: t('about.radar.crossFunc'), value: 87, fullMark: 100 },
   ];
 

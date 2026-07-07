@@ -18,7 +18,7 @@ export const translations = {
       overline: '数据与 AI 应用工程师',
       title: '端到端构建可上线的 AI 系统',
       subtitle: 'LangGraph 智能体 · RAG · 数据管道',
-      description: '在加拿大完成数据分析硕士（GPA 4.13/4.3）期间，亲手构建并测试了一批端到端项目：8 节点 LangGraph 求职智能体、LangChain RAG 管道、Go/MQTT 工业物联网后端，以及 275,156 棵树的地理空间气候分析。PGWP 资格，无需雇主担保。',
+      description: '在加拿大完成数据分析硕士（GPA 4.13/4.3）期间，亲手构建并测试了一批端到端项目：约 20 节点的 LangGraph 求职智能体、LangChain RAG 管道、Go/MQTT 工业物联网后端，以及 275,156 棵树的地理空间气候分析。PGWP 资格，无需雇主担保。',
       cta: '查看项目',
       secondary: '关于我',
       tagline: '数据 · AI · 工程',
@@ -321,14 +321,14 @@ export const translations = {
         tagBoth: '产品+技术',
         entries: {
           unfc: {
-            period: '2025 - 至今',
-            title: '数据分析研究生',
+            period: '2025 - 2026',
+            title: '数据分析硕士',
             company: 'University of Niagara Falls Canada',
-            description: 'GPA 4.13，专注数据分析方法论、机器学习和AI应用研究',
+            description: '课程已修完，GPA 4.13/4.3，专注数据分析方法论、机器学习与 AI 应用',
           },
           freelancer: {
             period: '2022 - 2024',
-            title: '产品经理 & 软件工程师',
+            title: '软件工程师 & 技术顾问',
             company: '自由职业（北京）',
             description: '处理时间减少40%，客户满意度92%，独立交付多个全栈项目',
           },
@@ -391,14 +391,14 @@ export const translations = {
         awsSaa: { name: 'AWS SAA', issuer: 'Amazon Web Services', year: '2021' },
         awsSap: { name: 'AWS SAP', issuer: 'Amazon Web Services', year: '2021' },
         bupt: { name: '计算机科学 学士', issuer: '北京邮电大学', year: '2005' },
-        unfc: { name: '数据分析 在读', issuer: 'University of Niagara Falls Canada', year: '2025' },
+        unfc: { name: '数据分析硕士（课程已修完）', issuer: 'University of Niagara Falls Canada', year: '2026' },
       },
       // SkillRadar
       radar: {
         sectionTitle: '能力雷达图',
         sectionSubtitle: '六维能力评估',
         productStrategy: '产品战略',
-        techLeadership: '技术领导力',
+        aiLlm: 'AI / LLM 工程',
         cloudArch: '云架构',
         fullStackDev: '全栈开发',
         dataAnalysis: '数据分析',
@@ -435,7 +435,7 @@ export const translations = {
       contactPrivacy: '只会发送到 Yi 的私人邮箱',
     },
     footer: {
-      copyright: '© 2024 NiagaraDataAnalyst. 保留所有权利。',
+      copyright: '© 2026 NiagaraDataAnalyst. 保留所有权利。',
     },
   },
   en: {
@@ -451,7 +451,7 @@ export const translations = {
       overline: 'Data & AI-Application Engineer',
       title: 'Production AI Systems, Built to Ship',
       subtitle: 'LangGraph agents · RAG · Data pipelines',
-      description: 'During a Master of Data Analytics in Canada (GPA 4.13/4.3), I designed, built, and tested projects end to end: an 8-node LangGraph job-search agent, a LangChain RAG pipeline, a Go/MQTT IIoT backend, and a geospatial climate analysis of 275,156 trees. PGWP-eligible, no employer sponsorship required.',
+      description: 'During a Master of Data Analytics in Canada (GPA 4.13/4.3), I designed, built, and tested projects end to end: a ~20-node LangGraph job-search agent, a LangChain RAG pipeline, a Go/MQTT IIoT backend, and a geospatial climate analysis of 275,156 trees. PGWP-eligible, no employer sponsorship required.',
       cta: 'View Projects',
       secondary: 'About Me',
       tagline: 'Data · AI · Engineering',
@@ -754,14 +754,14 @@ export const translations = {
         tagBoth: 'Product+Tech',
         entries: {
           unfc: {
-            period: '2025 - Present',
-            title: 'Data Analytics Graduate Student',
+            period: '2025 - 2026',
+            title: 'Master of Data Analytics',
             company: 'University of Niagara Falls Canada',
-            description: 'GPA 4.13, focused on data analytics methodology, machine learning, and AI applications',
+            description: 'Coursework completed, GPA 4.13/4.3 — data analytics methodology, machine learning, and AI applications',
           },
           freelancer: {
             period: '2022 - 2024',
-            title: 'Product Manager & Software Engineer',
+            title: 'Software Engineer & Technical Consultant',
             company: 'Freelancer (Beijing)',
             description: '40% processing time reduction, 92% client satisfaction, independently delivered multiple full-stack projects',
           },
@@ -824,14 +824,14 @@ export const translations = {
         awsSaa: { name: 'AWS SAA', issuer: 'Amazon Web Services', year: '2021' },
         awsSap: { name: 'AWS SAP', issuer: 'Amazon Web Services', year: '2021' },
         bupt: { name: 'B.S. Computer Science', issuer: 'Beijing University of Posts and Telecommunications', year: '2005' },
-        unfc: { name: 'Data Analytics (In Progress)', issuer: 'University of Niagara Falls Canada', year: '2025' },
+        unfc: { name: 'Master of Data Analytics (coursework completed)', issuer: 'University of Niagara Falls Canada', year: '2026' },
       },
       // SkillRadar
       radar: {
         sectionTitle: 'Skill Radar',
         sectionSubtitle: 'Six-Dimensional Capability Assessment',
         productStrategy: 'Product Strategy',
-        techLeadership: 'Tech Leadership',
+        aiLlm: 'AI / LLM Engineering',
         cloudArch: 'Cloud Architecture',
         fullStackDev: 'Full-Stack Dev',
         dataAnalysis: 'Data Analytics',
@@ -868,7 +868,7 @@ export const translations = {
       contactPrivacy: 'Sent only to Yi\'s private inbox.',
     },
     footer: {
-      copyright: '© 2024 NiagaraDataAnalyst. All rights reserved.',
+      copyright: '© 2026 NiagaraDataAnalyst. All rights reserved.',
     },
   },
 } as const;
